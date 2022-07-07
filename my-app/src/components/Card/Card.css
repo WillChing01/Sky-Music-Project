@@ -1,0 +1,7 @@
+.card .bi-play-fill {
+    display: none;
+}
+
+.card:hover .bi-play-fill {
+    display: block;
+}

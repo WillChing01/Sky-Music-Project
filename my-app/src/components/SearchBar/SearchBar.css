@@ -1,0 +1,11 @@
+input {
+    border: none
+}
+
+input:focus {
+    outline: none;
+  }
+
+form {
+    display: inline-block;
+}

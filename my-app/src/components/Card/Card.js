@@ -1,22 +1,14 @@
-import { useState, useEffect } from 'react';
+import './Card.css'
 
-const Card = ({ type, id, title, artistName, albumId }) => {
-    // artists, songs (tracks), albums
-
-    const generateImageReq = () => {
-        const imgFetchType = type === 'track' ? 'album': type;
-        const imgFetchId = type === 'track' ? albumId: id;
-        const size = type === 'artist' ? '633x422': '500x500';
-        return `https://api.napster.com/imageserver/v2/${imgFetchType + 's'}/${imgFetchId}/images/${size}.jpg`;
-    };
-
+const Card = ({ info }) => {
     return (
-        <div className="container">
-            <h5>{title}</h5>
-            <img src={generateImageReq()} alt={title}></img>
-            
-        </div>      
+        <div className="container card">
+            <h5>{info.name}</h5>
+            <img src={info.imgSrc} alt={info.name}></img>
+            <h6>{info.artist}</h6>
+            {info.playable && <i class="bi bi-play-fill"></i>}
+        </div> 
     );
 };
- 
+
 export default Card;
