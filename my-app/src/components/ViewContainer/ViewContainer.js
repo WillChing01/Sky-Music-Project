@@ -1,8 +1,9 @@
-import './view.css';
+import './ViewContainer.css';
 import Card from '../Card/Card';
 import List from '../List/List';
 
-const ViewContainer = ({className, artists, albums, tracks, channelsOpen}) => {
+const ViewContainer = ({className, data, channelsOpen, previewURL, setPlaying}) => {
+    const {artists, albums, tracks} = data;
     const channels = [
         {type: 'tracks', items: tracks, open: channelsOpen['tracks']},
         {type: 'albums', items: albums, open: channelsOpen['albums']},
@@ -17,22 +18,24 @@ const ViewContainer = ({className, artists, albums, tracks, channelsOpen}) => {
           name: item.name,
           imgSrc: `https://api.napster.com/imageserver/v2/${type}/${id}/images/${size}.jpg`,
           artist: 'artistName' in item ? item.artistName : '',
-          playable: item.type === 'track'
+          playable: item.type === 'track',
+          previewURL: 'previewURL' in item ? item.previewURL : ''
         };
       };
 
 
     return (
         <div>
-            {channels.map((channel, index) => {
+            {
+            channels.map((channel, index) => {
                 if(!channel.open) return null;
                 const noView = <p>No {channel.type} were found</p> 
                 const view = className === 'gridView' ? 
                         <div className='gridView'>
-                            {channel.items.map((item, index) => <Card key={index} info={getInfo(item)}/>)}
+                            {channel.items.map((item, index) => <Card key={index} info={getInfo(item)} previewURL={previewURL} setPlaying={setPlaying}/>)}
                         </div>
                         :
-                        <List data={channel.items} getInfo={getInfo}/>
+                        <List data={channel.items} getInfo={getInfo} previewURL={previewURL} setPlaying={setPlaying}/>
                 return (
                     <div key={index}>
                         <h1>{channel.type}</h1>

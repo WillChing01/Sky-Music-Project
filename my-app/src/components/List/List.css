@@ -1,6 +1,13 @@
-/* bi-play-fill is coming from the play icon component */
 
-.card-view .bi-play-fill {
+.list:hover .bi-play-fill {
+    color: gray;
+}
+
+.list .display {
+    color: green;
+}
+
+/* .card-view .bi-play-fill {
     display: none;
 }
 
@@ -23,8 +30,5 @@
 
  .card-view .display {
     display: inline-block;
-}
+} */
 
-.card-view .bi-play-fill {
-    float: right;
-}

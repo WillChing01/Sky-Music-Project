@@ -1,0 +1,15 @@
+.bottomscreen {
+    position: fixed;
+    bottom: 0px;
+    background: grey;
+    display: inline-block;
+}
+
+.card-view .bi-pause {
+    float: right;
+}
+
+.bi-play-fill:hover {
+    cursor: pointer;
+}
+

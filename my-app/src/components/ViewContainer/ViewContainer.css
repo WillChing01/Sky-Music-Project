@@ -1,0 +1,27 @@
+
+.gridView {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    transition: gap 0.3s;
+}
+
+
+@media (width < 1000px) {
+    .gridView {
+        gap: 2rem;
+    }
+}
+
+
+@media (width < 650px) {
+    .gridView {
+        gap: 1rem;
+    }
+}
+
+.gridView .card-view img {
+    object-fit: contain;
+    max-width: 100%;
+    height: auto;
+}
