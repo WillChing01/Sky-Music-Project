@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
 import ChannelSelect from '../ChannelSelect/ChannelSelect';
 import ViewSelect from '../ViewSelect/ViewSelect';
 import SearchBar from '../SearchBar/SearchBar';
 import ViewContainer from '../ViewContainer/ViewContainer';
-import { useSearchParams } from 'react-router-dom';
 import Player from '../Player/Player';
-
-export const header = {headers: {apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3'}};
 
 function Home() {
   const [data, setData] = useState({});
@@ -17,40 +16,18 @@ function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [playing, setPlaying] = useState({previewURL: '', name: '', artistName: '', imgSrc: '', play: false});
 
-  const fetchData = async () => {
-    const query = searchParams.get('query');
-
-
-
-    if(query) {
-      setIsPending(true);
-      const res = await fetch(`https://api.napster.com/v2.2/search/verbose?query=${query}`, header);
-      const jsonRes = await res.json();
-      setIsPending(false);
-      setData(jsonRes.search.data);
-      return;
-    };
-    
-    // no search
-    const newData = {...data};
-    setIsPending(true)
-    for (const [channel, isOpen] of Object.entries(channelsOpen)) {
-      if (isOpen) {
-        const fetchUrl = `https://api.napster.com/v2.2/${channel}/top`;
-        const res = await fetch(fetchUrl, header);
-        const jsonRes = await res.json();
-        newData[channel] = jsonRes[channel];
-      }
-    }
-    setIsPending(false);  
-    setData(newData);
-    
-  }
-
   useEffect(() => {
     setData({});
-    fetchData();
-                                                                                                                                                            
+    const updateData = async () => {
+      const query = searchParams.get('query');
+      setIsPending(true);
+      const newData = query ? 
+                      await fetchQuery(query):
+                      await fetchTop(data, channelsOpen);
+      setIsPending(false);
+      setData(newData);
+    };
+    updateData();                                                                                 
   }, [searchParams]);
 
   return (
