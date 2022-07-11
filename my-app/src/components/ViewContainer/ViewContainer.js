@@ -2,7 +2,7 @@ import './ViewContainer.css';
 import Card from '../Card/Card';
 import List from '../List/List';
 
-const ViewContainer = ({className, data, channelsOpen, previewURL, setPlaying}) => {
+const ViewContainer = ({className, data, channelsOpen, currentPreviewURL, setPlaying}) => {
     const {artists, albums, tracks} = data;
     const channels = [
         {type: 'tracks', items: tracks, open: channelsOpen['tracks']},
@@ -23,6 +23,9 @@ const ViewContainer = ({className, data, channelsOpen, previewURL, setPlaying}) 
         };
       };
 
+    const firstLetterCapital = (e) => {
+        return e.charAt(0).toUpperCase() + e.slice(1);
+    }
 
     return (
         <div>
@@ -32,13 +35,13 @@ const ViewContainer = ({className, data, channelsOpen, previewURL, setPlaying}) 
                 const noView = <p>No {channel.type} were found</p> 
                 const view = className === 'gridView' ? 
                         <div className='gridView'>
-                            {channel.items.map((item, index) => <Card key={index} info={getInfo(item)} previewURL={previewURL} setPlaying={setPlaying}/>)}
+                            {channel.items.map((item, index) => <Card key={index} info={getInfo(item)} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying}/>)}
                         </div>
                         :
-                        <List data={channel.items} getInfo={getInfo} previewURL={previewURL} setPlaying={setPlaying}/>
+                        <List data={channel.items} getInfo={getInfo} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying}/>
                 return (
                     <div key={index}>
-                        <h1>{channel.type}</h1>
+                        <h1>{firstLetterCapital(channel.type)}</h1>
                         {!!channel.items.length ? view: noView}
                     </div>
                 );

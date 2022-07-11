@@ -1,0 +1,20 @@
+
+- backend
+- add volume slider to player.
+
+perfectionist stuff
+- card.css files not referencing classes outside of card.js comp.
+
+Notes:
+- Change previewURL (passed down to ViewContainer from playing state) to currentURL so it is clearer
+- unrelated css style blocks defined in player.css
+
+play = +
+pause = -
+
+Icon state:
+1    2
++    +
+-    +
++    -
+

@@ -1,11 +1,6 @@
 import PlayIcon from "../PlayIcon/PlayIcon";
 
-const List = ({ data, getInfo, previewURL, setPlaying }) => {
-    
-    const handleClick = (previewURL, name, artist) => {
-        setPlaying(setPlaying({previewURL, name, artist}));
-    };
-    
+const List = ({ data, getInfo, currentPreviewURL, setPlaying }) => {
     
     return (
         <div className="list">
@@ -15,7 +10,7 @@ const List = ({ data, getInfo, previewURL, setPlaying }) => {
                     const info = getInfo(item);
                     return (
                     <li key={index}>
-                        {info.playable && <PlayIcon info={info} previewURL={previewURL} setPlaying={setPlaying} />}
+                        {info.playable && <PlayIcon info={info} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying} />}
                         {info.name + (info.artist ? ', ' + info.artist : '')}
                     </li>
                     )

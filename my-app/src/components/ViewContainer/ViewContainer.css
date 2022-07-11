@@ -1,9 +1,17 @@
 
-.gridView {
+/* .gridView {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
     transition: gap 0.3s;
+} */
+
+.gridView {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
 }
 
 

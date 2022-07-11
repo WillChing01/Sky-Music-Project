@@ -6,6 +6,7 @@ import ViewSelect from '../ViewSelect/ViewSelect';
 import SearchBar from '../SearchBar/SearchBar';
 import ViewContainer from '../ViewContainer/ViewContainer';
 import Player from '../Player/Player';
+import './Home.css';
 
 function Home() {
   const [data, setData] = useState({});
@@ -14,7 +15,7 @@ function Home() {
   const [view, setView] = useState('grid');
   const [channelsOpen, setChannelsOpen] = useState({albums: true, artists: true, tracks: true});
   const [searchParams, setSearchParams] = useSearchParams();
-  const [playing, setPlaying] = useState({previewURL: '', name: '', artistName: '', imgSrc: '', play: false});
+  const [playing, setPlaying] = useState({currentPreviewURL: '', name: '', artistName: '', imgSrc: '', play: false});
 
   useEffect(() => {
     setData({});
@@ -22,8 +23,8 @@ function Home() {
       const query = searchParams.get('query');
       setIsPending(true);
       const newData = query ? 
-                      await fetchQuery(query):
-                      await fetchTop(data, channelsOpen);
+                      await fetchQuery(query, 3):
+                      await fetchTop(data, channelsOpen, 3);
       setIsPending(false);
       setData(newData);
     };
@@ -31,15 +32,15 @@ function Home() {
   }, [searchParams]);
 
   return (
-    <div>
+    <div className='space'>
       <SearchBar initialSearch={searchParams.get("query") || ''} searchParams={searchParams} setSearchParams={setSearchParams}/>
       <ChannelSelect setChannelsOpen={setChannelsOpen} channelsOpen={channelsOpen}/>
       <ViewSelect view={view} setView={setView}/>
       {isPending && 'Loading...'}
       {!!Object.keys(data).length && (
       view === 'grid' ?
-      <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} previewURL={playing.previewURL} setPlaying={setPlaying}/>:
-      <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} previewURL={playing.previewURL} setPlaying={setPlaying}/>
+      <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} currentPreviewURL={playing.currentPreviewURL} setPlaying={setPlaying}/>:
+      <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} currentPreviewURL={playing.currentPreviewURL} setPlaying={setPlaying}/>
       )
       }
       <Player playing={playing}></Player>

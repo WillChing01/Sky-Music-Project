@@ -1,15 +1,20 @@
 .bottomscreen {
     position: fixed;
     bottom: 0px;
-    background: grey;
-    display: inline-block;
+    width: 100%;
+    background: white;
+    border-top: 1px solid grey;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.card-view .bi-pause {
-    float: right;
+#player-icon {
+    height: 80px;
+    width: auto;
 }
 
-.bi-play-fill:hover {
-    cursor: pointer;
+.region {
+    flex-grow: 1;
 }
-
