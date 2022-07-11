@@ -2,7 +2,8 @@ import List from '../List/List';
 import Grid from '../Grid/Grid';
 import './ViewContainer.css';
 
-const ViewContainer = ({className, data, channelsOpen, currentPreviewURL, setPlaying}) => {
+const ViewContainer = ({className, data, channelsOpen, playing, setPlaying}) => {
+    const {currentPreviewURL, play} = playing;
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
       {
@@ -18,7 +19,8 @@ const ViewContainer = ({className, data, channelsOpen, currentPreviewURL, setPla
         const props = {
             channelItems: channel.items,
             currentPreviewURL,
-            setPlaying
+            setPlaying,
+            play
         }; 
         const GridView = <Grid {...props}/>;
         const ListView = <List {...props}/>; 

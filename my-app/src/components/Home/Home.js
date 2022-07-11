@@ -24,7 +24,7 @@ function Home() {
       setIsPending(true);
       const newData = query ? 
                       await fetchQuery(query, 1):
-                      await fetchTop(data, channelsOpen, 1);
+                      await fetchTop(data, channelsOpen, 3);
       setIsPending(false);
       setData(newData);
     };
@@ -39,11 +39,11 @@ function Home() {
       {isPending && 'Loading...'}
       {!!Object.keys(data).length && (
       view === 'grid' ?
-      <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} currentPreviewURL={playing.currentPreviewURL} setPlaying={setPlaying}/>:
-      <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} currentPreviewURL={playing.currentPreviewURL} setPlaying={setPlaying}/>
+      <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>:
+      <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>
       )
       }
-      <Player playing={playing}></Player>
+      <Player playing={playing} setPlaying={setPlaying}></Player>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import './Player.css';
 
-const Player = ({ playing }) => {
+const Player = ({ playing, setPlaying }) => {
     const { currentPreviewURL , name, artistName, imgSrc, play } = playing;
     const [ volume, setVolume ] = useState(0.2);
 
@@ -27,6 +27,15 @@ const Player = ({ playing }) => {
         setVolume(newVolume);
     };
 
+    const handlePause = (e) => {
+        setPlaying({...playing, play: false});
+    };
+
+    const handlePlay = (e) => {
+        setPlaying({...playing, play: true});
+    };
+
+
     const previousTrack = () => {};
 
     const nextTrack = () => {};
@@ -47,7 +56,7 @@ const Player = ({ playing }) => {
             <span className='region'/>
             {/* <i className='bi-skip-backward' onClick={previousTrack}></i>
             <i className='bi-skip-forward' onClick={nextTrack}></i> */}
-            <audio id='player-audio' src={currentPreviewURL } type='audio/mp3' autoPlay controls></audio>
+            <audio id='player-audio' src={currentPreviewURL } type='audio/mp3' onPause={handlePause} onPlay={handlePlay} autoPlay controls></audio>
             <span className='region'/>
             <input type='range' min='0' max='100' value={volume*100} onChange={handleVolume}/>
         </div>
