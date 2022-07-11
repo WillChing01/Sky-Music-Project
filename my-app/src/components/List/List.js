@@ -1,13 +1,14 @@
+import { getItemInfo } from "../../utility/parseMusicItem";
 import PlayIcon from "../PlayIcon/PlayIcon";
 
-const List = ({ data, getInfo, currentPreviewURL, setPlaying }) => {
+const List = ({channelItems, currentPreviewURL, setPlaying}) => {
     
     return (
         <div className="list">
             <ul>
                 {
-                data.map((item, index) => {
-                    const info = getInfo(item);
+                channelItems.map((item, index) => {
+                    const info = getItemInfo(item);
                     return (
                     <li key={index}>
                         {info.playable && <PlayIcon info={info} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying} />}

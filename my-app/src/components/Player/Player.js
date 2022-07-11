@@ -5,8 +5,6 @@ const Player = ({ playing }) => {
     const { currentPreviewURL , name, artistName, imgSrc, play } = playing;
     const [ volume, setVolume ] = useState(0.2);
 
-    console.log("current track is ", currentPreviewURL, " and it's playing? ", `${play ? "yes": "nope"}`)
-
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
     };

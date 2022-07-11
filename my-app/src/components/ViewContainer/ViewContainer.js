@@ -1,50 +1,71 @@
-import './ViewContainer.css';
-import Card from '../Card/Card';
 import List from '../List/List';
+import Grid from '../Grid/Grid';
+import './ViewContainer.css';
 
 const ViewContainer = ({className, data, channelsOpen, currentPreviewURL, setPlaying}) => {
-    const {artists, albums, tracks} = data;
-    const channels = [
-        {type: 'tracks', items: tracks, open: channelsOpen['tracks']},
-        {type: 'albums', items: albums, open: channelsOpen['albums']},
-        {type: 'artists', items: artists, open: channelsOpen['artists']}
-    ];
-  
-    
-    const getInfo = (item) => {
-        const [type, size] = item.type === 'artist' ? ['artists', '633x422'] : ['albums', '500x500'];
-        const id = item.type === 'track' ? item.albumId : item.id;
-        return {
-          name: item.name,
-          imgSrc: `https://api.napster.com/imageserver/v2/${type}/${id}/images/${size}.jpg`,
-          artist: 'artistName' in item ? item.artistName : '',
-          playable: item.type === 'track',
-          previewURL: 'previewURL' in item ? item.previewURL : ''
-        };
-      };
+    const channelTypes = ['tracks', 'albums', 'artists'];
+    const channels = channelTypes.map(type => (
+      {
+        type,
+        items: data[type],
+        open: channelsOpen[type]
+      }  
+      )
+    ); 
 
-    const firstLetterCapital = (e) => {
-        return e.charAt(0).toUpperCase() + e.slice(1);
-    }
+    const getView = (channel) => {
+        const isGridView = className === 'gridView';
+        const props = {
+            channelItems: channel.items,
+            currentPreviewURL,
+            setPlaying
+        }; 
+        const GridView = <Grid {...props}/>;
+        const ListView = <List {...props}/>; 
+        const view = isGridView ? GridView: ListView;
+        
+        return view;
+    };
+
+    const getNoView = (channel) => {
+        const noView = <p>No {channel.type} were found</p>;
+        return noView;
+    };
+
+    const toTitleCase = (str) => {
+        const firstLetter = str.charAt(0);
+        const remainingStr = str.slice(1);
+        const titleCase = firstLetter.toUpperCase() + remainingStr;
+        return titleCase;
+    };
+
+    const getChannelDisplay = (channel) => {
+        const view = getView(channel); 
+        const noView = getNoView(channel);
+        const title = toTitleCase(channel.type);
+        const body = channel.items.length ? 
+                     view:
+                     noView;
+        return (
+            <>
+                <h1>{title}</h1>
+                    {body}
+            </>
+        );
+    };
 
     return (
         <div>
             {
             channels.map((channel, index) => {
-                if(!channel.open) return null;
-                const noView = <p>No {channel.type} were found</p> 
-                const view = className === 'gridView' ? 
-                        <div className='gridView'>
-                            {channel.items.map((item, index) => <Card key={index} info={getInfo(item)} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying}/>)}
+                if (channel.open) {
+                    const channelDisplay = getChannelDisplay(channel);
+                    return (
+                        <div key={index}>
+                            {channelDisplay}
                         </div>
-                        :
-                        <List data={channel.items} getInfo={getInfo} currentPreviewURL={currentPreviewURL} setPlaying={setPlaying}/>
-                return (
-                    <div key={index}>
-                        <h1>{firstLetterCapital(channel.type)}</h1>
-                        {!!channel.items.length ? view: noView}
-                    </div>
-                );
+                    )
+                }           
             })  
             }
         </div>
