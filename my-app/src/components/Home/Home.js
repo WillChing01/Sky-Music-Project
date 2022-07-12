@@ -23,8 +23,8 @@ function Home() {
       const query = searchParams.get('query');
       setIsPending(true);
       const newData = query ? 
-                      await fetchQuery(query, 3):
-                      await fetchTop(data, channelsOpen, 3);
+                      await fetchQuery(query, 1):
+                      await fetchTop(data, channelsOpen, 1);
       setIsPending(false);
       setData(newData);
     };
