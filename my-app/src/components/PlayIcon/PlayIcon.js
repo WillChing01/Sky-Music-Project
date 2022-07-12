@@ -2,22 +2,14 @@ import { useEffect, useState } from 'react';
 import "./PlayIcon.css";
 
 
-const PlayIcon = ({info, currentPreviewURL, setPlaying}) => {
+const PlayIcon = ({info, currentPreviewURL, play, setPlaying}) => {
     const [icon, setIcon] = useState('bi-play-fill');
 
     useEffect(() => {
-        const needsReset = getNeedsReset(); 
-        if (needsReset) {
-            setIcon('bi-play-fill');
-        }
-    }, [currentPreviewURL]);
-
-    const getNeedsReset = () => {
-        const isNotPlaying = info.previewURL !== currentPreviewURL
-        const iconIsPause = icon === 'bi-pause';
-        const needsReset = isNotPlaying && iconIsPause;
-        return needsReset;
-    };    
+        const currentTrack = info.previewURL === currentPreviewURL;
+        if(currentTrack) play ? setIcon('bi-pause') : setIcon('bi-play-fill');
+        else setIcon('bi-play-fill');
+    }, [currentPreviewURL, play]);   
 
     const getIconClass = () => {
         const isPlaying = info.previewURL === currentPreviewURL;
