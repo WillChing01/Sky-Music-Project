@@ -1,34 +1,33 @@
 
-.list:hover .bi-play-fill {
+.bi-play-fill:hover, .bi-pause:hover {
     color: gray;
 }
 
-.list .display {
-    color: green;
+.ul {
+    padding: 0;
 }
 
-/* .card-view .bi-play-fill {
-    display: none;
+.list {
+    --spacing: 5px;
 }
 
-.card-view h6 {
-    display: inline-block
-}
- 
-.card-view:hover .bi-play-fill {
-    display: inline-block;
-}
-
-.card-view .bi-pause {
-    display: none;
+.list li {
+    list-style: none;
+    padding-bottom: var(--spacing);
+    margin-bottom: var(--spacing);
+    border-bottom: 1px solid grey;
 }
 
-.card-view:hover .bi-pause {
-    display: inline-block;
+.list li .item-info {
+    padding-left: var(--spacing);
 }
 
+.list .bi-pause, .list .bi-play-fill {
+    padding-left: var(--spacing);
+}
 
- .card-view .display {
-    display: inline-block;
-} */
+.list img {
+    height: 40px;
+    width: auto;
+}
 

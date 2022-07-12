@@ -6,6 +6,6 @@ input:focus {
     outline: none;
   }
 
-form {
+.search-bar {
     display: inline-block;
 }

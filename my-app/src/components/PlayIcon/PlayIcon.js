@@ -3,12 +3,13 @@ import "./PlayIcon.css";
 
 
 const PlayIcon = ({info, currentPreviewURL, play, setPlaying}) => {
-    const [icon, setIcon] = useState('bi-play-fill');
+    const [playIcon, pauseIcon] = ['bi-play-fill', 'bi-pause']
+    const [icon, setIcon] = useState(playIcon);
 
     useEffect(() => {
         const currentTrack = info.previewURL === currentPreviewURL;
-        if(currentTrack) play ? setIcon('bi-pause') : setIcon('bi-play-fill');
-        else setIcon('bi-play-fill');
+        if(currentTrack) play ? setIcon(pauseIcon) : setIcon(playIcon);
+        else setIcon(playIcon);
     }, [currentPreviewURL, play]);   
 
     const getIconClass = () => {
@@ -18,7 +19,7 @@ const PlayIcon = ({info, currentPreviewURL, play, setPlaying}) => {
     };
 
     const getNewIcon = () => {
-        const icons = ['bi-play-fill', 'bi-pause'];
+        const icons = [playIcon, pauseIcon];
         const newIcon = icons[(icons.indexOf(icon) + 1) % 2];
         return newIcon;
     };
@@ -29,7 +30,7 @@ const PlayIcon = ({info, currentPreviewURL, play, setPlaying}) => {
     };
 
     const handleClick = (currentPreviewURL, name, artistName, imgSrc) => {
-        const play = icon === "bi-play-fill"; 
+        const play = icon === playIcon; 
         toggleIcons();
         setPlaying({currentPreviewURL, name, artistName, imgSrc, play});
     };

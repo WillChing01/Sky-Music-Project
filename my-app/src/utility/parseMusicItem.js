@@ -37,14 +37,18 @@ const getPreviewURL = (item) => {
 };
 
 export const getItemInfo = (item) => {
+    const id = item.id;
     const name = item.name;
+    const type = item.type;
     const imgSrc = getImgSrc(item);
     const artist = getDisplayedArtist(item);
     const playable = getPlayable(item);
     const previewURL = getPreviewURL(item);
 
     return {
+      id, 
       name,
+      type,
       imgSrc,
       artist,
       playable,

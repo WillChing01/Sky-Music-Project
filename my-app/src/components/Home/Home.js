@@ -6,38 +6,54 @@ import ViewSelect from '../ViewSelect/ViewSelect';
 import SearchBar from '../SearchBar/SearchBar';
 import ViewContainer from '../ViewContainer/ViewContainer';
 import Player from '../Player/Player';
+import GenreSelect from '../GenreSelect/GenreSelect';
 import './Home.css';
 
 function Home() {
   const [data, setData] = useState({});
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({canRetry: false, message: ''});
   const [view, setView] = useState('grid');
   const [channelsOpen, setChannelsOpen] = useState({albums: true, artists: true, tracks: true});
   const [searchParams, setSearchParams] = useSearchParams();
   const [playing, setPlaying] = useState({currentPreviewURL: '', name: '', artistName: '', imgSrc: '', play: false});
 
-  useEffect(() => {
+  const handleDataFetch = () => {
     setData({});
     const updateData = async () => {
       const query = searchParams.get('query');
       setIsPending(true);
-      const newData = query ? 
-                      await fetchQuery(query, 1):
-                      await fetchTop(data, channelsOpen, 3);
+      const { newData, error } = query ? 
+                      await fetchQuery(query, 6):
+                      await fetchTop(channelsOpen, 1);
+      if (error) setError(error);
+      else setData(newData);
       setIsPending(false);
-      setData(newData);
     };
-    updateData();                                                                                 
+    updateData();  
+  };
+
+  useEffect(() => {
+    const threshold = 5;
+    // const count = error.count || 0
+    let errorCount = 0;
+    do {
+      handleDataFetch();
+      if (!error) break;
+    } while (errorCount++ < threshold && error.canRetry)
+                                                                        
   }, [searchParams]);
+
 
   return (
     <div className='space'>
       <SearchBar initialSearch={searchParams.get("query") || ''} searchParams={searchParams} setSearchParams={setSearchParams}/>
+      <GenreSelect />
       <ChannelSelect setChannelsOpen={setChannelsOpen} channelsOpen={channelsOpen}/>
       <ViewSelect view={view} setView={setView}/>
       {isPending && 'Loading...'}
-      {!!Object.keys(data).length && (
+      { !isPending && error && <span>{error.message}</span> }
+      {!!Object.keys(data).length && ( 
       view === 'grid' ?
       <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>:
       <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>

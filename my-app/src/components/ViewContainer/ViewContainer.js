@@ -21,7 +21,7 @@ const ViewContainer = ({className, data, channelsOpen, playing, setPlaying}) => 
             currentPreviewURL,
             setPlaying,
             play
-        }; 
+        };
         const GridView = <Grid {...props}/>;
         const ListView = <List {...props}/>; 
         const view = isGridView ? GridView: ListView;

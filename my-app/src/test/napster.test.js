@@ -10,3 +10,4 @@ it("returns sensible results", async () => {
     const data = await res.json();
     expect(data.albums.length).toEqual(5);
 });
+
