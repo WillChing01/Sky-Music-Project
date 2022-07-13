@@ -44,6 +44,7 @@ export const getItemInfo = (item) => {
     const artist = getDisplayedArtist(item);
     const playable = getPlayable(item);
     const previewURL = getPreviewURL(item);
+    const genres = item.links.genres.ids;
 
     return {
       id, 
@@ -52,6 +53,7 @@ export const getItemInfo = (item) => {
       imgSrc,
       artist,
       playable,
-      previewURL
+      previewURL,
+      genres
     };
   };

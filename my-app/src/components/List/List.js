@@ -2,13 +2,14 @@ import { getItemInfo } from "../../utility/parseMusicItem";
 import PlayIcon from "../PlayIcon/PlayIcon";
 import './List.css';
 
-const List = ({channelItems, currentPreviewURL, play, setPlaying}) => {
+const List = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
     
     return (
         <div className="list">
             <ul>
                 {
                 channelItems.map((item, index) => {
+                    //if(!item.genres.includes(filter.genre)) return null;
                     const info = getItemInfo(item);
                     return (
                     <li key={index} className="me-5 ms-5">

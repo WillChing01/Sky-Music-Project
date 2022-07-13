@@ -8,8 +8,6 @@ const Player = ({ playing, setPlaying }) => {
     const [ isMuted, setMuted ] = useState(false);
     const [ isRepeat, setRepeat ] = useState(false);
     const [ isShuffle, setShuffle ] = useState(false);
-    const [ nextSelected, setNextSelected ] = useState(false);
-    const [ previousSelected, setPreviousSelected ] = useState(false);
 
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
@@ -21,9 +19,13 @@ const Player = ({ playing, setPlaying }) => {
     };
 
     const togglePlay = () => {
-        const playerAudio = getPlayerAudio(); 
-        if (play) playerAudio.play();
-        else playerAudio.pause();
+        const playerAudio = getPlayerAudio();
+        if (play) {
+            playerAudio.play();
+        }
+        else {
+            playerAudio.pause();
+        }
     };
 
     const handleVolume = (e) => {
@@ -31,7 +33,6 @@ const Player = ({ playing, setPlaying }) => {
         const newVolume = parseFloat(e.target.value)/100;
         playerAudio.volume = newVolume;
         setVolume(newVolume);
-
         if (isMuted && volume != 0) {setMuted(false);}
     };
 
@@ -73,6 +74,26 @@ const Player = ({ playing, setPlaying }) => {
         playerAudio.loop=newRepeat;
     };
 
+    const formatString = (str) => {
+        /*
+            if str is longer than charLimit, will return the first
+            {charLimit} characters and then three dots '...'
+            so song title/artist doesn't eclipse play buttons etc.
+        */
+        const charLimit = 20;
+        const formattedString = '';
+        
+        if (str.length <= charLimit) {
+            formattedString = str;
+        }
+        else {
+            formattedString = str.slice(0,charLimit);
+            formattedString += '...';
+        }
+
+        return formattedString;
+    }
+
     useEffect(() => {
         setInitialVolume();
     },[]);
@@ -85,21 +106,29 @@ const Player = ({ playing, setPlaying }) => {
         <div className='bottomscreen'>
             <img id='player-icon' src={imgSrc}></img>
             <ul className='no-bullets'>
-            <li><span className='make-bold'>{!!name.length ? name : ''}</span></li>
-            <li><span>{!!artistName.length ? artistName : ''}</span></li>
+                <li>
+                    <span className='make-bold'>{!!name.length ? name : ''}</span>
+                </li>
+                <li>
+                    <span>{!!artistName.length ? artistName : ''}</span>
+                </li>
             </ul>
             <div className='center-position'>
                 <div className='spread'>
                     {
-                    isShuffle ?
+                    isShuffle === true ?
                     <i className='bi-shuffle icon-selected' onClick={toggleShuffleTracks}></i> :
                     <i className='bi-shuffle icon' onClick={toggleShuffleTracks}></i>
                     }
                     <i className='bi-skip-backward icon' onClick={previousTrack}></i>
-                    <i className='bi-play icon'></i>
+                    {
+                    play === true ?
+                    <i className='bi-pause icon' onClick={!!name.length ? handlePause : null}></i> :
+                    <i className='bi-play icon' onClick={!!name.length ? handlePlay : null}></i>
+                    }
                     <i className='bi-skip-forward icon' onClick={nextTrack}></i>
                     {
-                    isRepeat ?
+                    isRepeat === true ?
                     <i className='bi-arrow-repeat icon-selected' onClick={toggleRepeatTracks}></i> :
                     <i className='bi-arrow-repeat icon' onClick={toggleRepeatTracks}></i>
                     }
@@ -112,9 +141,7 @@ const Player = ({ playing, setPlaying }) => {
             {
             volume === 0 ?
             <i className='bi-volume-mute icon' onClick={toggleVolume}></i> :
-            (volume < 0.5 ?
-            <i className='bi-volume-down icon' onClick={toggleVolume}></i> :
-            <i className='bi-volume-up icon' onClick={toggleVolume}></i>)
+            <i className='bi-volume-up icon' onClick={toggleVolume}></i>
             }
             <input type='range' min='0' max='100' value={volume*100} onChange={handleVolume}/>
         </div>

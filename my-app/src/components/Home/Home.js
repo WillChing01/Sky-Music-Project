@@ -17,6 +17,7 @@ function Home() {
   const [channelsOpen, setChannelsOpen] = useState({albums: true, artists: true, tracks: true});
   const [searchParams, setSearchParams] = useSearchParams();
   const [playing, setPlaying] = useState({currentPreviewURL: '', name: '', artistName: '', imgSrc: '', play: false});
+  const [filter, setFilter] = useState({channelsOpen: {albums: true, artists: true, tracks: true}, genre: ''})
 
   const handleDataFetch = () => {
     setData({});
@@ -48,15 +49,15 @@ function Home() {
   return (
     <div className='space'>
       <SearchBar initialSearch={searchParams.get("query") || ''} searchParams={searchParams} setSearchParams={setSearchParams}/>
-      <GenreSelect />
-      <ChannelSelect setChannelsOpen={setChannelsOpen} channelsOpen={channelsOpen}/>
+      <GenreSelect filter={filter} setFilter={setFilter} />
+      <ChannelSelect filter={filter} setFilter={setFilter}/>
       <ViewSelect view={view} setView={setView}/>
       {isPending && 'Loading...'}
       { !isPending && error && <span>{error.message}</span> }
       {!!Object.keys(data).length && ( 
       view === 'grid' ?
-      <ViewContainer className='gridView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>:
-      <ViewContainer className='listView' data={data} channelsOpen={channelsOpen} playing={playing} setPlaying={setPlaying}/>
+      <ViewContainer className='gridView' data={data} filter={filter} playing={playing} setPlaying={setPlaying}/>:
+      <ViewContainer className='listView' data={data} filter={filter} playing={playing} setPlaying={setPlaying}/>
       )
       }
       <Player playing={playing} setPlaying={setPlaying}></Player>

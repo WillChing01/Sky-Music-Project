@@ -6,7 +6,7 @@ const getFetchErr = (err) => {
   if (err.status >= 500) {
     error['canRetry'] = true;
     error['message'] = 'We couldn\'t connect to the server.';
-  } else if (err.status == 404) {
+  } else if (err.status === 404) {
     error['canRetry'] = false;
     error['message'] = 'The resource could not be found.'
   } else if (err.status >= 400) {
@@ -17,10 +17,7 @@ const getFetchErr = (err) => {
 };
 
 const getNewData = (candidate, ...keys) => {
-  for(let key of keys) {
-    candidate = candidate[key];
-  }
-  return candidate;
+  return keys.reduce((pre, cur) => pre[cur], candidate);
 };
 
 const tryFetch = async (fetchUrl, ...keys) => {
