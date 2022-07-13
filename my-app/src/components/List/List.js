@@ -9,8 +9,8 @@ const List = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
             <ul>
                 {
                 channelItems.map((item, index) => {
-                    //if(!item.genres.includes(filter.genre)) return null;
                     const info = getItemInfo(item);
+                    if(!info.genres.includes(filter.genre) && filter.genre !== '') return null;
                     return (
                     <li key={index} className="me-5 ms-5">
                         <img id='list-image' src={info.imgSrc}></img>
