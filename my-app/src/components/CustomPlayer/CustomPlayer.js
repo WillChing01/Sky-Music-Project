@@ -11,6 +11,7 @@ const CustomPlayer = ({ songProgress, songDuration }) => {
         const fraction = x/(box.right-box.left);
         console.log('target: '+e.target);
         console.log('x: '+x);
+        console.log('fraction: '+fraction);
         
         if (!(songDuration === 0 || isNaN(songDuration)))
         {

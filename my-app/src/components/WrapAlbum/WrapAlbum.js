@@ -64,7 +64,7 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
                     <div className='row'>
                         <div className='col'>{children}</div>
                         <div className='col extra-album-info'>
-                            Genres: {listAlbumGenres()}
+                            Genres: 
                             <em>albumName</em> has numTracks tracks. It was released on releaseDate. 
                             // if explicit: It has been rated explicit. 
                             // if features: This track has features from artist names (another fetch...).
