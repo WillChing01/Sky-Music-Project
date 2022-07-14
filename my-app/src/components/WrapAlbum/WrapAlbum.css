@@ -1,3 +1,22 @@
-/* .inline-card {
-    display: inline;
-} */
+.wrapped-album {
+    position: relative;
+}
+
+.spinner-centraliser {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.loaded-album-info .spinner-border {
+    display: none;
+}
+
+.loaded-album-info:hover {
+    cursor: pointer;
+}
+
+.extra-album-info {
+    margin: auto;
+}

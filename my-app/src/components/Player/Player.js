@@ -10,9 +10,6 @@ const Player = ({ playing, setPlaying }) => {
     const [ isRepeat, setRepeat ] = useState(false);
     const [ isShuffle, setShuffle ] = useState(false);
 
-    const [ songProgress, setSongProgress ] = useState(0);
-    const [ songDuration, setSongDuration ] = useState(0);
-
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
     };
@@ -62,9 +59,15 @@ const Player = ({ playing, setPlaying }) => {
         setPlaying({...playing, play: true});
     };
 
-    const previousTrack = () => {};
+    const previousTrack = () => {
+        const playerAudio = getPlayerAudio();
+        playerAudio.currentTime = 0;
+    };
 
-    const nextTrack = () => {};
+    const nextTrack = () => {
+        const playerAudio = getPlayerAudio();
+        playerAudio.currentTime = playerAudio.duration - 0.01;
+    };
 
     const toggleShuffleTracks = () => {
         const newShuffle=!isShuffle;
@@ -77,21 +80,6 @@ const Player = ({ playing, setPlaying }) => {
         setRepeat(newRepeat);
         playerAudio.loop=newRepeat;
     };
-
-    const updateSongProgress = () => {
-        const playerAudio = getPlayerAudio();
-        const currentSongTime = playerAudio.currentTime;
-        const newSongDuration = playerAudio.duration;
-        const newSongProgress = Math.round(100.*(currentSongTime/newSongDuration));
-
-        setSongDuration(newSongDuration);
-        setSongProgress(newSongProgress);
-    }
-
-    const setTimeUpdate = () => {
-        const playerAudio = getPlayerAudio();
-        playerAudio.ontimeupdate = function() {updateSongProgress()};
-    }
 
     const formatString = (str) => {
         /*
@@ -115,7 +103,6 @@ const Player = ({ playing, setPlaying }) => {
 
     useEffect(() => {
         setInitialVolume();
-        setTimeUpdate();
     },[]);
 
     useEffect(() => {
@@ -154,7 +141,7 @@ const Player = ({ playing, setPlaying }) => {
                     <i className='bi-arrow-repeat icon' onClick={toggleRepeatTracks}></i>
                     }
                 </div>
-                <CustomPlayer songProgress={songProgress} songDuration={songDuration}/>
+                <CustomPlayer/>
             </div>
             <span className='region'/>
             {

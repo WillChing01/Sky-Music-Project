@@ -78,7 +78,7 @@ export const getItemInfo = (item) => {
     const previewURL = getPreviewURL(item);
     const numTracks = getNumTracks(item);
     const isExplicit = getIsExplicit(item);
-    const releaseData = getReleaseDate(item);
+    const releaseDate = getReleaseDate(item);
     const features = getFeaturedArtists(item);
 
     return {
@@ -92,6 +92,7 @@ export const getItemInfo = (item) => {
       previewURL,
       numTracks,
       isExplicit,
+      releaseDate,
       features
     };
   };

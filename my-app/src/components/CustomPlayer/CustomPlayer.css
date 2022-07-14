@@ -14,12 +14,12 @@
 
 .progress-bar-style {
     background: grey;
+    transition: all 0.1s ease;
 }
 
 .progress-style {
-    z-index: 2;
+    z-index: 1;
     width: 100%;
-    position: relative;
 }
 
 .progress-style:hover {
