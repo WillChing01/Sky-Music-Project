@@ -1,0 +1,12 @@
+.checkbox {
+    border: 1px solid grey;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox span {
+    flex-grow: 1;
+}
+
+

@@ -20,8 +20,8 @@ const GenreSelect = ({ filter, setFilter }) => {
     }, []);
 
     return (
-        <div className='dropdown'>
-            <label htmlFor='genreDropdown'>Choose Genre</label>
+        <div className='dropdown mb-1'>
+            <h6>Genre</h6>
             <select id='genreDropdown' defaultValue={'all'} onChange={handleSelection}>
                 <option value={'disabled'} disabled>Choose Genre</option>
                 <option value={'all'}>All</option>

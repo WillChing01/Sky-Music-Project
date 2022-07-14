@@ -4,18 +4,12 @@ input {
 
 input:focus {
     outline: none;
-  }
-
-.search-bar {
-    display: inline-block;
 }
 
-.bar {
-    float: right;
+.search-bar {
+    flex-grow: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
+    border-radius: 5px;
 }
 
 .search-bar input {
