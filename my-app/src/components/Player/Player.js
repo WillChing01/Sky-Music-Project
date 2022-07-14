@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import CustomPlayer from '../CustomPlayer/CustomPlayer';
 import './Player.css';
 
 const Player = ({ playing, setPlaying }) => {
@@ -8,6 +9,9 @@ const Player = ({ playing, setPlaying }) => {
     const [ isMuted, setMuted ] = useState(false);
     const [ isRepeat, setRepeat ] = useState(false);
     const [ isShuffle, setShuffle ] = useState(false);
+
+    const [ songProgress, setSongProgress ] = useState(0);
+    const [ songDuration, setSongDuration ] = useState(0);
 
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
@@ -74,6 +78,21 @@ const Player = ({ playing, setPlaying }) => {
         playerAudio.loop=newRepeat;
     };
 
+    const updateSongProgress = () => {
+        const playerAudio = getPlayerAudio();
+        const currentSongTime = playerAudio.currentTime;
+        const newSongDuration = playerAudio.duration;
+        const newSongProgress = Math.round(100.*(currentSongTime/newSongDuration));
+
+        setSongDuration(newSongDuration);
+        setSongProgress(newSongProgress);
+    }
+
+    const setTimeUpdate = () => {
+        const playerAudio = getPlayerAudio();
+        playerAudio.ontimeupdate = function() {updateSongProgress()};
+    }
+
     const formatString = (str) => {
         /*
             if str is longer than charLimit, will return the first
@@ -81,7 +100,7 @@ const Player = ({ playing, setPlaying }) => {
             so song title/artist doesn't eclipse play buttons etc.
         */
         const charLimit = 20;
-        const formattedString = '';
+        let formattedString = '';
         
         if (str.length <= charLimit) {
             formattedString = str;
@@ -96,6 +115,7 @@ const Player = ({ playing, setPlaying }) => {
 
     useEffect(() => {
         setInitialVolume();
+        setTimeUpdate();
     },[]);
 
     useEffect(() => {
@@ -104,13 +124,14 @@ const Player = ({ playing, setPlaying }) => {
 
     return (
         <div className='bottomscreen'>
+            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' onPause={handlePause} onPlay={handlePlay} autoPlay preload='metadata'></audio>
             <img id='player-icon' src={imgSrc}></img>
             <ul className='no-bullets'>
                 <li>
-                    <span className='make-bold'>{!!name.length ? name : ''}</span>
+                    <span className='make-bold'>{!!name.length ? formatString(name) : ''}</span>
                 </li>
                 <li>
-                    <span>{!!artistName.length ? artistName : ''}</span>
+                    <span>{!!artistName.length ? formatString(artistName) : ''}</span>
                 </li>
             </ul>
             <div className='center-position'>
@@ -133,9 +154,7 @@ const Player = ({ playing, setPlaying }) => {
                     <i className='bi-arrow-repeat icon' onClick={toggleRepeatTracks}></i>
                     }
                 </div>
-                <div className='center-elements'>
-                <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' onPause={handlePause} onPlay={handlePlay} autoPlay controls></audio>
-                </div>
+                <CustomPlayer songProgress={songProgress} songDuration={songDuration}/>
             </div>
             <span className='region'/>
             {

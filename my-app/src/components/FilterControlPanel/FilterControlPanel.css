@@ -1,0 +1,15 @@
+details {
+    display: inline-block;
+}
+
+details > summary {
+    list-style: none;
+}
+
+.panel {
+    position: absolute;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid grey;
+    border-radius: 5px;
+}

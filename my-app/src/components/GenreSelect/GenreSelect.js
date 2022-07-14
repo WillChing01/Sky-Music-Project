@@ -9,20 +9,22 @@ const GenreSelect = ({ filter, setFilter }) => {
 
     const handleSelection = (e) => {
         setFilter({...filter, genre: e.target.value});
-    }
+    };
 
     useEffect(() => {
         const getGenres = async () => {
-            const genres = await fetchGenre();
-            setGenres(genres['newData']);
+            const { newData: genres } = await fetchGenre();
+            setGenres(genres);
         }
         getGenres();
     }, []);
 
     return (
         <div className='dropdown'>
-            <select defaultValue={'default'} onChange={handleSelection}>
-                <option value={'default'} disabled hidden>Choose Genre</option>
+            <label htmlFor='genreDropdown'>Choose Genre</label>
+            <select id='genreDropdown' defaultValue={'all'} onChange={handleSelection}>
+                <option value={'disabled'} disabled>Choose Genre</option>
+                <option value={'all'}>All</option>
                 { 
                     genres !== null && genres.map(genre => <option key={genre.id} value={genre.id}>{genre.name}</option>)
                 }

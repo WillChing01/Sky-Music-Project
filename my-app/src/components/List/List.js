@@ -1,16 +1,17 @@
 import { getItemInfo } from "../../utility/parseMusicItem";
+import { shouldBeFiltered } from '../../utility/filterResults';
 import PlayIcon from "../PlayIcon/PlayIcon";
 import './List.css';
 
 const List = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
-    
+
     return (
         <div className="list">
             <ul>
                 {
                 channelItems.map((item, index) => {
                     const info = getItemInfo(item);
-                    if(!info.genres.includes(filter.genre) && filter.genre !== '') return null;
+                    if (shouldBeFiltered(info, filter)) return null;
                     return (
                     <li key={index} className="me-5 ms-5">
                         <img id='list-image' src={info.imgSrc}></img>

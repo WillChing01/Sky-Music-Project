@@ -1,0 +1,26 @@
+.spread-bar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    width: 100%;
+}
+
+.time-format {
+    font-size: 60%;
+    padding: 0% 1%;
+    margin: 0;
+    border: 0;
+}
+
+.progress-bar-style {
+    background: grey;
+}
+
+.progress-style {
+    z-index: 1;
+    width: 100%;
+}
+
+.progress-style:hover {
+    cursor: pointer;
+}

@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { fetchAlbumTracks } from '../../utility/fetchNapster';
+import { shouldBeFiltered } from '../../utility/filterResults';
 import PlayIcon from '../PlayIcon/PlayIcon';
 import './Card.css'
 
-const Card = ({ info, currentPreviewURL, play, setPlaying }) => {
+const Card = ({ info, currentPreviewURL, play, setPlaying, filter}) => {
+    if (shouldBeFiltered(info, filter)) return null;
 
     return (
         <div className='py-2 px-4 m-4 border rounded card-view'>

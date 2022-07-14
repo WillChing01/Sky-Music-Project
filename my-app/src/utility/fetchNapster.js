@@ -37,7 +37,7 @@ const tryFetch = async (fetchUrl, ...keys) => {
 
 export const fetchQuery = async (query, limit) => {
   const limitParam = limit ? `&per_type_limit=${limit}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`
+  const fetchUrl = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`;
   const fetchInfo = await tryFetch(fetchUrl, 'search', 'data');
   return fetchInfo;
 };
@@ -74,8 +74,15 @@ export const fetchAlbumTracks = async (albumId, limit) => {
   return fetchInfo;
 };
 
-export const fetchGenre = async () => {
-  const fetchUrl = 'https://api.napster.com/v2.2/genres';
+export const fetchGenre = async (idsPath='') => {
+  const fetchUrl = `https://api.napster.com/v2.2/genres${idsPath}`;
   const fetchInfo = await tryFetch(fetchUrl, 'genres');
   return fetchInfo;
-}
+};
+
+export const fetchArtists = async (idsPath='') => {
+  const fetchUrl = `https://api.napster.com/v2.2/artists${idsPath}`;
+  const fetchInfo = await tryFetch(fetchUrl, 'artists');
+  return fetchInfo;
+};
+

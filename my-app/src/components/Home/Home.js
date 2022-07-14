@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
-import ChannelSelect from '../ChannelSelect/ChannelSelect';
 import ViewSelect from '../ViewSelect/ViewSelect';
 import SearchBar from '../SearchBar/SearchBar';
 import ViewContainer from '../ViewContainer/ViewContainer';
 import Player from '../Player/Player';
-import GenreSelect from '../GenreSelect/GenreSelect';
+import FilterControlPanel from '../FilterControlPanel/FilterControlPanel';
 import './Home.css';
 
 function Home() {
@@ -14,10 +13,9 @@ function Home() {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState({canRetry: false, message: ''});
   const [view, setView] = useState('grid');
-  const [channelsOpen, setChannelsOpen] = useState({albums: true, artists: true, tracks: true});
   const [searchParams, setSearchParams] = useSearchParams();
   const [playing, setPlaying] = useState({currentPreviewURL: '', name: '', artistName: '', imgSrc: '', play: false});
-  const [filter, setFilter] = useState({channelsOpen: {albums: true, artists: true, tracks: true}, genre: ''})
+  const [filter, setFilter] = useState({channelsOpen: {albums: true, artists: true, tracks: true}, genre: 'all', showExplicit: true})
 
   const handleDataFetch = () => {
     setData({});
@@ -26,7 +24,7 @@ function Home() {
       setIsPending(true);
       const { newData, error } = query ? 
                       await fetchQuery(query, 6):
-                      await fetchTop(channelsOpen, 1);
+                      await fetchTop(filter.channelsOpen, 1);
       if (error) setError(error);
       else setData(newData);
       setIsPending(false);
@@ -48,9 +46,9 @@ function Home() {
 
   return (
     <div className='space'>
-      <SearchBar initialSearch={searchParams.get("query") || ''} searchParams={searchParams} setSearchParams={setSearchParams}/>
-      <GenreSelect filter={filter} setFilter={setFilter} />
-      <ChannelSelect filter={filter} setFilter={setFilter}/>
+      
+      <SearchBar initialSearch={searchParams.get("query") || ''} setSearchParams={setSearchParams} filter={filter} setFilter={setFilter}/>
+
       <ViewSelect view={view} setView={setView}/>
       {isPending && 'Loading...'}
       { !isPending && error && <span>{error.message}</span> }

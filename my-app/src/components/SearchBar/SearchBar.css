@@ -9,3 +9,15 @@ input:focus {
 .search-bar {
     display: inline-block;
 }
+
+.bar {
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
+
+.search-bar input {
+    flex-grow: 1;
+}

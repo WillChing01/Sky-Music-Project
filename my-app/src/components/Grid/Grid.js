@@ -2,20 +2,22 @@ import { getItemInfo } from '../../utility/parseMusicItem';
 import Card from '../Card/Card';
 import WrapAlbum from '../WrapAlbum/WrapAlbum';
 
-const Grid = ({channelItems, currentPreviewURL, play, setPlaying}) => {
+const Grid = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
 
     return (
         <div className='gridView'>
             {channelItems.map((item, index) => {
                 const info = getItemInfo(item);
-                const isAlbum = info.type === 'albums'
+                const isAlbum = info.type === 'album'
                 const key = index;
-                const props = {key, info, currentPreviewURL, play, setPlaying} 
+                const props = {key, info, currentPreviewURL, play, setPlaying, filter} 
                 const card = <Card {...props}/>
-                return <Card {...props}/>      
+                const possiblyWrappedCard = isAlbum ? <WrapAlbum {...props}>{card}</WrapAlbum>: 
+                card
+                return possiblyWrappedCard;   
             }
-             )
-            }
+            )
+           }
         </div>
     );
 }

@@ -36,24 +36,62 @@ const getPreviewURL = (item) => {
     return previewURL;
 };
 
+const getNumTracks = (item) => {
+    if (item.type === 'album') return item.trackCount;
+    else if (item.type === 'track') return 1; 
+    else return 0;
+}
+
+const getIsExplicit = (item) => {
+    if (item.type === 'track') return item.isExplicit;
+    else if (item.type === 'album') return item.tags.includes('Explicit');
+    else return false;
+}
+
+const getReleaseDate = (item) => {
+    if (item.type === 'artist') return null;
+    else {
+        const releaseDate = new Date(item.released);
+        const formatDateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedReleaseDate = releaseDate.toLocaleDateString("en-US", formatDateOptions);
+        return formattedReleaseDate;
+    }
+};
+
+const getFeaturedArtists = (item) => {
+    if (item.type === 'album') {
+        const features = item.contributingArtists.featuredPerformer;
+        if (features) return features;
+    }
+    return null;
+};
+
+
 export const getItemInfo = (item) => {
     const id = item.id;
     const name = item.name;
     const type = item.type;
+    const genres = item.links.genres;
     const imgSrc = getImgSrc(item);
     const artist = getDisplayedArtist(item);
     const playable = getPlayable(item);
     const previewURL = getPreviewURL(item);
-    const genres = item.links.genres.ids;
+    const numTracks = getNumTracks(item);
+    const isExplicit = getIsExplicit(item);
+    const releaseData = getReleaseDate(item);
+    const features = getFeaturedArtists(item);
 
     return {
       id, 
       name,
       type,
+      genres,
       imgSrc,
       artist,
       playable,
       previewURL,
-      genres
+      numTracks,
+      isExplicit,
+      features
     };
   };
