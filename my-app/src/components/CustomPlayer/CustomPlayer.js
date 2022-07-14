@@ -5,20 +5,16 @@ const CustomPlayer = ({ songProgress, songDuration }) => {
 
     const handleMouseDown = (e) => {
         //get position of mouse.
-        const box = e.target.getBoundingClientRect();
+        const box = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - box.left;
 
         const fraction = x/(box.right-box.left);
-        console.log('target: '+e.target);
-        console.log('x: '+x);
-        console.log('fraction: '+fraction);
         
         if (!(songDuration === 0 || isNaN(songDuration)))
         {
             //only set position if there is something playing.
             const playerAudio = document.getElementById('player-audio');
             playerAudio.currentTime = fraction * playerAudio.duration;
-            console.log(fraction*playerAudio.duration);
         }
     }
 

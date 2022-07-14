@@ -9,6 +9,8 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
 
+        
+
     const handleClick = async () => {
         const { newData: tracks } = await fetchAlbumTracks(info.id, 1);
         const albumGenres = await getAlbumGenres();
