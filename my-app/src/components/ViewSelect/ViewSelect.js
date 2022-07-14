@@ -1,3 +1,5 @@
+import './ViewSelect.css';
+
 const ViewSelect = ({view, setView}) => {
 
     const handleViewChange = (e) => {
@@ -9,11 +11,11 @@ const ViewSelect = ({view, setView}) => {
     };
     
     return (
-        <div>
-            <label htmlFor='gridViewRadio'>Grid</label>
-            <input type='radio' id='gridViewRadio' onChange={handleViewChange} name='group' defaultChecked/>
-            <label htmlFor='listViewRadio'>List</label>
-            <input type='radio' id='listViewRadio' onChange={handleViewChange} name='group'/>
+        <div className='view-box border ms-2'>
+            <input type='radio' id='grid-view-radio' onChange={handleViewChange} name='group' defaultChecked/>
+            <label htmlFor='grid-view-radio' className='view-radio p-1'>Grid <i className='bi bi-grid'></i></label>
+            <input type='radio' id='list-view-radio' onChange={handleViewChange} name='group'/>
+            <label htmlFor='list-view-radio' className='view-radio p-1'>List <i class="bi bi-list"></i></label>   
         </div>
     );
 }

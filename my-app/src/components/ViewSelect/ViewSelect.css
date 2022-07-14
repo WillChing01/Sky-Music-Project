@@ -1,0 +1,27 @@
+#grid-view-radio {
+    display: none;
+}
+
+#list-view-radio {
+    display: none;
+}
+
+.view-box {
+    border-radius: 5px;
+}
+
+.view-box #grid-view-radio + label {
+    border-right: 1px solid lightgrey;
+}
+
+#grid-view-radio + label, #list-view-radio + label {
+    transition: background-color .7s;
+}
+
+#grid-view-radio:checked + label {
+    background-color: lightgrey;
+}
+
+#list-view-radio:checked + label {
+    background-color: lightgrey;
+}

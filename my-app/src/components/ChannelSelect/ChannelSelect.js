@@ -1,3 +1,5 @@
+import './ChannelSelect.css';
+
 const ChannelSelect = ({filter, setFilter}) => {
     
     const handleCheckChannel = (e) => {
@@ -9,12 +11,19 @@ const ChannelSelect = ({filter, setFilter}) => {
 
     return (
         <div>
-            <label htmlFor="tracks">Tracks</label>
-            <input type="checkbox" name="channels" onClick={handleCheckChannel} id="tracks" value="tracks" defaultChecked={filter.channelsOpen.tracks}/>
-            <label htmlFor="album">Albums</label>
-            <input type="checkbox" name="channels" onClick={handleCheckChannel} id="albums" value="albums" defaultChecked={filter.channelsOpen.albums}/>
-            <label htmlFor="artists">Artists</label>
-            <input type="checkbox" name="channels" onClick={handleCheckChannel} id="artists" value="artists" defaultChecked={filter.channelsOpen.artists}/>
+            <h6>Channels</h6>
+            <label htmlFor="tracks" className='checkbox p-1 mb-1'>Tracks
+                <span></span>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="tracks" value="tracks" defaultChecked={filter.channelsOpen.tracks}/>
+            </label>
+            <label htmlFor="albums" className='checkbox p-1 mb-1'>Albums
+                <span></span>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="albums" value="albums" defaultChecked={filter.channelsOpen.albums}/>
+            </label>
+            <label htmlFor="artists" className='checkbox p-1 mb-1'>Artists
+                <span></span>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="artists" value="artists" defaultChecked={filter.channelsOpen.artists}/>
+            </label>
       </div>
     );
 }

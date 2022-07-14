@@ -13,12 +13,14 @@ const FilterControlPanel = ({ filter, setFilter }) => {
             <summary>
                 <i className='bi bi-filter'></i> Filter
             </summary>
-            <div className="panel p-1">
+            <div className="border panel p-1">
                 <GenreSelect filter={filter} setFilter={setFilter} />
                 <ChannelSelect filter={filter} setFilter={setFilter}/>
-                <label htmlFor="explicit-checkbox">Show Explicit</label>
-                <input type="checkbox" onClick={handleExplicit} id="explicit-checkbox" defaultChecked={filter.showExplicit}/>
-                {/*  */}
+                <h6>Other</h6>
+                <label htmlFor="explicit-checkbox" className='checkbox p-1'>Explicit
+                    <span></span>
+                    <input type="checkbox" onClick={handleExplicit} id="explicit-checkbox" defaultChecked={filter.showExplicit}/>
+                </label>   
             </div>
             
         </details>
