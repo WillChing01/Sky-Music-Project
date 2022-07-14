@@ -10,6 +10,10 @@
     border-radius: 5px;
 }
 
+.view-box label {
+    cursor: pointer;
+}
+
 .view-box #grid-view-radio + label {
     border-right: 1px solid lightgrey;
 }

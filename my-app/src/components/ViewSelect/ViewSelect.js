@@ -15,7 +15,7 @@ const ViewSelect = ({view, setView}) => {
             <input type='radio' id='grid-view-radio' onChange={handleViewChange} name='group' defaultChecked/>
             <label htmlFor='grid-view-radio' className='view-radio p-1'>Grid <i className='bi bi-grid'></i></label>
             <input type='radio' id='list-view-radio' onChange={handleViewChange} name='group'/>
-            <label htmlFor='list-view-radio' className='view-radio p-1'>List <i class="bi bi-list"></i></label>   
+            <label htmlFor='list-view-radio' className='view-radio p-1'>List <i className="bi bi-list"></i></label>   
         </div>
     );
 }
