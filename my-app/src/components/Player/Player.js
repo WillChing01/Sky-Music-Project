@@ -103,8 +103,19 @@ const Player = ({ playing, setPlaying }) => {
         return formattedString;
     }
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'm') {
+            toggleVolume();
+        }
+    }
+
     useEffect(() => {
         setInitialVolume();
+
+        //add keyboard input.
+        //document.addEventListener('keydown',handleKeyPress,false);
+
+        //return document.removeEventListener('keydown',handleKeyPress,false);
     },[]);
 
     useEffect(() => {
