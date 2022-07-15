@@ -31,15 +31,11 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
         return albumTracks;
     };
 
-    const getAlbumGenresIds = () => {
-        return info.genres;
-    }
-
     const getAlbumGenres = async () => {
-        const genresIds = getAlbumGenresIds() 
+        const genresIds = info.genres;
         const genreList = listArrOfStrsAsStr(genresIds, ',');
         const { newData: genres } = await fetchGenre(genreList);
-        return genres
+        return genres;
     };
 
     const getAlbumFeatures = async () => {
@@ -55,30 +51,89 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
 
     const listAlbumGenres = () => {
         const genreNames = genres.map(genre => genre.name);
-        const genresStrList = listArrOfStrsAsStr(genreNames);
+        const genresStrList = listArrOfStrsAsStr(genreNames, ', ');
         return genresStrList;
     };
 
     const listFeaturedArtists = () => {
-        const featuresStrList = listArrOfStrsAsStr(features);
+        const featuresStrList = listArrOfStrsAsStr(features, ', ');
         return featuresStrList;
     };
 
-    const getIsExplicitMessage = () => {
-        if (info.isExplicit) return 'It has been rated explicit.';
-        else return '';
+    const getNumTracksMessage = () => {
+        return (
+            <span>
+                <strong>{info.name}</strong> has {info.numTracks} tracks. 
+            </span>
+        );
     }
+
+    const getReleaseMessage = () => {
+        return (
+            <span> 
+                &nbsp;It was released on <em>{info.releaseDate}</em>.
+            </span>
+        );
+    };
+
+    const getIsExplicitMessage = () => {
+        const defaultExplicitMsg = '';
+        if (info.isExplicit) { 
+            const explicitMsg = (
+                                    <span>
+                                    &nbsp;It has been rated <em>explicit</em>.
+                                    </span>
+                                );
+            return explicitMsg;
+        } else return defaultExplicitMsg;
+    };
+
+    const getFeaturesMessage = () => {
+        const defaultFeaturesMsg = ''; 
+        const featuresListStr = listFeaturedArtists();
+        if (featuresListStr) {
+            const featuresMsg = (
+                                 <span>
+                                    &nbsp;The album has features from {featuresListStr}.
+                                 </span>
+                                );
+            return featuresMsg
+        } else return defaultFeaturesMsg;
+    };
+
+    const getGenresMessage = () => {
+        const defaultGenresMsg = '';
+        const genresListStr = listAlbumGenres();
+        if (genresListStr) {
+            const genresMsg = (
+                                  <span>
+                                     &nbsp;<strong>Genres:</strong> {genresListStr}
+                                  </span>
+                              ); 
+            return genresMsg;
+        } else return defaultGenresMsg;
+    };
 
 
     const getAlbumInfoMessage = () => {
-        const numTracksMessage = `${info.name} has ${info.numTracks}.` 
+        const numTracksMessage = getNumTracksMessage();
+        const releaseMessage = getReleaseMessage();
         const isExplicitMessage = getIsExplicitMessage();
-        const releaseMessage = `It was released on ${info.releaseDate}.`
-        // <em>{info.name}</em> has {info.numTracks}. It was released on {info.releaseDate}. 
-        // {getIsExplicitMessage()}. {getFeaturesMessage()}
-        // Copyright: copyright
-        // Genres: {listAlbumGenres()}
-    }
+        const featuresMessage = getFeaturesMessage();
+        const genresMessage = getGenresMessage();
+
+        return (
+        <p>
+            {numTracksMessage}
+            {releaseMessage}
+            {isExplicitMessage}
+            {featuresMessage}
+            <br/>
+            <br/>
+            {genresMessage}
+        </p>
+        );
+    };
 
 
     const getIsAlbumInfoLoaded = () => {
@@ -108,13 +163,13 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
             
             {isDialogOpen && 
             (<Dialog handleCloseDialog={handleCloseDialog}>
-                <div className='album-intro container'>
-                    <div className='row album-intro-row'>
-                        <div className='col'>{children}</div>
-                        <div className='col extra-album-info'>
-                           
+                <div className='album-intro'>
+                   <div className="album-intro-row">
+                         <div className='dialog-card-container'>{children}</div>
+                         <div className='extra-album-info'>
+                           {getAlbumInfoMessage()}
                         </div>
-                     </div>
+                   </div>
                 </div>
                 <List 
                     filter={filter}

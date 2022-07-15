@@ -1,3 +1,4 @@
+
 .screen {
   position: fixed;
   top: 0px;
@@ -22,25 +23,20 @@
   float: right;
 }
 
-.close-banner {
-  width: 100%
-}
-
-/* 
-
-::-webkit-scrollbar {
-  width: 1rem;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
  
-::-webkit-scrollbar-thumb {
-  background: #888; 
+.dialog ::-webkit-scrollbar {
+    width: 1rem;
+  }
+  
+.dialog ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
 }
-
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-} */
+   
+.dialog ::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  
+.dialog ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+} 

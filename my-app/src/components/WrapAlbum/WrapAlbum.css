@@ -17,6 +17,23 @@
     cursor: pointer;
 }
 
-.extra-album-info {
-    margin: auto;
+.album-intro-row {
+    display: flex;
+    flex-wrap: wrap;
 }
+
+.dialog-card-container {
+    display: inline-block;
+}
+
+.extra-album-info {
+    font-size: 1.2rem;
+}
+
+@media (width > 1650px) {
+    .extra-album-info {
+        margin: auto;
+        max-width: 10vw;
+    }
+} 
+

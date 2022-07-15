@@ -74,14 +74,15 @@ export const fetchAlbumTracks = async (albumId, limit) => {
   return fetchInfo;
 };
 
-export const fetchGenre = async (idsPath) => {
-  idsPath = idsPath ? `/${idsPath}` : ''
+export const fetchGenre = async (idsStr='') => {
+  const idsPath = idsStr ? `/${idsStr}` : '';
   const fetchUrl = `https://api.napster.com/v2.2/genres${idsPath}`;
   const fetchInfo = await tryFetch(fetchUrl, 'genres');
   return fetchInfo;
 };
 
-export const fetchArtists = async (idsPath='') => {
+export const fetchArtists = async (idsStr='') => {
+  const idsPath = idsStr ? `/${idsStr}` : '';
   const fetchUrl = `https://api.napster.com/v2.2/artists${idsPath}`;
   const fetchInfo = await tryFetch(fetchUrl, 'artists');
   return fetchInfo;
