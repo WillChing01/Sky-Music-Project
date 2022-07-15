@@ -1,22 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
-import ViewSelect from '../ViewSelect/ViewSelect';
-import SearchBar from '../SearchBar/SearchBar';
 import ViewContainer from '../ViewContainer/ViewContainer';
-import Player from '../Player/Player';
-import FilterControlPanel from '../FilterControlPanel/FilterControlPanel';
-import NavBar from '../NavBar/NavBar';
 import './Home.css';
 
-function Home() {
+function Home({ view, searchParams, filter, playing, setPlaying }) {
   const [data, setData] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState({canRetry: false, message: ''});
-  const [view, setView] = useState('grid');
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [playing, setPlaying] = useState({currentPreviewURL: '', name: '', artistName: '', imgSrc: '', play: false});
-  const [filter, setFilter] = useState({channelsOpen: {albums: true, artists: true, tracks: true}, genre: 'all', showExplicit: true})
 
   const handleDataFetch = () => {
     setData({});
@@ -47,7 +37,6 @@ function Home() {
 
   return (
     <div className='space'>
-      <NavBar view={view} setView={setView} searchParams={searchParams} setSearchParams={setSearchParams} filter={filter} setFilter={setFilter}/>
       {isPending && 'Loading...'}
       { !isPending && error && <span>{error.message}</span> }
       {!!Object.keys(data).length && ( 
@@ -56,7 +45,6 @@ function Home() {
       <ViewContainer className='listView' data={data} filter={filter} playing={playing} setPlaying={setPlaying}/>
       )
       }
-      <Player playing={playing} setPlaying={setPlaying}></Player>
     </div>
   );
 }

@@ -24,3 +24,23 @@
 .bar details {
     flex-grow: 0;
 }
+
+.nav-link {
+    color: black;
+    text-decoration: none;
+}
+
+.nav-icon {
+    font-size: 150%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+}
+
+.nav-icon:hover {
+    color: rgb(106, 218, 255);
+}
