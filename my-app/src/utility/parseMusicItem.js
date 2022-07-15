@@ -52,7 +52,7 @@ const getReleaseDate = (item) => {
     if (item.type === 'artist') return null;
     else {
         const releaseDate = new Date(item.released);
-        const formatDateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const formatDateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
         const formattedReleaseDate = releaseDate.toLocaleDateString("en-US", formatDateOptions);
         return formattedReleaseDate;
     }

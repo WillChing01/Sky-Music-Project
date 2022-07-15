@@ -8,9 +8,8 @@ const Dialog = ({children, handleCloseDialog}) => {
             <div className='dialog-box p-3'>
                 <div className='close-banner'>
                     <i className='close-dialog-icon bi bi-x' onClick={handleCloseDialog}></i>
-                    <br/>
-                    <hr/>
                 </div>
+                <hr/>
                 {children}
             </div>
         </div>

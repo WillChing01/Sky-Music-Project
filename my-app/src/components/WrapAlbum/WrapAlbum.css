@@ -2,12 +2,17 @@
     position: relative;
 }
 
-.spinner-centraliser {
+.wrapped-album-card .spinner-positioner {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
+
+/* .wrapped-album-list-item .spinner-positioner {
+    position: absolute; 
+    left: 0px;
+} */
 
 .loaded-album-info .spinner-border {
     display: none;
@@ -18,14 +23,23 @@
 }
 
 .album-intro-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-block
 }
-
+  
 .dialog-card-container {
     display: inline-block;
 }
 
-.extra-album-info {
+.extra-album-info-container {
     font-size: 1.2rem;
+    display: flex;
+}
+
+.album-info-msg {
+    flex-grow: 1;
+    width: 0;
+}
+
+.bi-explicit-fill {
+    color: red;
 }

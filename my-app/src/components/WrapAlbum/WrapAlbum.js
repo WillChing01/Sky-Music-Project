@@ -7,7 +7,7 @@ import List from '../List/List'
 
 import './WrapAlbum.css'
 
-const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}) => {
+const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, filter, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -63,7 +63,7 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
     const getNumTracksMessage = () => {
         return (
             <span>
-                <strong>{info.name}</strong> has {info.numTracks} tracks. 
+                <strong>{info.name}</strong> has <strong>{info.numTracks} tracks</strong>. 
             </span>
         );
     }
@@ -78,10 +78,13 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
 
     const getIsExplicitMessage = () => {
         const defaultExplicitMsg = '';
+        const explicitIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-explicit-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
+                            </svg>
         if (info.isExplicit) { 
             const explicitMsg = (
                                     <span>
-                                    &nbsp;It has been rated <em>explicit</em>.
+                                    &nbsp; The album has been rated <strong>explicit</strong> {explicitIcon}.
                                     </span>
                                 );
             return explicitMsg;
@@ -91,10 +94,11 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
     const getFeaturesMessage = () => {
         const defaultFeaturesMsg = ''; 
         const featuresListStr = listFeaturedArtists();
+        console.log(featuresListStr)
         if (featuresListStr) {
             const featuresMsg = (
                                  <span>
-                                    &nbsp;The album has features from {featuresListStr}.
+                                    &nbsp;The album has <strong>features</strong> from <em>{featuresListStr}</em>.
                                  </span>
                                 );
             return featuresMsg
@@ -107,7 +111,7 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
         if (genresListStr) {
             const genresMsg = (
                                   <span>
-                                     &nbsp;<strong>Genres:</strong> {genresListStr}
+                                     &nbsp;Album <strong>genres:</strong> <em>{genresListStr}</em>.
                                   </span>
                               ); 
             return genresMsg;
@@ -123,15 +127,13 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
         const genresMessage = getGenresMessage();
 
         return (
-        <p>
+        <div className='album-info-msg mb-1 p-3'>
             {numTracksMessage}
             {releaseMessage}
             {isExplicitMessage}
             {featuresMessage}
-            <br/>
-            <br/>
             {genresMessage}
-        </p>
+        </div>
         );
     };
 
@@ -154,19 +156,22 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
 
     return (
         <div className='wrapped-album'>
-            <div className={`wrapped-album-card ${getIsAlbumInfoLoaded() && 'loaded-album-info'}`} onClick={handleClick}>
-                <div className='spinner-centraliser'>
-                    <div className='spinner-border text-light' role='status'></div>
-                </div>
+            <div className={`wrapped-album-${isCard ? 'card': 'list-item'} ${getIsAlbumInfoLoaded() && 'loaded-album-info'}`} onClick={handleClick}>
+                {/* eventually get rid of isCard condition */}
+                {isCard && <div className='spinner-positioner'>
+                    <div className={`spinner-border ${isCard ? 'text-light': 'spinner-border-sm'}`} role='status'></div>
+                </div>  
+                }       
                 {children}
             </div>
             
             {isDialogOpen && 
-            (<Dialog handleCloseDialog={handleCloseDialog}>
+            (
+            <Dialog handleCloseDialog={handleCloseDialog}>
                 <div className='album-intro'>
                    <div className="album-intro-row">
-                         <div className='dialog-card-container'>{children}</div>
-                         <div className='extra-album-info'>
+                         <div className='dialog-card-container'>{card}</div>
+                         <div className='extra-album-info-container text-center'>
                            {getAlbumInfoMessage()}
                         </div>
                    </div>
