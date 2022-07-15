@@ -74,7 +74,8 @@ export const fetchAlbumTracks = async (albumId, limit) => {
   return fetchInfo;
 };
 
-export const fetchGenre = async (idsPath='') => {
+export const fetchGenre = async (idsPath) => {
+  idsPath = idsPath ? `/${idsPath}` : ''
   const fetchUrl = `https://api.napster.com/v2.2/genres${idsPath}`;
   const fetchInfo = await tryFetch(fetchUrl, 'genres');
   return fetchInfo;

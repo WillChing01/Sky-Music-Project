@@ -3,6 +3,7 @@
     top: 0px;
     width: 100%;
     height: 7vh;
+    min-height: 3em;
     border-bottom: 1px solid grey;
     background-color: white;
 

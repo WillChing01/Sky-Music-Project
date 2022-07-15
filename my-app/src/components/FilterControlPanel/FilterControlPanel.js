@@ -1,15 +1,25 @@
 import GenreSelect from "../GenreSelect/GenreSelect";
 import ChannelSelect from "../ChannelSelect/ChannelSelect";
 import './FilterControlPanel.css';
+import { useEffect } from "react";
 
 const FilterControlPanel = ({ filter, setFilter }) => {
+
+    useEffect(() => {
+        const filterTab = document.querySelector('#filter-tab');
+        document.addEventListener('click', (e) => {
+            if (!filterTab.contains(e.target)) {
+                filterTab.removeAttribute('open');
+            } 
+          })
+    },[]);
 
     const handleExplicit = () => {
         setFilter({...filter, showExplicit: !filter.showExplicit});
     }
 
     return (
-        <details>
+        <details id="filter-tab">
             <summary>
                 <i className='bi bi-filter'></i> Filter
             </summary>

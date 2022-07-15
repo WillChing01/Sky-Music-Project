@@ -1,4 +1,4 @@
-export const listArrOfStrsAsStr = (array) => {
+export const listArrOfStrsAsStr = (array, separator) => {
     let list = '';
     const arrLength = array.length;
     const lastIndex = arrLength - 1;
@@ -6,7 +6,7 @@ export const listArrOfStrsAsStr = (array) => {
         const element = array[index];
         list += element;
         if (index !== lastIndex) {
-            list += ', ';
+            list += separator;
         }
     }
     return list;

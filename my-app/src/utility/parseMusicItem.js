@@ -66,12 +66,18 @@ const getFeaturedArtists = (item) => {
     return null;
 };
 
+const getGenres = (item) => {
+    const genresExist = item.links.genres;
+    if(!genresExist) return [];
+    else return genresExist.ids;
+};
+
 
 export const getItemInfo = (item) => {
     const id = item.id;
     const name = item.name;
     const type = item.type;
-    const genres = item.links.genres;
+    const genres = getGenres(item);
     const imgSrc = getImgSrc(item);
     const artist = getDisplayedArtist(item);
     const playable = getPlayable(item);

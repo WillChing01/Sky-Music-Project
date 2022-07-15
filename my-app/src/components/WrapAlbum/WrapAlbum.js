@@ -31,16 +31,14 @@ const WrapAlbum = ({children, info, currentPreviewURL, play, setPlaying, filter}
         return albumTracks;
     };
 
-    const getAlbumGenresIds = async () => {
-        const genresLink = info.genres.href;
-        const idsRegex = /\/g\.[0-9g,\.]+/;
-        const idsStr = genresLink.match(idsRegex)[0];
-        return idsStr;
+    const getAlbumGenresIds = () => {
+        return info.genres;
     }
 
     const getAlbumGenres = async () => {
-        const genresIdsStr = getAlbumGenresIds() 
-        const { newData: genres } = await fetchGenre(genresIdsStr);
+        const genresIds = getAlbumGenresIds() 
+        const genreList = listArrOfStrsAsStr(genresIds, ',');
+        const { newData: genres } = await fetchGenre(genreList);
         return genres
     };
 
