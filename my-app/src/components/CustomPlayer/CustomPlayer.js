@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './CustomPlayer.css'
 
-const CustomPlayer = ({ isPlaying }) => {
+const CustomPlayer = () => {
     //songDuration is length in seconds.
     //songProgress is percentage of way through song.
     const [ songDuration, setSongDuration ] = useState(0);
@@ -10,9 +10,9 @@ const CustomPlayer = ({ isPlaying }) => {
     //console.log(isPlaying);
 
     const updateSongProgress = () => {
-        if (true) {
+        const playerAudio = document.getElementById('player-audio');
+        if (!playerAudio.paused) {
             //isPlaying is not updating inside this function?
-            const playerAudio = document.getElementById('player-audio');
             const currentSongTime = playerAudio.currentTime;
             const newSongDuration = playerAudio.duration;
             const newSongProgress = 100*(currentSongTime/newSongDuration);
