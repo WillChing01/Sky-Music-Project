@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
 import './CustomPlayer.css'
 
-const CustomPlayer = () => {
+const CustomPlayer = ({ isPlaying }) => {
     //songDuration is length in seconds.
     //songProgress is percentage of way through song.
     const [ songDuration, setSongDuration ] = useState(0);
     const [ songProgress, setSongProgress ] = useState(0);
     const [ isDragging, setDragging ] = useState(false);
+    //console.log(isPlaying);
 
     const updateSongProgress = () => {
-        const playerAudio = document.getElementById('player-audio');
-        const currentSongTime = playerAudio.currentTime;
-        const newSongDuration = playerAudio.duration;
-        const newSongProgress = 100*(currentSongTime/newSongDuration);
+        if (true) {
+            //isPlaying is not updating inside this function?
+            const playerAudio = document.getElementById('player-audio');
+            const currentSongTime = playerAudio.currentTime;
+            const newSongDuration = playerAudio.duration;
+            const newSongProgress = 100*(currentSongTime/newSongDuration);
 
-        setSongDuration(newSongDuration);
-        setSongProgress(newSongProgress);
+            setSongDuration(newSongDuration);
+            setSongProgress(newSongProgress);
+            //console.log('updating!');
+        }
     };
 
     const setTimeUpdate = () => {
@@ -50,7 +55,10 @@ const CustomPlayer = () => {
     }
 
     useEffect(() => {
-        setTimeUpdate();
+        const intervalThing = setInterval(() => {updateSongProgress()},10);
+        //setTimeUpdate();
+
+        return () => clearInterval(intervalThing);
     },[]);
 
     const formatTime = () => {

@@ -25,7 +25,7 @@ function Home() {
       setIsPending(true);
       const { newData, error } = query ? 
                       await fetchQuery(query, 1):
-                      await fetchTop(filter.channelsOpen, 1);
+                      await fetchTop(filter.channelsOpen, 3);
       if (error) setError(error);
       else setData(newData);
       setIsPending(false);

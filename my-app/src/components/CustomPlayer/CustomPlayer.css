@@ -14,7 +14,7 @@
 
 .progress-bar-style {
     background: grey;
-    transition: all 0.1s ease;
+    transition: all 0.001s ease;
 }
 
 .progress-style {

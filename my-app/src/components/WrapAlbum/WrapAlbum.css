@@ -29,11 +29,3 @@
 .extra-album-info {
     font-size: 1.2rem;
 }
-
-@media (width > 1650px) {
-    .extra-album-info {
-        margin: auto;
-        max-width: 10vw;
-    }
-} 
-

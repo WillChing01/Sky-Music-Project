@@ -9,6 +9,7 @@ const Player = ({ playing, setPlaying }) => {
     const [ isMuted, setMuted ] = useState(false);
     const [ isRepeat, setRepeat ] = useState(false);
     const [ isShuffle, setShuffle ] = useState(false);
+    const [ isPlaying, setIsPlaying ] = useState(false);
 
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
@@ -27,6 +28,7 @@ const Player = ({ playing, setPlaying }) => {
         else {
             playerAudio.pause();
         }
+        setIsPlaying(play);
     };
 
     const handleVolume = (e) => {
@@ -141,7 +143,7 @@ const Player = ({ playing, setPlaying }) => {
                     <i className='bi-arrow-repeat icon' onClick={toggleRepeatTracks}></i>
                     }
                 </div>
-                <CustomPlayer/>
+                <CustomPlayer isPlaying={isPlaying}/>
             </div>
             <span className='region'/>
             {
