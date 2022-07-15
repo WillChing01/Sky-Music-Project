@@ -1,33 +1,3 @@
-
-.bi-play-fill:hover, .bi-pause:hover {
-    color: gray;
-}
-
 ul {
     padding: 0;
 }
-
-.list {
-    --spacing: 5px;
-}
-
-.list li {
-    list-style: none;
-    padding-bottom: var(--spacing);
-    margin-bottom: var(--spacing);
-    border-bottom: 1px solid grey;
-}
-
-.list li .item-info {
-    padding-left: var(--spacing);
-}
-
-.list .bi-pause, .list .bi-play-fill {
-    padding-left: var(--spacing);
-}
-
-.list img {
-    height: 40px;
-    width: auto;
-}
-
