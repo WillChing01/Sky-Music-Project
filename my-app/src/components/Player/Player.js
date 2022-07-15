@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import CustomPlayer from '../CustomPlayer/CustomPlayer';
 import './Player.css';
 
@@ -10,6 +10,8 @@ const Player = ({ playing, setPlaying }) => {
     const [ isRepeat, setRepeat ] = useState(false);
     const [ isShuffle, setShuffle ] = useState(false);
     const [ isPlaying, setIsPlaying ] = useState(false);
+    const [ volumeIncrement, setVolumeIncrement ] = useState(0.05);
+    const [ skipIncrement, setSkipIncrement ] = useState(5);
 
     const getPlayerAudio = () => {
         return document.getElementById('player-audio');
@@ -50,26 +52,54 @@ const Player = ({ playing, setPlaying }) => {
             setVolume(0);
             playerAudio.volume = 0;
         }
-        setMuted(!isMuted);
+        const newMute = !isMuted;
+        setMuted(newMute);
     };
+
+    const increaseVolume = () => {
+        const newVolume = volume + volumeIncrement;
+    }
+
+    const decreaseVolume = () => {
+        const newVolume = volume - volumeIncrement;
+    }
 
     const handlePause = (e) => {
         setPlaying({...playing, play: false});
+        setIsPlaying(false);
     };
 
     const handlePlay = (e) => {
         setPlaying({...playing, play: true});
+        setIsPlaying(true);
     };
 
     const previousTrack = () => {
+        if (!!!name.length) {return;}
         const playerAudio = getPlayerAudio();
         playerAudio.currentTime = 0;
     };
 
     const nextTrack = () => {
+        if (!!!name.length) {return;}
         const playerAudio = getPlayerAudio();
-        playerAudio.currentTime = playerAudio.duration - 0.01;
+        const tinyAmount = 0.000001;
+        playerAudio.currentTime = playerAudio.duration - tinyAmount;
     };
+
+    const skipForwards = () => {
+        if (!!!name.length) {return;}
+        const playerAudio = getPlayerAudio();
+        const tinyAmount = 0.000001;
+        playerAudio.currentTime = Math.min(playerAudio.currentTime + skipIncrement,
+                                  playerAudio.duration + tinyAmount);
+    }
+
+    const skipBackwards = () => {
+        if (!!!name.length) {return;}
+        const playerAudio = getPlayerAudio();
+        playerAudio.currentTime = Math.max(playerAudio.currentTime - skipIncrement, 0);
+    }
 
     const toggleShuffleTracks = () => {
         const newShuffle=!isShuffle;
@@ -103,24 +133,55 @@ const Player = ({ playing, setPlaying }) => {
         return formattedString;
     }
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'm') {
+    const handleKeyPress = useCallback((e) => {
+        if (document.activeElement.type === 'search') {return;}
+        if (e.key.toLowerCase() === 'm') {
+            //mute.
             toggleVolume();
         }
-    }
+        else if (e.key.toLowerCase() === 'k' && !!name.length) {
+            //toggle play.
+            if (isPlaying) {handlePause();}
+            else {handlePlay();}
+        }
+        else if (e.key.toLowerCase() === 'j' && !!name.length) {
+            //go to beginning of track.
+            previousTrack();
+        }
+        else if (e.key.toLowerCase() === 'l' && !!name.length) {
+            //go to end of track.
+            nextTrack();
+        }
+        else if (e.key === ']') {
+            //increase the volume.
+            increaseVolume();
+        }
+        else if (e.key === '[') {
+            //decrease the volume.
+            decreaseVolume();
+        }
+        else if (e.key === 'ArrowLeft' && !!name.length) {
+            //go back 5 seconds.
+            skipBackwards();
+        }
+        else if (e.key === 'ArrowRight' && !!name.length) {
+            //go forward 5 seconds.
+            skipForwards();
+        }
+    },[ isMuted, volume, oldVolume, isPlaying, volumeIncrement, skipIncrement ]);
 
     useEffect(() => {
         setInitialVolume();
 
         //add keyboard input.
-        //document.addEventListener('keydown',handleKeyPress,false);
+        document.addEventListener('keydown',handleKeyPress);
 
-        //return document.removeEventListener('keydown',handleKeyPress,false);
-    },[]);
+        return () => {document.removeEventListener('keydown',handleKeyPress)};
+    },[ handleKeyPress ]);
 
     useEffect(() => {
         togglePlay();
-    },[play]);
+    },[ play ]);
 
     return (
         <div className='bottomscreen'>
@@ -142,11 +203,13 @@ const Player = ({ playing, setPlaying }) => {
                     <i className='bi-shuffle icon' onClick={toggleShuffleTracks}></i>
                     }
                     <i className='bi-skip-backward icon' onClick={previousTrack}></i>
+                    <i className='bi-arrow-counterclockwise icon' onClick={skipBackwards}></i>
                     {
                     play === true ?
                     <i className='bi-pause icon' onClick={!!name.length ? handlePause : null}></i> :
                     <i className='bi-play icon' onClick={!!name.length ? handlePlay : null}></i>
                     }
+                    <i className='bi-arrow-clockwise icon' onClick={skipForwards}></i>
                     <i className='bi-skip-forward icon' onClick={nextTrack}></i>
                     {
                     isRepeat === true ?
