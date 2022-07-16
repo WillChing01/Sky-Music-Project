@@ -1,0 +1,33 @@
+NORMS:
+
+- if you call state 'somethingSomething', the setting state function should be called 
+ 'setSomethingSomething'
+
+- don't use spaces around square-brackets when building arrays, as in '[ varA, varB ]'. do like 
+  '[varA, varB]'
+
+- put spaces between arguments in functions, like 'console.log('Hello, ', 'World.')', not like
+ 'console.log('Hello, ','World.')'
+
+- inline if statements -- 'if (<condition>) <execute>;' -- should not use curly braces like 
+  'if (<condition>) {<execute>;}'
+
+- use unambiguous variable names
+
+- when using 'if {} else {}', the else clause should begin on the same line as the closing brace of 
+  the if clause 
+
+- put a space between (the opening bracket for the condition of an if clause) and (the 'if' keyword),
+  like 'if (<condition>) <code>', not 'if(<condition>) <code>'
+
+- don't write this: 'if (<conditionA>) <conditionB> ? <executeX>: <executeY>;'  
+
+- don't consume the event in a handler -- like 'const handleEvent = (e) => {<code>};' -- unless you 
+  are going to use that event
+
+NOTES:
+
+- there are a couple things of note about booleans and how truthy/falsy works in JS that Adam can
+resolve with Will
+
+- NORMS are open to revision/addition

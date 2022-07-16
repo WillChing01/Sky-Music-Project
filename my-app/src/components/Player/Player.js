@@ -1,187 +1,250 @@
 import { useState, useEffect, useCallback } from 'react';
+import { truncateStr } from '../../utility/formatStr';
+
 import CustomPlayer from '../CustomPlayer/CustomPlayer';
+
 import './Player.css';
 
-const Player = ({ playing, setPlaying }) => {
-    const { currentPreviewURL , name, artistName, imgSrc, play } = playing;
-    const [ volume, setVolume ] = useState(0.2);
-    const [ oldVolume, setOldVolume ] = useState(0.2);
-    const [ isMuted, setMuted ] = useState(false);
-    const [ isRepeat, setRepeat ] = useState(false);
-    const [ isShuffle, setShuffle ] = useState(false);
-    const [ isPlaying, setIsPlaying ] = useState(false);
-    const [ volumeIncrement, setVolumeIncrement ] = useState(0.05);
-    const [ skipIncrement, setSkipIncrement ] = useState(5);
+const tinyTimeIncrement = 0.0001;
+const volumeIncrement = 0.05;
+const skipIncrement = 5;
 
+const Player = ({ playingInfo, setPlayingInfo }) => {
+    const { currentPreviewURL , name, artistName, imgSrc, play } = playingInfo;
+    const [currentVolume, setCurrentVolume ] = useState(0.2);
+    const [cachedVolume, setCachedVolume] = useState(0.2);
+    const [isMuted, setIsMuted] = useState(false);
+    const [shouldLoop, setShouldLoop] = useState(false);
+    const [isShuffle, setShuffle] = useState(false);
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+    
     const getPlayerAudio = () => {
-        return document.getElementById('player-audio');
+        const playerAudio = document.getElementById('player-audio');
+        return playerAudio;
     };
 
-    const setInitialVolume = () => {
+    const setPlayerAudioVolume = (newPlayerAudioVolume) => {
         const playerAudio = getPlayerAudio();
-        playerAudio.volume = volume;
+        playerAudio.volume = newPlayerAudioVolume;
+    }
+
+    const setPlayerAudioCurrentTime = (newTime) => {
+        console.log("New time is ", newTime);
+        const playerAudio = getPlayerAudio();
+        playerAudio.currentTime = newTime;
     };
 
-    const togglePlay = () => {
+    const setPlayerAudioLoop = (newShouldLoop) => {
         const playerAudio = getPlayerAudio();
-        if (play) {
-            playerAudio.play();
-        }
-        else {
-            playerAudio.pause();
-        }
-        setIsPlaying(play);
+        playerAudio.loop = newShouldLoop;
     };
 
-    const handleVolume = (e) => {
+    const setInitialPlayerAudioVolume = () => {
+        setPlayerAudioVolume(currentVolume);
+    };
+
+    const givenTrackLoadedIntoPlayer = (effect) => {
+        /* What is this first line below? I want to make it clear that isTrackLoadedIntoPlayer
+       is being used in a boolean capacity. It doesn't matter that the !! is logically 
+       unnecessary. If you're the second person to read this, please mark your name:
+       
+       Seen by: Adam
+
+       If you're the third person to read this, please delete the comment.
+       */
+       const isTrackLoadedIntoPlayer = !!currentPreviewURL;
+       if (isTrackLoadedIntoPlayer) {
+           effect();
+       }
+   };
+
+    const togglePlayAudio = (newIsAudioPlaying) => {
+        setIsAudioPlaying(newIsAudioPlaying);
         const playerAudio = getPlayerAudio();
+        if (newIsAudioPlaying) playerAudio.play();
+        else playerAudio.pause();
+    };
+
+    const toggleShouldPlay = (shouldPlay) => {
+        const effect = () => {
+            const newPlayingInfo = {...playingInfo, play: shouldPlay};
+            const newIsAudioPlaying = shouldPlay;
+            setPlayingInfo(newPlayingInfo);
+            togglePlayAudio(newIsAudioPlaying);
+        };
+
+        givenTrackLoadedIntoPlayer(effect);
+    };
+
+    const toggleMute = () => {
+        setIsMuted(!isMuted);
+    };
+
+    const toggleShuffleTracks = () => {
+        setShuffle(!isShuffle);
+    };
+
+    const toggleLoopTrack = () => {
+        setPlayerAudioLoop(!shouldLoop);
+        setShouldLoop(!shouldLoop);
+    };
+
+    const handleUnmuteOnVolumeChange = (newVolume) => {
+        const shouldUnmute = isMuted && newVolume !== 0;
+        if (shouldUnmute) setIsMuted(false);
+    };
+
+    const handleVolumeSliderChange = (e) => {
         const newVolume = parseFloat(e.target.value)/100;
-        playerAudio.volume = newVolume;
-        setVolume(newVolume);
-        if (isMuted && volume != 0) {setMuted(false);}
+        setPlayerAudioVolume(newVolume);
+        setCurrentVolume(newVolume);
+        handleUnmuteOnVolumeChange(newVolume);
     };
 
-    const toggleVolume = () => {
-        const playerAudio = getPlayerAudio();
+    const handleClickVolumeIcon = () => {
         if (isMuted) {
-            setVolume(oldVolume);
-            playerAudio.volume = oldVolume;
+            setCurrentVolume(cachedVolume);
+            setPlayerAudioVolume(cachedVolume);
+        } else {
+            setCachedVolume(currentVolume);
+            setCurrentVolume(0);
+            setPlayerAudioVolume(0);
         }
-        else {
-            setOldVolume(volume);
-            setVolume(0);
-            playerAudio.volume = 0;
+        toggleMute();
+    };
+
+    const handlePause = () => {
+        toggleShouldPlay(false);
+    };
+
+    const handlePlay = () => {
+        toggleShouldPlay(true);
+    };
+
+    const jumpVolume = (direction) => {
+        let newVolume = currentVolume;
+        switch (direction) {
+            case 'up':
+                newVolume += volumeIncrement;
+                break;
+            case 'down':
+                newVolume -= volumeIncrement;
+                break;
+            default:
+                break;
         }
-        const newMute = !isMuted;
-        setMuted(newMute);
+        setPlayerAudioVolume(newVolume);
+        setCurrentVolume(newVolume);
     };
-
-    const increaseVolume = () => {
-        const newVolume = volume + volumeIncrement;
-    }
-
-    const decreaseVolume = () => {
-        const newVolume = volume - volumeIncrement;
-    }
-
-    const handlePause = (e) => {
-        setPlaying({...playing, play: false});
-        setIsPlaying(false);
-    };
-
-    const handlePlay = (e) => {
-        setPlaying({...playing, play: true});
-        setIsPlaying(true);
-    };
-
+    
     const previousTrack = () => {
-        if (!!!name.length) {return;}
-        const playerAudio = getPlayerAudio();
-        playerAudio.currentTime = 0;
+        const effect = () => {
+            setPlayerAudioCurrentTime(0);
+        };
+
+        givenTrackLoadedIntoPlayer(effect);
     };
 
     const nextTrack = () => {
-        if (!!!name.length) {return;}
-        const playerAudio = getPlayerAudio();
-        const tinyAmount = 0.000001;
-        playerAudio.currentTime = playerAudio.duration - tinyAmount;
+        const effect = () => {
+            const playerAudio = getPlayerAudio();
+            const trackDuration = playerAudio.duration;
+            const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
+            setPlayerAudioCurrentTime(newPlayerAudioTime);  
+        };
+
+        givenTrackLoadedIntoPlayer(effect);
     };
 
     const skipForwards = () => {
-        if (!!!name.length) {return;}
-        const playerAudio = getPlayerAudio();
-        const tinyAmount = 0.000001;
-        playerAudio.currentTime = Math.min(playerAudio.currentTime + skipIncrement,
-                                  playerAudio.duration + tinyAmount);
-    }
+        const effect = () => {
+            const playerAudio = getPlayerAudio();
+            const currentPlayerAudioTime = playerAudio.currentTime;
+            const trackDuration = playerAudio.duration;
+            const prePauseDuration = trackDuration - tinyTimeIncrement; 
+            const candidatePlayerAudioTime = currentPlayerAudioTime + skipIncrement;
+            const newPlayerAudioTime = Math.min(prePauseDuration, candidatePlayerAudioTime);
+            setPlayerAudioCurrentTime(newPlayerAudioTime);
+        };
+
+        givenTrackLoadedIntoPlayer(effect);
+    };
 
     const skipBackwards = () => {
-        if (!!!name.length) {return;}
-        const playerAudio = getPlayerAudio();
-        playerAudio.currentTime = Math.max(playerAudio.currentTime - skipIncrement, 0);
-    }
+        const effect = () => {
+            const playerAudio = getPlayerAudio();
+            const currentPlayerAudioTime = playerAudio.currentTime;
+            const candidatePlayerAudioTime = currentPlayerAudioTime - skipIncrement;
+            const newPlayerAudioTime = Math.max(0, candidatePlayerAudioTime);
+            setPlayerAudioCurrentTime(newPlayerAudioTime);
+        };
 
-    const toggleShuffleTracks = () => {
-        const newShuffle=!isShuffle;
-        setShuffle(newShuffle);
+        givenTrackLoadedIntoPlayer(effect);
     };
-
-    const toggleRepeatTracks = () => {
-        const playerAudio = getPlayerAudio();
-        const newRepeat=!isRepeat;
-        setRepeat(newRepeat);
-        playerAudio.loop=newRepeat;
-    };
-
-    const formatString = (str) => {
-        /*
-            if str is longer than charLimit, will return the first
-            {charLimit} characters and then three dots '...'
-            so song title/artist doesn't eclipse play buttons etc.
-        */
-        const charLimit = 20;
-        let formattedString = '';
-        
-        if (str.length <= charLimit) {
-            formattedString = str;
-        }
-        else {
-            formattedString = str.slice(0,charLimit);
-            formattedString += '...';
-        }
-
-        return formattedString;
-    }
 
     const handleKeyPress = useCallback((e) => {
-        if (document.activeElement.type === 'search') {return;}
-        if (e.key.toLowerCase() === 'm') {
-            //mute.
-            toggleVolume();
+        if (document.activeElement.type !== 'search') {
+            const key = e.key.toLowerCase();
+            switch (key) {
+                case 'm':
+                    handleClickVolumeIcon();
+                    break;
+                case 'k':
+                    toggleShouldPlay(!isAudioPlaying);
+                    break;
+                case 'j':
+                    previousTrack();
+                    break;
+                case 'l':
+                    nextTrack();
+                    break;
+                case ']':
+                    jumpVolume('up');
+                    break;
+                case '[':
+                    jumpVolume('down');
+                    break;
+                case 'arrowleft':
+                    skipBackwards();
+                    break;
+                case 'arrowright':
+                    skipForwards();
+                    break;
+                default:
+                    break;
+            }
         }
-        else if (e.key.toLowerCase() === 'k' && !!name.length) {
-            //toggle play.
-            if (isPlaying) {handlePause();}
-            else {handlePlay();}
-        }
-        else if (e.key.toLowerCase() === 'j' && !!name.length) {
-            //go to beginning of track.
-            previousTrack();
-        }
-        else if (e.key.toLowerCase() === 'l' && !!name.length) {
-            //go to end of track.
-            nextTrack();
-        }
-        else if (e.key === ']') {
-            //increase the volume.
-            increaseVolume();
-        }
-        else if (e.key === '[') {
-            //decrease the volume.
-            decreaseVolume();
-        }
-        else if (e.key === 'ArrowLeft' && !!name.length) {
-            //go back 5 seconds.
-            skipBackwards();
-        }
-        else if (e.key === 'ArrowRight' && !!name.length) {
-            //go forward 5 seconds.
-            skipForwards();
-        }
-    },[ isMuted, volume, oldVolume, isPlaying, volumeIncrement, skipIncrement ]);
+    }, [isMuted, currentVolume, cachedVolume, isAudioPlaying]);
 
     useEffect(() => {
-        setInitialVolume();
+        const subToKeyPress = () => {
+            document.addEventListener('keydown', handleKeyPress);
+        };
+        const unsubFromKeyPress = () => {
+            document.removeEventListener('keydown', handleKeyPress)
+        };
 
-        //add keyboard input.
-        document.addEventListener('keydown',handleKeyPress);
+        setInitialPlayerAudioVolume();
+        subToKeyPress();
 
-        return () => {document.removeEventListener('keydown',handleKeyPress)};
-    },[ handleKeyPress ]);
+        return unsubFromKeyPress();
+    }, [handleKeyPress]);
 
     useEffect(() => {
-        togglePlay();
-    },[ play ]);
+        togglePlayAudio(play);
+    }, [play]);
+
+
+    const getTrackName = () => {
+        const trackName = truncateStr(name, 20, true);
+        return trackName;
+    };
+
+    const getArtistName = () => {
+        const artistName = truncateStr(name, 20, true);
+        return artistName;
+    };
+
 
     return (
         <div className='bottomscreen'>
@@ -189,10 +252,10 @@ const Player = ({ playing, setPlaying }) => {
             <img id='player-icon' src={imgSrc}></img>
             <ul className='no-bullets'>
                 <li>
-                    <span className='make-bold'>{!!name.length ? formatString(name) : ''}</span>
+                    <span className='make-bold'>{getTrackName()}</span>
                 </li>
                 <li>
-                    <span>{!!artistName.length ? formatString(artistName) : ''}</span>
+                    <span>{getArtistName()}</span>
                 </li>
             </ul>
             <div className='center-position'>
@@ -206,26 +269,26 @@ const Player = ({ playing, setPlaying }) => {
                     <i className='bi-arrow-counterclockwise icon' onClick={skipBackwards}></i>
                     {
                     play === true ?
-                    <i className='bi-pause icon' onClick={!!name.length ? handlePause : null}></i> :
-                    <i className='bi-play icon' onClick={!!name.length ? handlePlay : null}></i>
+                    <i className='bi-pause icon' onClick={handlePause}></i> :
+                    <i className='bi-play icon' onClick={handlePlay}></i>
                     }
                     <i className='bi-arrow-clockwise icon' onClick={skipForwards}></i>
                     <i className='bi-skip-forward icon' onClick={nextTrack}></i>
                     {
-                    isRepeat === true ?
-                    <i className='bi-arrow-repeat icon-selected' onClick={toggleRepeatTracks}></i> :
-                    <i className='bi-arrow-repeat icon' onClick={toggleRepeatTracks}></i>
+                    shouldLoop === true ?
+                    <i className='bi-arrow-repeat icon-selected' onClick={toggleLoopTrack}></i> :
+                    <i className='bi-arrow-repeat icon' onClick={toggleLoopTrack}></i>
                     }
                 </div>
-                <CustomPlayer isPlaying={isPlaying}/>
+                <CustomPlayer isAudioPlaying={isAudioPlaying}/>
             </div>
             <span className='region'/>
             {
-            volume === 0 ?
-            <i className='bi-volume-mute icon' onClick={toggleVolume}></i> :
-            <i className='bi-volume-up icon' onClick={toggleVolume}></i>
+            currentVolume === 0 ?
+            <i className='bi-volume-mute icon' onClick={handleClickVolumeIcon}></i> :
+            <i className='bi-volume-up icon' onClick={handleClickVolumeIcon}></i>
             }
-            <input type='range' min='0' max='100' value={volume*100} onChange={handleVolume}/>
+            <input type='range' min='0' max='100' value={currentVolume*100} onChange={handleVolumeSliderChange}/>
         </div>
     );
 }

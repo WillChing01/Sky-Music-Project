@@ -7,7 +7,7 @@ import List from '../List/List'
 
 import './WrapAlbum.css'
 
-const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, filter, isCard}) => {
+const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlaying, filter, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -27,19 +27,19 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
     
 
     const getAlbumTracks = async () => {
-        const { newData: albumTracks } = await fetchAlbumTracks(info.id, 1);
+        const { newData: albumTracks } = await fetchAlbumTracks(itemInfo.id, 1);
         return albumTracks;
     };
 
     const getAlbumGenres = async () => {
-        const genresIds = info.genres;
+        const genresIds = itemInfo.genres;
         const genreList = listArrOfStrsAsStr(genresIds, ',');
         const { newData: genres } = await fetchGenre(genreList);
         return genres;
     };
 
     const getAlbumFeatures = async () => {
-        const featuresIdStr = info.features;
+        const featuresIdStr = itemInfo.features;
         const defaultFeatures = [];
         if (featuresIdStr) {
             const featuredArtists = await fetchArtists(featuresIdStr);
@@ -63,7 +63,7 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
     const getNumTracksMessage = () => {
         return (
             <span>
-                <strong>{info.name}</strong> has <strong>{info.numTracks} tracks</strong>. 
+                <strong>{itemInfo.name}</strong> has <strong>{itemInfo.numTracks} tracks</strong>. 
             </span>
         );
     }
@@ -71,7 +71,7 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
     const getReleaseMessage = () => {
         return (
             <span> 
-                &nbsp;It was released on <em>{info.releaseDate}</em>.
+                &nbsp;It was released on <em>{itemInfo.releaseDate}</em>.
             </span>
         );
     };
@@ -83,7 +83,7 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
                                     <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
                                 </svg>
                              );
-        if (info.isExplicit) { 
+        if (itemInfo.isExplicit) { 
             const explicitMsg = (
                                     <span>
                                     &nbsp; The album has been rated <strong>explicit</strong> {explicitIcon}.
@@ -194,7 +194,7 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
                     <List 
                         filter={filter}
                         channelItems={tracks} 
-                        info={info} 
+                        itemInfo={itemInfo} 
                         currentPreviewURL={currentPreviewURL} 
                         play={play}
                         setPlaying={setPlaying}
