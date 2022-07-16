@@ -5,7 +5,7 @@ import './Card.css'
 const Card = ({ info, currentPreviewURL, play, setPlaying}) => {
 
     return (
-        <div className='py-2 px-4 m-4 border rounded card-view'>
+        <div className='py-2 px-4 border rounded card-view'>
             <h5>{info.name}</h5>
             <img src={info.imgSrc} alt={info.name}></img>
             <div className='mt-2'>

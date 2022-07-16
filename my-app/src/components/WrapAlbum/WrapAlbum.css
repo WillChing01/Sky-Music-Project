@@ -9,10 +9,12 @@
     transform: translateX(-50%) translateY(-50%);
 }
 
-/* .wrapped-album-list-item .spinner-positioner {
+.wrapped-album-list-item .spinner-positioner {
     position: absolute; 
-    left: 0px;
-} */
+    left: 1.5%;
+    top: 35%;
+    transform: translateX(-1.5%) translateY(-35%);
+}
 
 .loaded-album-info .spinner-border {
     display: none;
@@ -31,7 +33,6 @@
 }
 
 .extra-album-info-container {
-    font-size: 1.2rem;
     display: flex;
 }
 

@@ -78,9 +78,11 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
 
     const getIsExplicitMessage = () => {
         const defaultExplicitMsg = '';
-        const explicitIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-explicit-fill" viewBox="0 0 16 16">
-                                <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
-                            </svg>
+        const explicitIcon = (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-explicit-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"/>
+                                </svg>
+                             );
         if (info.isExplicit) { 
             const explicitMsg = (
                                     <span>
@@ -143,6 +145,22 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
         return isAlbumInfoLoaded; 
     }
 
+    const getWrappedAlbumItemClassName = () => {
+        const marginClass = isCard ? 'm-4': '';
+        const cardOrListItem = isCard ? 'card': 'list-item';
+        const cardOrListItemClass = `wrapped-album-${cardOrListItem}`;
+        const possibleAlbumLoadedClass = getIsAlbumInfoLoaded() ? 'loaded-album-info': '';
+        const wrappedAlbumItemClassName = `${marginClass} ${cardOrListItemClass} ${possibleAlbumLoadedClass}`;
+        return wrappedAlbumItemClassName;
+    };
+
+    const getSpinnerClassName = () => {
+        const possibleColourClass = isCard ? 'text-light': '';
+        const possibleSizeClass = !isCard ? 'spinner-border-sm': '';
+        const spinnerClassName = `spinner-border ${possibleColourClass} ${possibleSizeClass}`;
+        return spinnerClassName;
+    }
+
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
     };
@@ -156,37 +174,33 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
 
     return (
         <div className='wrapped-album'>
-            <div className={`wrapped-album-${isCard ? 'card': 'list-item'} ${getIsAlbumInfoLoaded() && 'loaded-album-info'}`} onClick={handleClick}>
-                {/* eventually get rid of isCard condition */}
-                {isCard && <div className='spinner-positioner'>
-                    <div className={`spinner-border ${isCard ? 'text-light': 'spinner-border-sm'}`} role='status'></div>
-                </div>  
-                }       
+            <div className={getWrappedAlbumItemClassName()} onClick={handleClick}>
+                <div className='spinner-positioner'>
+                    <div className={getSpinnerClassName()} role='status'></div>
+                </div>         
                 {children}
             </div>
             
-            {isDialogOpen && 
-            (
-            <Dialog handleCloseDialog={handleCloseDialog}>
-                <div className='album-intro'>
-                   <div className="album-intro-row">
-                         <div className='dialog-card-container'>{card}</div>
-                         <div className='extra-album-info-container text-center'>
-                           {getAlbumInfoMessage()}
+            {isDialogOpen && (
+                <Dialog handleCloseDialog={handleCloseDialog}>
+                    <div className='album-intro'>
+                        <div className="album-intro-row">
+                                <div className='dialog-card-container mx-4'>{card}</div>
+                                <div className='extra-album-info-container text-center'>
+                                    {getAlbumInfoMessage()}
+                                </div>
                         </div>
-                   </div>
-                </div>
-                <List 
-                    filter={filter}
-                    channelItems={tracks} 
-                    info={info} 
-                    currentPreviewURL={currentPreviewURL} 
-                    play={play}
-                    setPlaying={setPlaying}
-                />
-            </Dialog>
-            )
-            }
+                    </div>
+                    <List 
+                        filter={filter}
+                        channelItems={tracks} 
+                        info={info} 
+                        currentPreviewURL={currentPreviewURL} 
+                        play={play}
+                        setPlaying={setPlaying}
+                    />
+                </Dialog>
+            )}
         </div>
     );
 };
