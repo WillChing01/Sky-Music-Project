@@ -29,7 +29,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
     }
 
     const setPlayerAudioCurrentTime = (newTime) => {
-        console.log("New time is ", newTime);
+        //console.log("New time is ", newTime);
         const playerAudio = getPlayerAudio();
         playerAudio.currentTime = newTime;
     };
@@ -46,7 +46,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
     const givenTrackLoadedIntoPlayer = (effect) => {
         /* What is this first line below? I want to make it clear that isTrackLoadedIntoPlayer
        is being used in a boolean capacity. It doesn't matter that the !! is logically 
-       unnecessary. If you're the second person to read this, please mark your name:
+       unnecessary. If you're the second person to read this, please mark your name: William
        
        Seen by: Adam
 
@@ -125,10 +125,10 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
         let newVolume = currentVolume;
         switch (direction) {
             case 'up':
-                newVolume += volumeIncrement;
+                newVolume = Math.min(newVolume + volumeIncrement, 1);
                 break;
             case 'down':
-                newVolume -= volumeIncrement;
+                newVolume = Math.max(newVolume - volumeIncrement, 0);
                 break;
             default:
                 break;
@@ -221,13 +221,13 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
             document.addEventListener('keydown', handleKeyPress);
         };
         const unsubFromKeyPress = () => {
-            document.removeEventListener('keydown', handleKeyPress)
+            document.removeEventListener('keydown', handleKeyPress);
         };
 
         setInitialPlayerAudioVolume();
         subToKeyPress();
 
-        return unsubFromKeyPress();
+        return unsubFromKeyPress;
     }, [handleKeyPress]);
 
     useEffect(() => {
@@ -236,13 +236,13 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
 
 
     const getTrackName = () => {
-        const trackName = truncateStr(name, 20, true);
-        return trackName;
+        const truncatedTrackName = truncateStr(name, 20, true);
+        return truncatedTrackName;
     };
 
     const getArtistName = () => {
-        const artistName = truncateStr(name, 20, true);
-        return artistName;
+        const truncatedArtistName = truncateStr(artistName, 20, true);
+        return truncatedArtistName;
     };
 
 
