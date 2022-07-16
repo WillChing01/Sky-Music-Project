@@ -14,6 +14,8 @@ const PlayIcon = ({itemInfo, currentPreviewURL, play, setPlayingInfo}) => {
         if (isCurrentTrack) {
             if (play) setIconClass(pauseIconClass);
             else setIconClass(playIconClass);
+        } else {
+            setIconClass(playIconClass);
         }
     }, [currentPreviewURL, play]);   
 
