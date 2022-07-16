@@ -1,42 +1,55 @@
 import { useEffect, useState } from 'react';
+
 import "./PlayIcon.css";
 
+const playIconClass = 'bi-play-fill';
+const pauseIconClass = 'bi-pause';
+const iconClasses = [playIconClass, pauseIconClass]; 
 
-const PlayIcon = ({info, currentPreviewURL, play, setPlaying}) => {
-    const [playIcon, pauseIcon] = ['bi-play-fill', 'bi-pause']
-    const [icon, setIcon] = useState(playIcon);
+const PlayIcon = ({itemInfo, currentPreviewURL, play, setPlayingInfo}) => { 
+    const [iconClass, setIconClass] = useState(playIconClass);
 
     useEffect(() => {
-        const currentTrack = info.previewURL === currentPreviewURL;
-        if(currentTrack) play ? setIcon(pauseIcon) : setIcon(playIcon);
-        else setIcon(playIcon);
+        const isCurrentTrack = itemInfo.previewURL === currentPreviewURL;
+        if (isCurrentTrack) {
+            if (play) setIconClass(pauseIconClass);
+            else setIconClass(playIconClass);
+        }
     }, [currentPreviewURL, play]);   
 
-    const getIconClass = () => {
-        const isPlaying = info.previewURL === currentPreviewURL;
-        if (isPlaying) return `bi display ${icon}`;
-        else return `bi ${icon}`; 
+    const getIconClassName = () => {
+        const isPlaying = itemInfo.previewURL === currentPreviewURL;
+        if (isPlaying) return `bi display ${iconClass}`;
+        else return `bi ${iconClass}`; 
     };
 
-    const getNewIcon = () => {
-        const icons = [playIcon, pauseIcon];
-        const newIcon = icons[(icons.indexOf(icon) + 1) % 2];
-        return newIcon;
+    const getNewIconClass = () => {
+        const newIconClassIndex = (iconClasses.indexOf(iconClass) + 1) % 2;
+        const newIconClass = iconClasses[newIconClassIndex];
+        return newIconClass;
     };
 
     const toggleIcons = () => {      
-        const newIcon = getNewIcon();
-        setIcon(newIcon);
+        const newIconClass = getNewIconClass();
+        setIconClass(newIconClass);
     };
 
-    const handleClick = (currentPreviewURL, name, artistName, imgSrc) => {
-        const play = icon === playIcon; 
+    const handleClick = () => {
+        const { previewURL, name, artist, imgSrc } = itemInfo;
+        const play = iconClass === playIconClass; 
+        const newPlayingInfo = {
+            currentPreviewURL: previewURL,
+            name,
+            artistName: artist,
+            imgSrc,
+            play
+        };
+        setPlayingInfo(newPlayingInfo);
         toggleIcons();
-        setPlaying({currentPreviewURL, name, artistName, imgSrc, play});
     };
 
     return (
-        <i className={getIconClass()} onClick={e => handleClick(info.previewURL, info.name, info.artist, info.imgSrc)}></i>
+        <i className={getIconClassName()} onClick={handleClick}></i>
     );
 }
  

@@ -8,18 +8,18 @@ import Card from "../Card/Card";
 import './List.css';
 
 
-const List = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
+const List = ({channelItems, currentPreviewURL, play, setPlayingInfo, filter}) => {
 
     return (
         <div className="list">
             <ul>
                 {
                 channelItems.map((item, index) => {
-                    const info = getItemInfo(item);
-                    if (shouldBeFiltered(info, filter)) return null;
-                    const isAlbum = info.type === 'album';
+                    const itemInfo = getItemInfo(item);
+                    if (shouldBeFiltered(itemInfo, filter)) return null;
+                    const isAlbum = itemInfo.type === 'album';
                     const key = index;
-                    const props = {key, info, currentPreviewURL, play, setPlaying, filter}; 
+                    const props = {key, itemInfo, currentPreviewURL, play, setPlayingInfo, filter}; 
                     const card = <Card {...props}/>;
                     const listItem = <ListItem {...props}/>
                     props['card'] = card;
