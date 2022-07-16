@@ -46,7 +46,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
     const givenTrackLoadedIntoPlayer = (effect) => {
         /* What is this first line below? I want to make it clear that isTrackLoadedIntoPlayer
        is being used in a boolean capacity. It doesn't matter that the !! is logically 
-       unnecessary. If you're the second person to read this, please mark your name:
+       unnecessary. If you're the second person to read this, please mark your name: William
        
        Seen by: Adam
 
