@@ -11,16 +11,12 @@ const CustomPlayer = () => {
 
     const updateSongProgress = () => {
         const playerAudio = document.getElementById('player-audio');
-        if (!playerAudio.paused) {
-            //isPlaying is not updating inside this function?
-            const currentSongTime = playerAudio.currentTime;
-            const newSongDuration = playerAudio.duration;
-            const newSongProgress = 100*(currentSongTime/newSongDuration);
+        const currentSongTime = playerAudio.currentTime;
+        const newSongDuration = playerAudio.duration;
+        const newSongProgress = 100*(currentSongTime/newSongDuration);
 
-            setSongDuration(newSongDuration);
-            setSongProgress(newSongProgress);
-            //console.log('updating!');
-        }
+        setSongDuration(newSongDuration);
+        setSongProgress(newSongProgress);
     };
 
     const setTimeUpdate = () => {
