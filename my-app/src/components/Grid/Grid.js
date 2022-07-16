@@ -18,7 +18,7 @@ const Grid = ({channelItems, currentPreviewURL, play, setPlaying, filter}) => {
                 props['card'] = card;
                 props['isCard'] = true;
                 const possiblyWrappedCard = isAlbum ? <WrapAlbum {...props}>{card}</WrapAlbum>: 
-                card
+                <div className='m-4'>{card}</div>
                 return possiblyWrappedCard;   
             }
             )
