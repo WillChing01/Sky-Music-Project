@@ -101,4 +101,17 @@ export const getItemInfo = (item) => {
       releaseDate,
       features
     };
-  };
+};
+
+export const formatAsTrackList = (items) => {
+    return items.map(item => {
+        const info = getItemInfo(item);
+        return {
+            currentPreviewURL: info.previewURL,
+            name: info.name,
+            artistName: info.artist,
+            imgSrc: info.imgSrc,
+            play: false
+        }
+    })
+}

@@ -3,8 +3,10 @@ import { captilizeFirstLetter } from '../../utility/formatStr';
 import List from '../List/List';
 import Grid from '../Grid/Grid';
 import './ViewContainer.css';
+import { formatAsTrackList } from '../../utility/parseMusicItem';
+import { useEffect } from 'react';
 
-const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo}) => {
+const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo, trackList, setTrackList}) => {
     const {currentPreviewURL, play} = playingInfo;
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
@@ -16,6 +18,10 @@ const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo}) =
       )
     ); 
 
+    useEffect(() => {
+        setTrackList(formatAsTrackList(channels[0].items));
+    }, []);
+
     const getView = (channel) => {
         const isGridView = className === 'gridView';
         const props = {
@@ -23,7 +29,9 @@ const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo}) =
             currentPreviewURL,
             setPlayingInfo,
             play,
-            filter
+            filter,
+            trackList,
+            setTrackList
         };
         const GridView = <Grid {...props}/>;
         const ListView = <List {...props}/>; 

@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react'
 import { fetchAlbumTracks, fetchGenre, fetchArtists } from '../../utility/fetchNapster' 
 import { listArrOfStrsAsStr } from '../../utility/formatArr';
+import { formatAsTrackList } from '../../utility/parseMusicItem';
 
 import Dialog from '../Dialog/Dialog';
 import List from '../List/List'
 
 import './WrapAlbum.css'
 
-const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayingInfo, filter, isCard}) => {
+const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayingInfo, filter, isCard, trackList, setTrackList}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
     const [features, setFeatures] = useState([]);
+    const [prevTrackList, setPrevTrackList] = useState();
+
+    useEffect(() => {
+        if(trackList && !prevTrackList) setPrevTrackList(trackList);
+    }, [trackList]);
 
     useEffect(() => {
         const updateAlbumInfo = async () => {
@@ -142,7 +148,7 @@ const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayin
 
     const getIsAlbumInfoLoaded = () => {
         const isAlbumInfoLoaded = !!tracks.length; 
-        return isAlbumInfoLoaded; 
+        return isAlbumInfoLoaded && prevTrackList; 
     }
 
     const getWrappedAlbumItemClassName = () => {
@@ -163,12 +169,17 @@ const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayin
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
+        setTrackList(prevTrackList);
     };
     
      
     const handleClick = async () => {
         const isAlbumInfoLoaded = getIsAlbumInfoLoaded(); 
-        if (isAlbumInfoLoaded) setIsDialogOpen(true);
+        if (isAlbumInfoLoaded) {
+            setIsDialogOpen(true);
+            const newTrackList = formatAsTrackList(tracks);
+            setTrackList(newTrackList);
+        }
     };
 
 
@@ -194,7 +205,7 @@ const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayin
                     <List 
                         filter={filter}
                         channelItems={tracks} 
-                        itemInfo={itemInfo} 
+                        itemInfo={itemInfo} // Safe to remove?
                         currentPreviewURL={currentPreviewURL} 
                         play={play}
                         setPlayingInfo={setPlayingInfo}

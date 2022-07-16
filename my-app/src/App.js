@@ -26,16 +26,16 @@ const App = () => {
         imgSrc: '', 
         play: false
     });
-    const [favourites, setFavourites] = useState([])
+    const [trackList, setTrackList] = useState()
 
     return (
         <div className='page'>
             <NavBar view={view} setView={setView} searchParams={searchParams} setSearchParams={setSearchParams} filter={filter} setFilter={setFilter}/>
             <Routes>
-                <Route path='/' element={<Home view={view} searchParams={searchParams} filter={filter} playingInfo={playingInfo} setPlayingInfo={setPlayingInfo} />} />
+                <Route path='/' element={<Home view={view} searchParams={searchParams} filter={filter} playingInfo={playingInfo} setPlayingInfo={setPlayingInfo} trackList={trackList} setTrackList={setTrackList} />} />
                 <Route path='/profile' element={<Profile />} />
             </Routes>
-            <Player playingInfo={playingInfo} setPlayingInfo={setPlayingInfo}/>
+            <Player playingInfo={playingInfo} setPlayingInfo={setPlayingInfo} trackList={trackList}/>
         </div>
     )
 };

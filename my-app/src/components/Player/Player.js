@@ -9,7 +9,7 @@ const tinyTimeIncrement = 0.0001;
 const volumeIncrement = 0.05;
 const skipIncrement = 5;
 
-const Player = ({ playingInfo, setPlayingInfo }) => {
+const Player = ({ playingInfo, setPlayingInfo, trackList }) => {
     const { currentPreviewURL , name, artistName, imgSrc, play } = playingInfo;
     const [currentVolume, setCurrentVolume ] = useState(0.2);
     const [cachedVolume, setCachedVolume] = useState(0.2);
@@ -17,6 +17,20 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
     const [shouldLoop, setShouldLoop] = useState(false);
     const [isShuffle, setShuffle] = useState(false);
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
+    const setNthTrackFromCurrent = (n, isShuffle = false) => {
+        // Get index of current track
+        let currentIndex;
+        for(const [i, info] of trackList.entries()) {
+            if(info.currentPreviewURL == currentPreviewURL) currentIndex = i;
+        }
+        const shuffleOffset = isShuffle ? n : 0;
+        // If track was not found (e.g., the user clicked an album that the current song isn't in) play song at shuffleOffset
+        const offset = currentIndex !== undefined ? (currentIndex + n) % trackList.length : shuffleOffset;
+        const newTrack = trackList[offset];
+        newTrack.play = true;
+        setPlayingInfo(newTrack);
+    }
     
     const getPlayerAudio = () => {
         const playerAudio = document.getElementById('player-audio');
@@ -137,20 +151,45 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
         setCurrentVolume(newVolume);
     };
     
+    // const previousTrack = () => {
+    //     const effect = () => {
+    //         setPlayerAudioCurrentTime(0);
+    //     };
+
+    //     givenTrackLoadedIntoPlayer(effect);
+    // };
+
     const previousTrack = () => {
         const effect = () => {
-            setPlayerAudioCurrentTime(0);
+            setNthTrackFromCurrent(-1);
         };
 
         givenTrackLoadedIntoPlayer(effect);
     };
 
+    // const nextTrack = () => {
+    //     const effect = () => {
+    //         const playerAudio = getPlayerAudio();
+    //         const trackDuration = playerAudio.duration;
+    //         const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
+    //         setPlayerAudioCurrentTime(newPlayerAudioTime);  
+    //     };
+
+    //     givenTrackLoadedIntoPlayer(effect);
+    // };
+
     const nextTrack = () => {
         const effect = () => {
-            const playerAudio = getPlayerAudio();
-            const trackDuration = playerAudio.duration;
-            const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
-            setPlayerAudioCurrentTime(newPlayerAudioTime);  
+            setNthTrackFromCurrent(1);
+        };
+
+        givenTrackLoadedIntoPlayer(effect);
+    };
+
+    const shuffleTrack = () => {
+        const effect = () => {
+            const rand = Math.floor(Math.random() * trackList.length);
+            setNthTrackFromCurrent(rand, true);
         };
 
         givenTrackLoadedIntoPlayer(effect);
@@ -181,6 +220,14 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
 
         givenTrackLoadedIntoPlayer(effect);
     };
+
+    const handleEnded = () => {
+        if(isShuffle) {
+            shuffleTrack()
+        } else {
+            nextTrack();
+        }
+    }
 
     const handleKeyPress = useCallback((e) => {
         if (document.activeElement.type !== 'search') {
@@ -248,7 +295,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
 
     return (
         <div className='bottomscreen'>
-            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' onPause={handlePause} onPlay={handlePlay} autoPlay preload='metadata'></audio>
+            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' onPause={handlePause} onPlay={handlePlay} onEnded={handleEnded} autoPlay preload='metadata'></audio>
             <img id='player-icon' src={imgSrc}></img>
             <ul className='no-bullets'>
                 <li>
