@@ -146,10 +146,11 @@ const WrapAlbum = ({children, card, info, currentPreviewURL, play, setPlaying, f
     }
 
     const getWrappedAlbumItemClassName = () => {
+        const marginClass = isCard ? 'm-4': '';
         const cardOrListItem = isCard ? 'card': 'list-item';
         const cardOrListItemClass = `wrapped-album-${cardOrListItem}`;
         const possibleAlbumLoadedClass = getIsAlbumInfoLoaded() ? 'loaded-album-info': '';
-        const wrappedAlbumItemClassName = `${cardOrListItemClass} ${possibleAlbumLoadedClass}`;
+        const wrappedAlbumItemClassName = `${marginClass} ${cardOrListItemClass} ${possibleAlbumLoadedClass}`;
         return wrappedAlbumItemClassName;
     };
 
