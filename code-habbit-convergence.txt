@@ -6,7 +6,7 @@ NORMS:
 - don't use spaces around square-brackets when building arrays, as in '[ varA, varB ]'. do like 
   '[varA, varB]'
 
-- put spaces between arguments in functions, like 'console.log('Hello, ', 'World.')', not like
+- put spaces between arguments in functions, like 'console.log('Hello, ', 'World.')', not like 
  'console.log('Hello, ','World.')'
 
 - inline if statements -- 'if (<condition>) <execute>;' -- should not use curly braces like 
@@ -18,12 +18,19 @@ NORMS:
   the if clause 
 
 - put a space between (the opening bracket for the condition of an if clause) and (the 'if' keyword),
-  like 'if (<condition>) <code>', not 'if(<condition>) <code>'
+  like 'if (<condition>) <code>', not 'if(<condition>) <code>'.
 
-- don't write this: 'if (<conditionA>) <conditionB> ? <executeX>: <executeY>;'  
+- don't write this: 'if (<conditionA>) <conditionB> ? <executeX>
+                                                    : <executeY>; 
 
 - don't consume the event in a handler -- like 'const handleEvent = (e) => {<code>};' -- unless you 
   are going to use that event
+
+- write single argument arrow functions like (e) => {}  
+
+- space out the colon for inline ternary operators like <condition> ? <executeA> : <executeB>
+
+- order imports by functions, components, css, with return whitespace separating these categories
 
 NOTES:
 

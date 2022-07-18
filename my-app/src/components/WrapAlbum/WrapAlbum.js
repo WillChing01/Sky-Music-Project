@@ -7,7 +7,7 @@ import List from '../List/List'
 
 import './WrapAlbum.css'
 
-const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayingInfo, filter, isCard}) => {
+const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayingInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -191,8 +191,7 @@ const WrapAlbum = ({children, card, itemInfo, currentPreviewURL, play, setPlayin
                                 </div>
                         </div>
                     </div>
-                    <List 
-                        filter={filter}
+                    <List
                         channelItems={tracks} 
                         itemInfo={itemInfo} 
                         currentPreviewURL={currentPreviewURL} 

@@ -1,12 +1,15 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleChannelOpen } from '../../state/slices/filterSlice';
 import './ChannelSelect.css';
 
-const ChannelSelect = ({filter, setFilter}) => {
+
+const ChannelSelect = ({}) => {
+    const channelsOpen = useSelector((state) => state.filter.channelsOpen);
+    const dispatch = useDispatch();
     
     const handleCheckChannel = (e) => {
         const channel = e.target.value;
-        const newChannels = {...(filter.channelsOpen)};
-        newChannels[channel] = !filter.channelsOpen[channel];
-        setFilter({...filter, channelsOpen: newChannels});
+        dispatch(toggleChannelOpen(channel));
     };
 
     return (
@@ -14,15 +17,15 @@ const ChannelSelect = ({filter, setFilter}) => {
             <h6>Channels</h6>
             <label htmlFor="tracks" className='checkbox p-1 mb-1'>Tracks
                 <span></span>
-                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="tracks" value="tracks" defaultChecked={filter.channelsOpen.tracks}/>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="tracks" value="tracks" defaultChecked={channelsOpen.tracks}/>
             </label>
             <label htmlFor="albums" className='checkbox p-1 mb-1'>Albums
                 <span></span>
-                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="albums" value="albums" defaultChecked={filter.channelsOpen.albums}/>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="albums" value="albums" defaultChecked={channelsOpen.albums}/>
             </label>
             <label htmlFor="artists" className='checkbox p-1 mb-1'>Artists
                 <span></span>
-                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="artists" value="artists" defaultChecked={filter.channelsOpen.artists}/>
+                <input type="checkbox" name="channels" onClick={handleCheckChannel} id="artists" value="artists" defaultChecked={channelsOpen.artists}/>
             </label>
       </div>
     );

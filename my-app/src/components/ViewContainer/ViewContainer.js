@@ -1,17 +1,21 @@
 import { captilizeFirstLetter } from '../../utility/formatStr';
+import { useSelector } from 'react-redux';
 
 import List from '../List/List';
 import Grid from '../Grid/Grid';
+
 import './ViewContainer.css';
 
-const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo}) => {
+const ViewContainer = ({className, data, playingInfo, setPlayingInfo}) => {
+    const channelsOpen = useSelector((state) => state.filter.channelsOpen);
+
     const {currentPreviewURL, play} = playingInfo;
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
       {
         type,
         items: data[type],
-        open: filter.channelsOpen[type]
+        open: channelsOpen[type]
       }  
       )
     ); 
@@ -22,8 +26,7 @@ const ViewContainer = ({className, data, filter, playingInfo, setPlayingInfo}) =
             channelItems: channel.items,
             currentPreviewURL,
             setPlayingInfo,
-            play,
-            filter
+            play
         };
         const GridView = <Grid {...props}/>;
         const ListView = <List {...props}/>; 

@@ -53,15 +53,14 @@ const fetchChannelTop = async (channel, limit) => {
 };
 
 
-export const fetchTop = async (channelsOpen, limit) => {
+export const fetchTop = async (limit) => {
+  const channels = ['tracks', 'albums', 'artists']
   const newData = {};
   const error = null;
-  for (const [channel, isOpen] of Object.entries(channelsOpen)) {
-    if (isOpen) {
+  for (const channel of channels) {
       const { channelData, channelError } = await fetchChannelTop(channel, limit);
       if (channelError) return { newData: {}, error: channelError };
       newData[channel] = channelData;
-    }
   }
   return { newData, error };
 };

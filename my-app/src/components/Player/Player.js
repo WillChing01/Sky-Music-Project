@@ -9,6 +9,15 @@ const tinyTimeIncrement = 0.0001;
 const volumeIncrement = 0.05;
 const skipIncrement = 5;
 
+/*
+shouldAudioPlay, 
+shouldIconBePlay
+
+playing
+
+*/
+
+
 const Player = ({ playingInfo, setPlayingInfo }) => {
     const { currentPreviewURL , name, artistName, imgSrc, play } = playingInfo;
     const [currentVolume, setCurrentVolume ] = useState(0.2);
@@ -67,6 +76,9 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
 
     const toggleShouldPlay = (shouldPlay) => {
         const effect = () => {
+            /* acutally:
+            newPlayingInfo = {...playingInfo, shouldIconBePlay: !shouldPlay, shouldAudioPlay: shouldPlay};
+            */
             const newPlayingInfo = {...playingInfo, play: shouldPlay};
             const newIsAudioPlaying = shouldPlay;
             setPlayingInfo(newPlayingInfo);
@@ -280,7 +292,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
                     <i className='bi-arrow-repeat icon' onClick={toggleLoopTrack}></i>
                     }
                 </div>
-                <CustomPlayer isAudioPlaying={isAudioPlaying}/>
+                <CustomPlayer />
             </div>
             <span className='region'/>
             {

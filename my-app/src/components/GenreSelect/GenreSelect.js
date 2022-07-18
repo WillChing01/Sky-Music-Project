@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { fetchGenre } from '../../utility/fetchNapster';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from '../../state/slices/filterSlice';
+
 import './GenreSelect.css';
 
-const GenreSelect = ({ filter, setFilter }) => {
+const GenreSelect = ({}) => {
 
-    // Note: if we really wanted to we could hard-code genre data to avoid another fetch
     const [genres, setGenres] = useState(null);
 
+    const dispatch = useDispatch();
+
     const handleSelection = (e) => {
-        setFilter({...filter, genre: e.target.value});
+        const genre = e.target.value;
+        dispatch(setFilter({genre}));
     };
 
     useEffect(() => {

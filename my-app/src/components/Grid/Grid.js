@@ -1,10 +1,13 @@
+import { useSelector } from 'react-redux';
 import { shouldBeFiltered } from '../../utility/filterResults';
 import { getItemInfo } from '../../utility/parseMusicItem';
 
 import Card from '../Card/Card';
 import WrapAlbum from '../WrapAlbum/WrapAlbum';
 
-const Grid = ({channelItems, currentPreviewURL, play, setPlayingInfo, filter}) => {
+const Grid = ({channelItems, currentPreviewURL, play, setPlayingInfo}) => {
+
+    const filter = useSelector((state) => state.filter);
 
     return (
         <div className='gridView'>
@@ -13,7 +16,7 @@ const Grid = ({channelItems, currentPreviewURL, play, setPlayingInfo, filter}) =
                 if (shouldBeFiltered(itemInfo, filter)) return null;
                 const isAlbum = itemInfo.type === 'album';
                 const key = index;
-                const props = {key, itemInfo, currentPreviewURL, play, setPlayingInfo, filter}; 
+                const props = {key, itemInfo, currentPreviewURL, play, setPlayingInfo}; 
                 const card = <Card {...props}/>;
                 props['card'] = card;
                 props['isCard'] = true;
