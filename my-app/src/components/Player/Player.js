@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
 import { truncateStr } from '../../utility/formatStr';
+
 
 import CustomPlayer from '../CustomPlayer/CustomPlayer';
 
@@ -18,15 +21,16 @@ playing
 */
 
 
-const Player = ({ playingInfo, setPlayingInfo }) => {
-    const { currentPreviewURL , name, artistName, imgSrc, play } = playingInfo;
-    const [currentVolume, setCurrentVolume ] = useState(0.2);
+const Player = ({}) => {
+    const {currentPreviewURL , name, artistName, imgSrc, isPlaying} = useSelector((state) => state.playerInfo);
+    const [currentVolume, setCurrentVolume] = useState(0.2);
     const [cachedVolume, setCachedVolume] = useState(0.2);
     const [isMuted, setIsMuted] = useState(false);
     const [shouldLoop, setShouldLoop] = useState(false);
     const [isShuffle, setShuffle] = useState(false);
-    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     
+    const dispatch = useDispatch();
+
     const getPlayerAudio = () => {
         const playerAudio = document.getElementById('player-audio');
         return playerAudio;
@@ -53,36 +57,24 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
     };
 
     const givenTrackLoadedIntoPlayer = (effect) => {
-        /* What is this first line below? I want to make it clear that isTrackLoadedIntoPlayer
-       is being used in a boolean capacity. It doesn't matter that the !! is logically 
-       unnecessary. If you're the second person to read this, please mark your name: William
-       
-       Seen by: Adam
-
-       If you're the third person to read this, please delete the comment.
-       */
        const isTrackLoadedIntoPlayer = !!currentPreviewURL;
        if (isTrackLoadedIntoPlayer) {
            effect();
        }
    };
 
-    const togglePlayAudio = (newIsAudioPlaying) => {
-        setIsAudioPlaying(newIsAudioPlaying);
+    const togglePlayAudio = () => {
         const playerAudio = getPlayerAudio();
-        if (newIsAudioPlaying) playerAudio.play();
+        if (isPlaying) playerAudio.play();
         else playerAudio.pause();
     };
-
-    const toggleShouldPlay = (shouldPlay) => {
+    
+    const handleToggleIsPlaying = () => {
         const effect = () => {
-            /* acutally:
-            newPlayingInfo = {...playingInfo, shouldIconBePlay: !shouldPlay, shouldAudioPlay: shouldPlay};
-            */
-            const newPlayingInfo = {...playingInfo, play: shouldPlay};
-            const newIsAudioPlaying = shouldPlay;
-            setPlayingInfo(newPlayingInfo);
-            togglePlayAudio(newIsAudioPlaying);
+            // const newPlayingInfo = {...playingInfo, isPlaying: shouldPlay};
+            // const newIsAudioPlaying = shouldPlay;
+            // setPlayerInfo(newPlayingInfo);
+            dispatch(toggleIsPlaying());
         };
 
         givenTrackLoadedIntoPlayer(effect);
@@ -123,14 +115,6 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
             setPlayerAudioVolume(0);
         }
         toggleMute();
-    };
-
-    const handlePause = () => {
-        toggleShouldPlay(false);
-    };
-
-    const handlePlay = () => {
-        toggleShouldPlay(true);
     };
 
     const jumpVolume = (direction) => {
@@ -194,7 +178,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
         givenTrackLoadedIntoPlayer(effect);
     };
 
-    const handleKeyPress = useCallback((e) => {
+    const handleKeyPressTest = (e) => {
         if (document.activeElement.type !== 'search') {
             const key = e.key.toLowerCase();
             switch (key) {
@@ -202,7 +186,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
                     handleClickVolumeIcon();
                     break;
                 case 'k':
-                    toggleShouldPlay(!isAudioPlaying);
+                    handleToggleIsPlaying();
                     break;
                 case 'j':
                     previousTrack();
@@ -226,14 +210,48 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
                     break;
             }
         }
-    }, [isMuted, currentVolume, cachedVolume, isAudioPlaying]);
+     }
+
+    const handleKeyPress = useCallback((e) => {
+        if (document.activeElement.type !== 'search') {
+            const key = e.key.toLowerCase();
+            switch (key) {
+                case 'm':
+                    handleClickVolumeIcon();
+                    break;
+                case 'k':
+                    handleToggleIsPlaying();
+                    break;
+                case 'j':
+                    previousTrack();
+                    break;
+                case 'l':
+                    nextTrack();
+                    break;
+                case ']':
+                    jumpVolume('up');
+                    break;
+                case '[':
+                    jumpVolume('down');
+                    break;
+                case 'arrowleft':
+                    skipBackwards();
+                    break;
+                case 'arrowright':
+                    skipForwards();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [isMuted, currentVolume, cachedVolume, isPlaying]);
 
     useEffect(() => {
         const subToKeyPress = () => {
-            document.addEventListener('keydown', handleKeyPress);
+            document.addEventListener('keydown', handleKeyPressTest);
         };
         const unsubFromKeyPress = () => {
-            document.removeEventListener('keydown', handleKeyPress);
+            document.removeEventListener('keydown', handleKeyPressTest);
         };
 
         setInitialPlayerAudioVolume();
@@ -242,9 +260,10 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
         return unsubFromKeyPress;
     }, [handleKeyPress]);
 
+
     useEffect(() => {
-        togglePlayAudio(play);
-    }, [play]);
+        togglePlayAudio();
+    }, [isPlaying]);
 
 
     const getTrackName = () => {
@@ -260,7 +279,7 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
 
     return (
         <div className='bottomscreen'>
-            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' onPause={handlePause} onPlay={handlePlay} autoPlay preload='metadata'></audio>
+            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay preload='metadata'></audio>
             <img id='player-icon' src={imgSrc}></img>
             <ul className='no-bullets'>
                 <li>
@@ -280,9 +299,9 @@ const Player = ({ playingInfo, setPlayingInfo }) => {
                     <i className='bi-skip-backward icon' onClick={previousTrack}></i>
                     <i className='bi-arrow-counterclockwise icon' onClick={skipBackwards}></i>
                     {
-                    play === true ?
-                    <i className='bi-pause icon' onClick={handlePause}></i> :
-                    <i className='bi-play icon' onClick={handlePlay}></i>
+                    isPlaying === true ?
+                    <i className='bi-pause icon' onClick={handleToggleIsPlaying}></i> :
+                    <i className='bi-play icon' onClick={handleToggleIsPlaying}></i>
                     }
                     <i className='bi-arrow-clockwise icon' onClick={skipForwards}></i>
                     <i className='bi-skip-forward icon' onClick={nextTrack}></i>

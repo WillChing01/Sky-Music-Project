@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ViewContainer from '../ViewContainer/ViewContainer';
 import './Home.css';
 
-function Home({ view, searchParams, playingInfo, setPlayingInfo }) {
+function Home({ view, searchParams }) {
   const [data, setData] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState({canRetry: false, message: ''});
@@ -42,8 +42,8 @@ function Home({ view, searchParams, playingInfo, setPlayingInfo }) {
       { !isPending && error && <span>{error.message}</span> }
       {!!Object.keys(data).length && ( 
       view === 'grid' ?
-      <ViewContainer className='gridView' data={data} playingInfo={playingInfo} setPlayingInfo={setPlayingInfo}/>:
-      <ViewContainer className='listView' data={data} playingInfo={playingInfo} setPlayingInfo={setPlayingInfo}/>
+      <ViewContainer className='gridView' data={data} />:
+      <ViewContainer className='listView' data={data} />
       )
       }
     </div>

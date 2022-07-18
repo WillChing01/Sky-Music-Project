@@ -5,7 +5,7 @@ import { getItemInfo } from '../../utility/parseMusicItem';
 import Card from '../Card/Card';
 import WrapAlbum from '../WrapAlbum/WrapAlbum';
 
-const Grid = ({channelItems, currentPreviewURL, play, setPlayingInfo}) => {
+const Grid = ({channelItems}) => {
 
     const filter = useSelector((state) => state.filter);
 
@@ -16,7 +16,7 @@ const Grid = ({channelItems, currentPreviewURL, play, setPlayingInfo}) => {
                 if (shouldBeFiltered(itemInfo, filter)) return null;
                 const isAlbum = itemInfo.type === 'album';
                 const key = index;
-                const props = {key, itemInfo, currentPreviewURL, play, setPlayingInfo}; 
+                const props = {key, itemInfo}; 
                 const card = <Card {...props}/>;
                 props['card'] = card;
                 props['isCard'] = true;

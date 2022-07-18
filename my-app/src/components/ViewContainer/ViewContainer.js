@@ -6,10 +6,9 @@ import Grid from '../Grid/Grid';
 
 import './ViewContainer.css';
 
-const ViewContainer = ({className, data, playingInfo, setPlayingInfo}) => {
+const ViewContainer = ({className, data }) => {
     const channelsOpen = useSelector((state) => state.filter.channelsOpen);
 
-    const {currentPreviewURL, play} = playingInfo;
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
       {
@@ -24,9 +23,6 @@ const ViewContainer = ({className, data, playingInfo, setPlayingInfo}) => {
         const isGridView = className === 'gridView';
         const props = {
             channelItems: channel.items,
-            currentPreviewURL,
-            setPlayingInfo,
-            play
         };
         const GridView = <Grid {...props}/>;
         const ListView = <List {...props}/>; 
