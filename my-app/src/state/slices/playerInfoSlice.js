@@ -9,18 +9,17 @@ const initialState = {
 };
 
 export const playerInfoSlice = createSlice({
-    name: 'playingInfo',
+    name: 'playerInfo',
     initialState,
     reducers: {
-        setPlayingInfo: (state, { payload }) => {
+        setPlayerInfo: (state, { payload }) => {
             return {...current(state), ...payload};
         },
-
-        togglePlaying: (state) => {
+        toggleIsPlaying: (state) => {
             state.isPlaying = !state.isPlaying;
         }
     }
 });
 
-export const { setPlayerInfo, togglePlaying } = playerInfoSlice.actions;
+export const { setPlayerInfo, toggleIsPlaying } = playerInfoSlice.actions;
 export default playerInfoSlice.reducer;

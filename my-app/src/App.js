@@ -13,23 +13,16 @@ const App = () => {
 
     const [view, setView] = useState('grid');
     const [searchParams, setSearchParams] = useSearchParams();
-    const [playingInfo, setPlayingInfo] = useState({
-        currentPreviewURL: '', 
-        name: '', 
-        artistName: '', 
-        imgSrc: '', 
-        play: false
-    });
     const [favourites, setFavourites] = useState([])
 
     return (
         <div className='page'>
             <NavBar view={view} setView={setView} searchParams={searchParams} setSearchParams={setSearchParams}/>
             <Routes>
-                <Route path='/' element={<Home view={view} searchParams={searchParams} playingInfo={playingInfo} setPlayingInfo={setPlayingInfo} />} />
+                <Route path='/' element={<Home view={view} searchParams={searchParams} />} />
                 <Route path='/profile' element={<Profile />} />
             </Routes>
-            <Player playingInfo={playingInfo} setPlayingInfo={setPlayingInfo}/>
+            <Player />
         </div>
     )
 };
