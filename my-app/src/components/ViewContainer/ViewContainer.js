@@ -6,8 +6,9 @@ import Grid from '../Grid/Grid';
 
 import './ViewContainer.css';
 
-const ViewContainer = ({className, data }) => {
+const ViewContainer = ({ data }) => {
     const channelsOpen = useSelector((state) => state.filter.channelsOpen);
+    const view = useSelector((state) => state.view.value);
 
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
@@ -19,30 +20,30 @@ const ViewContainer = ({className, data }) => {
       )
     ); 
 
-    const getView = (channel) => {
-        const isGridView = className === 'gridView';
+    const getDisplay = (channel) => {
+        const isGridView = view === 'grid';
         const props = {
             channelItems: channel.items,
         };
-        const GridView = <Grid {...props}/>;
-        const ListView = <List {...props}/>; 
-        const view = isGridView ? GridView: ListView;
+        const GridDisplay = <Grid {...props}/>;
+        const ListDisplay = <List {...props}/>; 
+        const display = isGridView ? GridDisplay : ListDisplay;
         
-        return view;
+        return display;
     };
 
-    const getNoView = (channel) => {
-        const noView = <p>No {channel.type} were found</p>;
-        return noView;
+    const getNoDisplay = (channel) => {
+        const noDisplay = <p>No {channel.type} were found</p>;
+        return noDisplay;
     };
 
     const getChannelDisplay = (channel) => {
-        const view = getView(channel); 
-        const noView = getNoView(channel);
+        const display = getDisplay(channel); 
+        const noDisplay = getNoDisplay(channel);
         const title = captilizeFirstLetter(channel.type);
         const body = channel.items.length ? 
-                     view:
-                     noView;
+                     display:
+                     noDisplay;
         return (
             <>
                 <h1>{title}</h1>

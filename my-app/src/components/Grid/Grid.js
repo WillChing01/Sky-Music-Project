@@ -5,6 +5,8 @@ import { getItemInfo } from '../../utility/parseMusicItem';
 import Card from '../Card/Card';
 import WrapAlbum from '../WrapAlbum/WrapAlbum';
 
+import './Grid.css';
+
 const Grid = ({channelItems}) => {
 
     const filter = useSelector((state) => state.filter);

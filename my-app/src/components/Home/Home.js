@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+
 import ViewContainer from '../ViewContainer/ViewContainer';
+
 import './Home.css';
 
-function Home({ view, searchParams }) {
+
+function Home() {
   const [data, setData] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState({canRetry: false, message: ''});
+  const [searchParams] = useSearchParams();
 
   const handleDataFetch = () => {
     setData({});
@@ -39,13 +44,8 @@ function Home({ view, searchParams }) {
   return (
     <div className='space'>
       {isPending && 'Loading...'}
-      { !isPending && error && <span>{error.message}</span> }
-      {!!Object.keys(data).length && ( 
-      view === 'grid' ?
-      <ViewContainer className='gridView' data={data} />:
-      <ViewContainer className='listView' data={data} />
-      )
-      }
+      {!isPending && error && <span>{error.message}</span>}
+      {!!Object.keys(data).length && <ViewContainer data={data} />}
     </div>
   );
 }

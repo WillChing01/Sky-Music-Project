@@ -1,13 +1,15 @@
+import { useDispatch } from 'react-redux';
+import { toggleView } from '../../state/slices/viewSlice';
+
 import './ViewSelect.css';
 
-const ViewSelect = ({view, setView}) => {
+
+const ViewSelect = ({}) => {
+
+    const dispatch = useDispatch();
 
     const handleViewChange = (e) => {
-        if(view === 'grid') {
-            setView('list');
-        } else {
-            setView('grid');
-        }
+        dispatch(toggleView());
     };
     
     return (

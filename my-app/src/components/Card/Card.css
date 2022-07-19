@@ -1,6 +1,12 @@
 /* bi-play-fill is coming from the play icon component */
 
 
+.card-view img {
+    object-fit: contain;
+    max-width: 100%;
+    height: auto;
+}
+
 .card-view h6 {
     display: inline-block
 }
@@ -24,3 +30,4 @@
 .card-view .bi-pause {
     float: right;
 }
+
