@@ -26,11 +26,13 @@ NORMS:
 - don't consume the event in a handler -- like 'const handleEvent = (e) => {<code>};' -- unless you 
   are going to use that event
 
-- write single argument arrow functions like (e) => {}  
+- write single argument arrow functions like (arg) => {}  
 
 - space out the colon for inline ternary operators like <condition> ? <executeA> : <executeB>
 
 - order imports by functions, components, css, with return whitespace separating these categories
+
+- classes made up of multiple words should be written like 'ding-dong', not 'dingDong'
 
 NOTES:
 

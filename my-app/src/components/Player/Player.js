@@ -178,7 +178,7 @@ const Player = ({}) => {
         givenTrackLoadedIntoPlayer(effect);
     };
 
-    const handleKeyPressTest = (e) => {
+    const handleKeyPress = (e) => {
         if (document.activeElement.type !== 'search') {
             const key = e.key.toLowerCase();
             switch (key) {
@@ -210,48 +210,14 @@ const Player = ({}) => {
                     break;
             }
         }
-     }
-
-    const handleKeyPress = useCallback((e) => {
-        if (document.activeElement.type !== 'search') {
-            const key = e.key.toLowerCase();
-            switch (key) {
-                case 'm':
-                    handleClickVolumeIcon();
-                    break;
-                case 'k':
-                    handleToggleIsPlaying();
-                    break;
-                case 'j':
-                    previousTrack();
-                    break;
-                case 'l':
-                    nextTrack();
-                    break;
-                case ']':
-                    jumpVolume('up');
-                    break;
-                case '[':
-                    jumpVolume('down');
-                    break;
-                case 'arrowleft':
-                    skipBackwards();
-                    break;
-                case 'arrowright':
-                    skipForwards();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }, [isMuted, currentVolume, cachedVolume, isPlaying]);
+     };
 
     useEffect(() => {
         const subToKeyPress = () => {
-            document.addEventListener('keydown', handleKeyPressTest);
+            document.addEventListener('keydown', handleKeyPress);
         };
         const unsubFromKeyPress = () => {
-            document.removeEventListener('keydown', handleKeyPressTest);
+            document.removeEventListener('keydown', handleKeyPress);
         };
 
         setInitialPlayerAudioVolume();

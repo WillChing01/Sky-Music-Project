@@ -11,15 +11,13 @@ import './App.css';
 
 const App = () => {
 
-    const [view, setView] = useState('grid');
     const [searchParams, setSearchParams] = useSearchParams();
-    const [favourites, setFavourites] = useState([])
 
     return (
         <div className='page'>
-            <NavBar view={view} setView={setView} searchParams={searchParams} setSearchParams={setSearchParams}/>
+            <NavBar searchParams={searchParams} setSearchParams={setSearchParams}/>
             <Routes>
-                <Route path='/' element={<Home view={view} searchParams={searchParams} />} />
+                <Route path='/' element={<Home searchParams={searchParams} />} />
                 <Route path='/profile' element={<Profile />} />
             </Routes>
             <Player />

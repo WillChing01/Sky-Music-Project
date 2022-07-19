@@ -6,30 +6,6 @@
     transition: gap 0.3s;
 } */
 
-.gridView {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-
-}
 
 
-@media (width < 1000px) {
-    .gridView {
-        gap: 2rem;
-    }
-}
 
-
-@media (width < 650px) {
-    .gridView {
-        gap: 1rem;
-    }
-}
-
-.gridView .card-view img {
-    object-fit: contain;
-    max-width: 100%;
-    height: auto;
-}
