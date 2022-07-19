@@ -29,3 +29,9 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 } 
+
+.dragging-progress-bar {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: grab;
+}

@@ -27,13 +27,6 @@
     flex-grow: 1;
 }
 
-.spread {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    width: 40%;
-}
-
 .center-position {
     position: absolute;
     left: 0;

@@ -6,6 +6,7 @@
 }
 
 .time-format {
+    font-variant-numeric: tabular-nums;
     font-size: 60%;
     padding: 0% 1%;
     margin: 0;
@@ -14,7 +15,7 @@
 
 .progress-bar-style {
     background: grey;
-    transition: all 0.001s ease;
+    transition: all 0s;
 }
 
 .progress-style {
@@ -22,6 +23,10 @@
     width: 100%;
 }
 
-.progress-style:hover {
+.progress-clickable:hover {
     cursor: pointer;
+}
+
+.progress-draggable {
+    cursor: grab;
 }

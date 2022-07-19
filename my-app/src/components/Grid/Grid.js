@@ -12,7 +12,7 @@ const Grid = ({channelItems}) => {
     const filter = useSelector((state) => state.filter);
 
     return (
-        <div className='gridView'>
+        <div className='grid-view'>
             {channelItems.map((item, index) => {
                 const itemInfo = getItemInfo(item);
                 if (shouldBeFiltered(itemInfo, filter)) return null;
