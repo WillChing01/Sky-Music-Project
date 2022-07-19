@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
-import { truncateStr } from '../../utility/formatStr';
+import { truncateStr } from '../../utility/format/formatStr';
 
-
-import CustomPlayer from '../CustomPlayer/CustomPlayer';
+import ProgressBar from '../ProgressBar/ProgressBar';
+import TrackControls from '../TrackControls/TrackControls';
+import VolumeControl from '../VolumeControl/VolumeControl';
 
 import './Player.css';
 
@@ -12,17 +13,25 @@ const tinyTimeIncrement = 0.0001;
 const volumeIncrement = 0.05;
 const skipIncrement = 5;
 
-/*
-shouldAudioPlay, 
-shouldIconBePlay
 
-playing
+export const getPlayerAudio = () => {
+    const playerAudio = document.getElementById('player-audio');
+    return playerAudio;
+};
 
-*/
+export const setPlayerAudioCurrentTime = (newTime) => {
+    const playerAudio = getPlayerAudio();
+    playerAudio.currentTime = newTime;
+};
 
-
-const Player = ({}) => {
-    const {currentPreviewURL , name, artistName, imgSrc, isPlaying} = useSelector((state) => state.playerInfo);
+const Player = () => {
+    const {
+        currentPreviewURL,
+        name, 
+        artistName, 
+        imgSrc, 
+        isPlaying
+    } = useSelector((state) => state.playerInfo);
     const [currentVolume, setCurrentVolume] = useState(0.2);
     const [cachedVolume, setCachedVolume] = useState(0.2);
     const [isMuted, setIsMuted] = useState(false);
@@ -31,21 +40,10 @@ const Player = ({}) => {
     
     const dispatch = useDispatch();
 
-    const getPlayerAudio = () => {
-        const playerAudio = document.getElementById('player-audio');
-        return playerAudio;
-    };
-
     const setPlayerAudioVolume = (newPlayerAudioVolume) => {
         const playerAudio = getPlayerAudio();
         playerAudio.volume = newPlayerAudioVolume;
     }
-
-    const setPlayerAudioCurrentTime = (newTime) => {
-        //console.log("New time is ", newTime);
-        const playerAudio = getPlayerAudio();
-        playerAudio.currentTime = newTime;
-    };
 
     const setPlayerAudioLoop = (newShouldLoop) => {
         const playerAudio = getPlayerAudio();
@@ -71,9 +69,6 @@ const Player = ({}) => {
     
     const handleToggleIsPlaying = () => {
         const effect = () => {
-            // const newPlayingInfo = {...playingInfo, isPlaying: shouldPlay};
-            // const newIsAudioPlaying = shouldPlay;
-            // setPlayerInfo(newPlayingInfo);
             dispatch(toggleIsPlaying());
         };
 
@@ -224,13 +219,11 @@ const Player = ({}) => {
         subToKeyPress();
 
         return unsubFromKeyPress;
-    }, [handleKeyPress]);
-
+    }, []);
 
     useEffect(() => {
         togglePlayAudio();
     }, [isPlaying]);
-
 
     const getTrackName = () => {
         const truncatedTrackName = truncateStr(name, 20, true);
@@ -241,7 +234,6 @@ const Player = ({}) => {
         const truncatedArtistName = truncateStr(artistName, 20, true);
         return truncatedArtistName;
     };
-
 
     return (
         <div className='bottomscreen'>
@@ -263,13 +255,11 @@ const Player = ({}) => {
                     <i className='bi-shuffle icon' onClick={toggleShuffleTracks}></i>
                     }
                     <i className='bi-skip-backward icon' onClick={previousTrack}></i>
-                    <i className='bi-arrow-counterclockwise icon' onClick={skipBackwards}></i>
                     {
                     isPlaying === true ?
                     <i className='bi-pause icon' onClick={handleToggleIsPlaying}></i> :
                     <i className='bi-play icon' onClick={handleToggleIsPlaying}></i>
                     }
-                    <i className='bi-arrow-clockwise icon' onClick={skipForwards}></i>
                     <i className='bi-skip-forward icon' onClick={nextTrack}></i>
                     {
                     shouldLoop === true ?
@@ -277,7 +267,7 @@ const Player = ({}) => {
                     <i className='bi-arrow-repeat icon' onClick={toggleLoopTrack}></i>
                     }
                 </div>
-                <CustomPlayer />
+                <ProgressBar />
             </div>
             <span className='region'/>
             {

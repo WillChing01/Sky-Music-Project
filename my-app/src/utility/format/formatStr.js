@@ -15,3 +15,4 @@ export const captilizeFirstLetter = (str) => {
     const titleCase = firstLetter.toUpperCase() + remainingStr;
     return titleCase;
 };
+

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchAlbumTracks, fetchGenre, fetchArtists } from '../../utility/fetchNapster' 
-import { listArrOfStrsAsStr } from '../../utility/formatArr';
+import { listArrOfStrsAsStr } from '../../utility/format/formatArr';
 
 import Dialog from '../Dialog/Dialog';
 import List from '../List/List'

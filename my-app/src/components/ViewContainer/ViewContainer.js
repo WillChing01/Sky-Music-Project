@@ -1,4 +1,4 @@
-import { captilizeFirstLetter } from '../../utility/formatStr';
+import { captilizeFirstLetter } from '../../utility/format/formatStr';
 import { useSelector } from 'react-redux';
 
 import List from '../List/List';
