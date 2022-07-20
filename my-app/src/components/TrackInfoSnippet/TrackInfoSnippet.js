@@ -1,11 +1,16 @@
 import { useSelector } from 'react-redux';
 import { truncateStr } from '../../utility/format/formatStr';
 
+import './TrackInfoSnippet.css';
+
 const charLimit = 20;
 
 const TrackInfoSnippet = () => {
-
-    const { name, artistName, imgSrc } = useSelector((state) => state.playerInfo);
+    const { 
+        name, 
+        artistName, 
+        imgSrc 
+    } = useSelector((state) => state.playerInfo);
 
     const getTrackName = () => {
         const truncatedTrackName = truncateStr(name, charLimit, true);
@@ -19,13 +24,13 @@ const TrackInfoSnippet = () => {
 
     return(
         <>
-            <img id='player-icon' alt='' src={imgSrc}></img>
+            <div className='img-div'><img id='player-icon' alt='' src={imgSrc}></img></div>
             <ul className='no-bullets'>
                 <li>
-                    <span className='make-bold'>{getTrackName()}</span>
+                    <div className='test-thing'><span className='make-bold fixed-width'>{getTrackName()}</span></div>
                 </li>
                 <li>
-                    <span>{getArtistName()}</span>
+                    <div className='test-thing'><span className='fixed-width'>{getArtistName()}</span></div>
                 </li>
             </ul>
         </>

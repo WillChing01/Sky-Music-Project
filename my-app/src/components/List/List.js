@@ -12,24 +12,31 @@ const List = ({channelItems}) => {
 
     const filter = useSelector((state) => state.filter)
 
+    const getDisplayChannelItem = (item, index) => {
+        const itemInfo = getItemInfo(item);
+        if (shouldBeFiltered(itemInfo, filter)) return null;
+        const isAlbum = itemInfo.type === 'album';
+        const card = <Card itemInfo={itemInfo}/>;
+        const listItem = <ListItem itemInfo={itemInfo}/>
+        const wrapProps = {
+            key: index,
+            itemInfo,
+            card,
+            isCard: false
+         };
+        const possiblyWrappedListItem = isAlbum ? <WrapAlbum {...wrapProps}>
+                                                    {listItem}
+                                                    </WrapAlbum>
+                                                : <div key={index}>
+                                                    {listItem}
+                                                   </div>
+        return possiblyWrappedListItem;   
+    };
+
     return (
         <div className="list">
             <ul>
-                {
-                channelItems.map((item, index) => {
-                    const itemInfo = getItemInfo(item);
-                    if (shouldBeFiltered(itemInfo, filter)) return null;
-                    const isAlbum = itemInfo.type === 'album';
-                    const key = index;
-                    const props = {key, itemInfo}; 
-                    const card = <Card {...props}/>;
-                    const listItem = <ListItem {...props}/>
-                    props['card'] = card;
-                    props['isCard'] = false;
-                    const possiblyWrappedListItem = isAlbum ? <WrapAlbum {...props}>{listItem}</WrapAlbum>: listItem;
-                    return possiblyWrappedListItem;   
-                })
-                }
+                {channelItems.map(getDisplayChannelItem)}
             </ul>
         </div>
     );

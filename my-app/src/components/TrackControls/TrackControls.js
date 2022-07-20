@@ -16,7 +16,6 @@ const TrackControls = ({ isPlaying, currentPreviewURL }) => {
     const dispatch = useDispatch();
 
     const givenTrackLoadedIntoPlayer = (effect) => {
-        
         const isTrackLoadedIntoPlayer = !!currentPreviewURL;
         if (isTrackLoadedIntoPlayer) {
             effect();

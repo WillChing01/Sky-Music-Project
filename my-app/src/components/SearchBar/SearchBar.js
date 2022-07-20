@@ -1,6 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
 
-import FilterControlPanel from '../FilterControlPanel/FilterControlPanel';
 import './SearchBar.css'
 
 const SearchBar = () => {    
@@ -18,8 +17,8 @@ const SearchBar = () => {
     };
 
     return (    
-        <form className='border search-bar' id='form' onSubmit={handleSearch}>
-            <input className='m-auto' type='search' name='search-query' placeholder='Search...' autoComplete='off'  defaultValue={getInitialSearch()}/>
+        <form className='border search-bar' onSubmit={handleSearch}>
+            <input className='m-auto' type='search' name='search-query' placeholder='Search...' autoComplete='off' defaultValue={getInitialSearch()}/>
             <button type='submit' className='btn btn-sm btn-primary'><i className='bi bi-search'></i></button>
         </form>
     );

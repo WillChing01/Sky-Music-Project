@@ -1,0 +1,23 @@
+.img-div {
+    width: 20%;
+    aspect-ratio: 1;
+}
+
+.test-thing {
+    overflow: hidden;
+}
+
+.fixed-width {
+    white-space: nowrap;
+    transform: translateX(0);
+    transition: 1s linear;
+}
+
+.fixed-width:hover {
+    transform: translateX(calc(100px - 100%));
+}
+
+#player-icon {
+    max-width: 100%;
+    max-height: 100%;
+}

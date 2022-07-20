@@ -36,7 +36,6 @@ const PlayIcon = ({itemInfo}) => {
             imgSrc,
             isPlaying: newIsPlaying
         };
-
         dispatch(setPlayerInfo(newPlayingInfo));
     };
 

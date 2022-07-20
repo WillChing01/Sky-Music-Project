@@ -1,5 +1,8 @@
 /* bi-play-fill is coming from the play icon component */
 
+.card-view {
+    overflow: hidden;
+}
 
 .card-view img {
     object-fit: contain;
@@ -31,3 +34,19 @@
     float: right;
 }
 
+.scroll {
+    animation: scroll-animation 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    width: 100%;
+}
+
+@keyframes scroll-animation {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+  }

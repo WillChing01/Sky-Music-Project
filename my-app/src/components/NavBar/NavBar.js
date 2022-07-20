@@ -5,7 +5,7 @@ import ViewSelect from "../ViewSelect/ViewSelect";
 
 import './NavBar.css';
 
-const NavBar = ({searchParams, setSearchParams}) => {
+const NavBar = ({}) => {
     return (
         <div className='topscreen'>
             <Link className='nav-link' to='/'><i className="bi bi-house nav-icon border ms-2 me-2"></i></Link>

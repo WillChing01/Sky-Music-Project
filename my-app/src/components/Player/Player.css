@@ -12,11 +12,6 @@
     padding: 0% 1%;
 }
 
-#player-icon {
-    height: 80px;
-    width: auto;
-}
-
 .region {
     flex-grow: 1;
 }
@@ -36,6 +31,12 @@
     justify-content: center;
 }
 
+.test {
+    width: 25%;
+    display: flex;
+    align-items: center;
+}
+
 .no-bullets {
     list-style-type: none;
     padding-left: 1%;
@@ -44,6 +45,8 @@
     padding-right: 0px;
     margin: 0px;
     border: 0px;
+    width: 75%;
+    overflow: hidden;
 }
 
 .make-bold {

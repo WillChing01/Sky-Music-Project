@@ -47,7 +47,7 @@ const Player = () => {
     return (
         <div className='bottomscreen'>
             <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay preload='metadata'></audio>
-            <TrackInfoSnippet />
+            <div className='test'><TrackInfoSnippet /></div>
             <div className='center-position'>
                 <TrackControls 
                 currentPreviewURL={currentPreviewURL}

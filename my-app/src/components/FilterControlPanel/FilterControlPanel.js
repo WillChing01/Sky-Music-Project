@@ -40,7 +40,6 @@ const FilterControlPanel = () => {
                     <input type="checkbox" onClick={handleExplicit} id="explicit-checkbox" defaultChecked={showExplicit}/>
                 </label>   
             </div>
-            
         </details>
     );
 }

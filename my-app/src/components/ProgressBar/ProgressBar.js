@@ -69,7 +69,7 @@ const ProgressBar = () => {
     }
 
     const setSongPosition = (MouseEvent) => {
-        //get position of mouse.
+        //get position of mouse
         const progBackgrRect = getProgressBackgroundRect();
         const progBackgrWidth = getClientRectWidth(progBackgrRect); 
         
@@ -102,22 +102,22 @@ const ProgressBar = () => {
         .toggle('dragging-progress-bar');
     };
 
-    useEffect(() => {
-        const handleMouseUp = (e) => {
-            setIsDragging(false);
-            toggleTextSelect();
-            if (didPlayingChange) {
-                setDidPlayingChange(false);
-                dispatch(toggleIsPlaying());
-            }
-        };
+    const handleMouseUp = (e) => {
+        setIsDragging(false);
+        toggleTextSelect();
+        if (didPlayingChange) {
+            setDidPlayingChange(false);
+            dispatch(toggleIsPlaying());
+        }
+    };
 
-        const handleMouseMove = (e) => {
-            if (isDragging) {
-                setSongPosition(e);
-            }
-        };
-        
+    const handleMouseMove = (e) => {
+        if (isDragging) {
+            setSongPosition(e);
+        }
+    };
+
+    useEffect(() => {
         const updateMouseEventListeners = () => {
             if (isDragging) {
                 document.addEventListener('mousemove', handleMouseMove);
@@ -135,7 +135,7 @@ const ProgressBar = () => {
 
     useEffect(() => {
         const refreshBarInterval = setInterval(() => {
-            updateSongProgress()
+            updateSongProgress();
         }, refreshTimePeriod);
 
         return () => clearInterval(refreshBarInterval);

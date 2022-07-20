@@ -9,6 +9,7 @@ import './WrapAlbum.css'
 
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    // I dream of const {tracks, genres, features} = useFetch(fetchAlbumInfo);
     const [tracks, setTracks] = useState([]);
     const [genres, setGenres] = useState([]);
     const [features, setFeatures] = useState([]);
@@ -39,13 +40,13 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     };
 
     const getAlbumFeatures = async () => {
-        const featuresIdStr = itemInfo.features;
         const defaultFeatures = [];
-        if (featuresIdStr) {
+        const featuresIdStr = itemInfo.features;
+        const hasFeatures = !!featuresIdStr;
+        if (hasFeatures) {
             const featuredArtists = await fetchArtists(featuresIdStr);
             return featuredArtists;
-        } 
-        return defaultFeatures;
+        } else return defaultFeatures;
      };
 
 
@@ -96,7 +97,6 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const getFeaturesMessage = () => {
         const defaultFeaturesMsg = ''; 
         const featuresListStr = listFeaturedArtists();
-        console.log(featuresListStr)
         if (featuresListStr) {
             const featuresMsg = (
                                  <span>
@@ -143,13 +143,14 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const getIsAlbumInfoLoaded = () => {
         const isAlbumInfoLoaded = !!tracks.length; 
         return isAlbumInfoLoaded; 
-    }
+    };
 
     const getWrappedAlbumItemClassName = () => {
         const marginClass = isCard ? 'm-4': '';
         const cardOrListItem = isCard ? 'card': 'list-item';
         const cardOrListItemClass = `wrapped-album-${cardOrListItem}`;
-        const possibleAlbumLoadedClass = getIsAlbumInfoLoaded() ? 'loaded-album-info': '';
+        const possibleAlbumLoadedClass = getIsAlbumInfoLoaded() ? 'loaded-album-info'
+                                                                : '';
         const wrappedAlbumItemClassName = `${marginClass} ${cardOrListItemClass} ${possibleAlbumLoadedClass}`;
         return wrappedAlbumItemClassName;
     };

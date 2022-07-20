@@ -27,8 +27,8 @@ const ViewContainer = ({ data }) => {
         };
         const GridDisplay = <Grid {...props}/>;
         const ListDisplay = <List {...props}/>; 
-        const display = isGridView ? GridDisplay : ListDisplay;
-        
+        const display = isGridView ? GridDisplay 
+                                   : ListDisplay;
         return display;
     };
 
@@ -41,9 +41,8 @@ const ViewContainer = ({ data }) => {
         const display = getDisplay(channel); 
         const noDisplay = getNoDisplay(channel);
         const title = captilizeFirstLetter(channel.type);
-        const body = channel.items.length ? 
-                     display:
-                     noDisplay;
+        const body = channel.items.length ? display
+                                          : noDisplay;
         return (
             <>
                 <h1>{title}</h1>
@@ -62,7 +61,7 @@ const ViewContainer = ({ data }) => {
                         <div key={index}>
                             {channelDisplay}
                         </div>
-                    )
+                    );
                 }           
             })  
             }
