@@ -7,9 +7,9 @@ import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
 import './ProgressBar.css';
 
 
-// in milliseconds.
+// refreshTimePeriod in milliseconds.
 const refreshTimePeriod = 10;
-
+const tinyFraction = 0.0001;
 
 const ProgressBar = () => {
     //songDuration is length in seconds.
@@ -47,7 +47,7 @@ const ProgressBar = () => {
         if (pixelsIn < 0) {
             return 0;
         } else if (pixelsIn > barWidth) {
-            return 1;
+            return 1 - tinyFraction;
         } else {
             return pixelsIn / barWidth;
         }
@@ -95,15 +95,6 @@ const ProgressBar = () => {
         }
     };
 
-    const handleMouseUp = (e) => {
-        setIsDragging(false);
-        toggleTextSelect();
-        if (didPlayingChange) {
-            setDidPlayingChange(false);
-            dispatch(toggleIsPlaying());
-        }
-    };
-
     const toggleTextSelect = () => {
         document
         .getElementById('root')
@@ -111,34 +102,36 @@ const ProgressBar = () => {
         .toggle('dragging-progress-bar');
     };
 
-    const handleMouseMove = (e) => {
-        if (isDragging) {
-            setSongPosition(e);
-        }
-    };
-
-    const updateProgressBarWidth = () => {
-        const progressBar = getProgressBar();
-        const songProgressPercentage = songProgress * 100;
-        const songProgressPercentageStr = String(songProgressPercentage) + '%';
-        progressBar.style.width = songProgressPercentageStr;
-    };
-
-    const updateMouseEventListeners = () => {
-        if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
-        }
-        
-        return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-        };
-    };
-
     useEffect(() => {
+        const handleMouseUp = (e) => {
+            setIsDragging(false);
+            toggleTextSelect();
+            if (didPlayingChange) {
+                setDidPlayingChange(false);
+                dispatch(toggleIsPlaying());
+            }
+        };
+
+        const handleMouseMove = (e) => {
+            if (isDragging) {
+                setSongPosition(e);
+            }
+        };
+        
+        const updateMouseEventListeners = () => {
+            if (isDragging) {
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', handleMouseUp);
+            }
+            
+            return () => {
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+            };
+        };
+        
         return updateMouseEventListeners();
-    },[isDragging]);
+    }, [isDragging]);
 
     useEffect(() => {
         const refreshBarInterval = setInterval(() => {
@@ -149,6 +142,12 @@ const ProgressBar = () => {
     }, []);
 
     useEffect(() => {
+        const updateProgressBarWidth = () => {
+            const progressBar = getProgressBar();
+            const songProgressPercentage = songProgress * 100;
+            const songProgressPercentageStr = String(songProgressPercentage) + '%';
+            progressBar.style.width = songProgressPercentageStr;
+        };
         updateProgressBarWidth();
     }, [songProgress])
 
