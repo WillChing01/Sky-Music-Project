@@ -14,6 +14,7 @@ const TrackInfoSnippet = () => {
         imgSrc 
     } = useSelector((state) => state.playerInfo);
 
+    /* 
     const getTrackName = () => {
         const truncatedTrackName = truncateStr(name, charLimit, true);
         return truncatedTrackName;
@@ -23,6 +24,7 @@ const TrackInfoSnippet = () => {
         const truncatedArtistName = truncateStr(artistName, charLimit, true);
         return truncatedArtistName;
     };
+    */
 
     const getScrollBarWidth = () => {
         const scrollBar = document.getElementById('scrolling');
@@ -64,8 +66,16 @@ const TrackInfoSnippet = () => {
         <>
             <div className='img-div'><img id='player-icon' alt='' src={imgSrc}></img></div>
             <div className='info-div'>
-                <div id='scrolling' className='scroll-box'><span id='scroll-name' className='make-bold'>{name}</span></div>
-                <div className='scroll-box'><span id='scroll-artist'>{artistName}</span></div>
+                <div className='shadow-wrapper'>
+                    <div id='scrolling' className='scroll-box'>
+                        <span id='scroll-name' className='make-bold'>{name}</span>
+                    </div>
+                </div>
+                <div className='shadow-wrapper'>
+                    <div className='scroll-box'>
+                        <span id='scroll-artist'>{artistName}</span>
+                    </div>
+                </div>
             </div>
         </>
     );
