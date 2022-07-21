@@ -31,22 +31,10 @@
     justify-content: center;
 }
 
-.test {
-    width: 25%;
+.left-panel {
+    width: 20%;
     display: flex;
     align-items: center;
-}
-
-.no-bullets {
-    list-style-type: none;
-    padding-left: 1%;
-    padding-bottom: 0px;
-    padding-top: 0px;
-    padding-right: 0px;
-    margin: 0px;
-    border: 0px;
-    width: 75%;
-    overflow: hidden;
 }
 
 .make-bold {

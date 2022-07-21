@@ -1,21 +1,56 @@
+:root {
+    --scroll-bar-width: 0px;
+    --scroll-bar-speed: 1;
+}
+
 .img-div {
-    width: 20%;
+    width: 25%;
     aspect-ratio: 1;
 }
 
-.test-thing {
+.info-div {
+    width: 75%;
+    float: left;
+    padding: 0% 2%;
+    margin: 0% 2%;
+}
+
+.scroll-box {
+    display: flex;
+    align-items: center;
     overflow: hidden;
+    outline: 1px solid red;
 }
 
-.fixed-width {
+.scroll-box span {
+    align-items: center;
     white-space: nowrap;
+    display: inline-block;
     transform: translateX(0);
-    transition: 1s linear;
+    transition: 0s;
+    font-size: 75%;
 }
 
-.fixed-width:hover {
-    transform: translateX(calc(100px - 100%));
+.scroll-box:hover span {
+    transform: translateX(min(0,calc(var(--scroll-bar-width) - 100%)));
+    transition: 0.5s linear;
 }
+
+/* .scroll {
+    animation: scroll-animation 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes scroll-animation {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+} */
 
 #player-icon {
     max-width: 100%;

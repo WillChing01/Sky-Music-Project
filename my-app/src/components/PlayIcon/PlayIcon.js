@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlayerInfo } from '../../state/slices/playerInfoSlice';
 
@@ -13,11 +13,11 @@ const PlayIcon = ({itemInfo}) => {
     const {isPlaying, currentPreviewURL} = useSelector((state) => state.playerInfo);
     const dispatch = useDispatch();
 
-    const configureIcons = () => {
+    const configureIcons = useCallback(() => {
         const isCurrentTrack = itemInfo.previewURL === currentPreviewURL;
         if (isCurrentTrack && isPlaying) setIconClass(pauseIconClass)
         else setIconClass(playIconClass)
-    };   
+    }, [currentPreviewURL, isPlaying, itemInfo.previewURL]);   
 
     const getIconClassName = () => {
         const isPlaying = itemInfo.previewURL === currentPreviewURL;
@@ -41,7 +41,7 @@ const PlayIcon = ({itemInfo}) => {
 
     useEffect(() => {
         configureIcons();
-    }, [currentPreviewURL, isPlaying]);
+    }, [configureIcons]);
 
     return (
         <i className={getIconClassName()} onClick={handleClick}></i>

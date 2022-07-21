@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useKeyPress from '../../hooks/useKeyPress';
-import { setCurrentVolume, setCachedVolume, toggleIsMuted } from '../../state/slices/configPlayerSlice';
+import { setCurrentVolume, toggleIsMuted } from '../../state/slices/configPlayerSlice';
 import { setPlayerAudioVolume } from '../Player/Player';
 
 import './VolumeControl.css';
@@ -19,7 +19,7 @@ const VolumeControl = () => {
             dispatch(setCurrentVolume(cachedVolume));
             setPlayerAudioVolume(cachedVolume);
         } else {
-            dispatch(setCachedVolume(currentVolume));
+            dispatch();
             dispatch(setCurrentVolume(0));
             setPlayerAudioVolume(0);
         }
@@ -80,10 +80,14 @@ const VolumeControl = () => {
     
     useEffect(() => {
         setInitialPlayerAudioVolume();
-    }, []);
+    }, [currentVolume]);
     
 
-    useKeyPress(handleVolumeKeyPress);
+    useKeyPress(handleVolumeKeyPress, [
+        currentVolume,
+        cachedVolume,
+        isMuted
+    ]);
     
     const getVolumeIconClass = () => {
         const volumeIconClass = currentVolume === 0 ? 'bi bi-volume-mute icon'

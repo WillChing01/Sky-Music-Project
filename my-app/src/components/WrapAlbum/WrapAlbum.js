@@ -28,7 +28,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     
 
     const getAlbumTracks = async () => {
-        const { newData: albumTracks } = await fetchAlbumTracks(itemInfo.id, 1);
+        const { newData: albumTracks } = await fetchAlbumTracks(itemInfo.id);
         return albumTracks;
     };
 

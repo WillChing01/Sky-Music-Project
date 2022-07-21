@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
-import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import ViewContainer from '../ViewContainer/ViewContainer';
@@ -8,11 +7,20 @@ import ViewContainer from '../ViewContainer/ViewContainer';
 import './Home.css';
 
 
+
+
 function Home() {
   const [data, setData] = useState({});
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState({canRetry: false, message: ''});
   const [searchParams] = useSearchParams();
+  
+
+  
+  // const tracks = useFetch(args);
+  // const albums = useFetch(args);
+  // const artists = useFetch(args);
+  // setData({tracks, albums, artists});
 
   const handleDataFetch = () => {
     setData({});
@@ -40,7 +48,6 @@ function Home() {
                                                                         
   }, [searchParams]);
 
-
   return (
     <div className='space'>
       {isPending && 'Loading...'}
@@ -49,6 +56,5 @@ function Home() {
     </div>
   );
 }
-
 
 export default Home;

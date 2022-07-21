@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useKeyPress = (handleKeyPress) => {
+const useKeyPress = (handleKeyPress, deps) => {
     useEffect(() => {
         const subToKeyPress = () => {
             document.addEventListener('keydown', handleKeyPress);
@@ -9,9 +9,8 @@ const useKeyPress = (handleKeyPress) => {
             document.removeEventListener('keydown', handleKeyPress);
         };
         subToKeyPress();
-
         return unsubFromKeyPress;
-    }, [handleKeyPress]);
+    }, deps);
 };
 
 export default useKeyPress;

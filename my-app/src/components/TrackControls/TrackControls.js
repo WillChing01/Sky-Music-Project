@@ -109,7 +109,9 @@ const TrackControls = ({ isPlaying, currentPreviewURL }) => {
         }
      };
 
-     useKeyPress(handleTrackControlsKeyPress);
+     useKeyPress(handleTrackControlsKeyPress, [
+        currentPreviewURL
+     ]);
 
 
     const getShuffleIconClass = () => {

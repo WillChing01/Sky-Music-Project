@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { truncateStr } from '../../utility/format/formatStr';
 
@@ -6,7 +7,7 @@ import './TrackInfoSnippet.css';
 const charLimit = 20;
 
 const TrackInfoSnippet = () => {
-    const { 
+    const {
         name, 
         artistName, 
         imgSrc 
@@ -22,17 +23,30 @@ const TrackInfoSnippet = () => {
         return truncatedArtistName;
     };
 
+    const handleWindowResize = (e) => {
+        console.log('resizing!');
+        const root = document.documentElement;
+        const scrollBar = document.getElementById('scrolling');
+        root.style.setProperty('--scroll-bar-width', scrollBar.clientWidth+'px');
+    };
+
+    useEffect(() => {
+        //initial resize.
+        handleWindowResize();
+
+        //check for window resize.
+        window.addEventListener('resize', handleWindowResize);
+
+        return () => window.removeEventListener('resize', handleWindowResize);
+    }, []);
+
     return(
         <>
             <div className='img-div'><img id='player-icon' alt='' src={imgSrc}></img></div>
-            <ul className='no-bullets'>
-                <li>
-                    <div className='test-thing'><span className='make-bold fixed-width'>{getTrackName()}</span></div>
-                </li>
-                <li>
-                    <div className='test-thing'><span className='fixed-width'>{getArtistName()}</span></div>
-                </li>
-            </ul>
+            <div className='info-div'>
+                <div id='scrolling' className='scroll-box'><span className='make-bold'>asldfjwoeifjsldfkjsdofijwef</span></div>
+                <div className='scroll-box'><span>sdfjiwoeifnoweifnwefoisdioowiefjoweijf</span></div>
+            </div>
         </>
     );
 }

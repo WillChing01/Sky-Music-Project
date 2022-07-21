@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { shouldBeFiltered } from '../../utility/filterResults';
 import { getItemInfo } from '../../utility/parseMusicItem';
@@ -8,6 +9,8 @@ import WrapAlbum from '../WrapAlbum/WrapAlbum';
 import './Grid.css';
 
 const Grid = ({channelItems}) => {
+
+    // const {data, error, pendingMsg } = useFetch(args);
 
     const filter = useSelector((state) => state.filter);
 

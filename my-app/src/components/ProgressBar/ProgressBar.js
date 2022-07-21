@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getPlayerAudio, setPlayerAudioCurrentTime } from '../Player/Player';
 import { formatTime } from '../../utility/format/formatBarTime';
 import { useDispatch, useSelector } from 'react-redux';
@@ -102,20 +102,20 @@ const ProgressBar = () => {
         .toggle('dragging-progress-bar');
     };
 
-    const handleMouseUp = (e) => {
+    const handleMouseUp = useCallback((e) => {
         setIsDragging(false);
         toggleTextSelect();
         if (didPlayingChange) {
             setDidPlayingChange(false);
             dispatch(toggleIsPlaying());
         }
-    };
+    }, [didPlayingChange]);
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = useCallback((e) => {
         if (isDragging) {
             setSongPosition(e);
         }
-    };
+    }, [isDragging, songDuration]);
 
     useEffect(() => {
         const updateMouseEventListeners = () => {
@@ -123,7 +123,6 @@ const ProgressBar = () => {
                 document.addEventListener('mousemove', handleMouseMove);
                 document.addEventListener('mouseup', handleMouseUp);
             }
-            
             return () => {
                 document.removeEventListener('mousemove', handleMouseMove);
                 document.removeEventListener('mouseup', handleMouseUp);
@@ -149,7 +148,7 @@ const ProgressBar = () => {
             progressBar.style.width = songProgressPercentageStr;
         };
         updateProgressBarWidth();
-    }, [songProgress])
+    }, [songProgress]);
 
     const getStrSongProgress = () => {
         return String(songProgress);

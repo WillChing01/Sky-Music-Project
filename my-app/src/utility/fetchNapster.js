@@ -1,3 +1,35 @@
+const getQueryURL = (query, limit) => {
+  const limitParam = limit ? `&per_type_limit=${limit}` : '';
+  const queryURL = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`;
+  return queryURL;
+};
+
+export const getQueryFetchInfo = () => {
+  const queryKeys = ['search', 'data'];
+  const queryURL = getQueryFetchInfo();
+  return [queryURL, queryKeys];
+};
+
+const getChannelTopURL = (channel, limit) => {
+  const limitParam = limit ? `?limit=${limit}` : '';
+  const channelTopURL = `https://api.napster.com/v2.2/${channel}/top${limitParam}`;
+  return channelTopURL;
+};
+
+export const getChannelTopInfo = (channel) => {
+  const channelTopKeys = [channel];
+  const channelTopURL = getChannelTopURL();
+  return [channelTopURL, channelTopKeys];
+};
+
+
+/**
+ * Old file
+ *      |
+ *      |
+ *      v
+ */
+
 const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3' } };
 //const header = {headers: {apikey: ''}};
 
@@ -16,8 +48,12 @@ const getFetchErr = (err) => {
   return error;
 };
 
+export const getDataByKeys = (candidate, ...keys) => {
+  return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
+};
+
 const getNewData = (candidate, ...keys) => {
-  return keys.reduce((pre, cur) => pre[cur], candidate);
+  return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
 };
 
 const tryFetch = async (fetchUrl, ...keys) => {
@@ -33,7 +69,6 @@ const tryFetch = async (fetchUrl, ...keys) => {
   }
   return fetchInfo;
 };
-
 
 export const fetchQuery = async (query, limit) => {
   const limitParam = limit ? `&per_type_limit=${limit}` : '';
@@ -58,6 +93,9 @@ export const fetchTop = async (limit) => {
   const newData = {};
   const error = null;
   for (const channel of channels) {
+      // get channel url & keys
+      // { data, error, pendingMsg, fetchAttempsLeft } = useFetch(url, keys)
+      // 
       const { channelData, channelError } = await fetchChannelTop(channel, limit);
       if (channelError) return { newData: {}, error: channelError };
       newData[channel] = channelData;
@@ -66,9 +104,8 @@ export const fetchTop = async (limit) => {
 };
 
 
-export const fetchAlbumTracks = async (albumId, limit) => {
-  const limitParam = limit ? `?limit=${limit}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/albums/${albumId}/tracks${limitParam}`;
+export const fetchAlbumTracks = async (albumId) => {
+  const fetchUrl = `https://api.napster.com/v2.2/albums/${albumId}/tracks`;
   const fetchInfo = await tryFetch(fetchUrl, 'tracks');
   return fetchInfo;
 };
