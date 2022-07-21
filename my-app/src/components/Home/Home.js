@@ -1,58 +1,41 @@
 import { useState, useEffect } from 'react';
-import { fetchQuery, fetchTop } from '../../utility/fetchNapster';
+import { fetchQuery, fetchTop, getChannelTopInfo, getQueryFetchInfo } from '../../utility/fetchNapster';
 import { useSearchParams } from 'react-router-dom';
 
 import ViewContainer from '../ViewContainer/ViewContainer';
 
 import './Home.css';
+import useFetch from '../../hooks/useFetch';
+const limit = 3;
+const getFetchArgs = (query, channel) => {
+    const fetchArgs = query ? getQueryFetchInfo(query, channel, limit)
+                            : getChannelTopInfo(channel, limit);
+    return fetchArgs;
+};
 
-
-
-
-function Home() {
-  const [data, setData] = useState({});
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState({canRetry: false, message: ''});
+const Home = () => {
   const [searchParams] = useSearchParams();
-  
 
+  const query = searchParams.get('query');
   
-  // const tracks = useFetch(args);
-  // const albums = useFetch(args);
-  // const artists = useFetch(args);
-  // setData({tracks, albums, artists});
+  const tracksFetchArgs = getFetchArgs(query, 'tracks');
+  const albumsFetchArgs = getFetchArgs(query, 'albums');
+  const artistsFetchArgs = getFetchArgs(query, 'artists');
 
-  const handleDataFetch = () => {
-    setData({});
-    const updateData = async () => {
-      const query = searchParams.get('query');
-      setIsPending(true);
-      const { newData, error } = query ? 
-                      await fetchQuery(query, 1):
-                      await fetchTop(3);
-      if (error) setError(error);
-      else setData(newData);
-      setIsPending(false);
-    };
-    updateData();  
+  const deps = [searchParams]
+  const tracks = useFetch(...tracksFetchArgs, deps);
+  const albums = useFetch(...albumsFetchArgs, deps);
+  const artists = useFetch(...artistsFetchArgs, deps);
+
+  const data = {
+    tracks, 
+    albums, 
+    artists
   };
-
-  useEffect(() => {
-    const threshold = 5;
-    // const count = error.count || 0
-    let errorCount = 0;
-    do {
-      handleDataFetch();
-      if (!error) break;
-    } while (errorCount++ < threshold && error.canRetry)
-                                                                        
-  }, [searchParams]);
 
   return (
     <div className='space'>
-      {isPending && 'Loading...'}
-      {!isPending && error && <span>{error.message}</span>}
-      {!!Object.keys(data).length && <ViewContainer data={data} />}
+      {data && <ViewContainer data={data} />}
     </div>
   );
 }

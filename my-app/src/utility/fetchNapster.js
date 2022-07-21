@@ -1,12 +1,17 @@
-const getQueryURL = (query, limit) => {
+import { makeSingular } from "./format/formatStr";
+
+/**
+ * channel = {track, album, artist}
+ */
+const getQueryURL = (query, channel, limit) => {
   const limitParam = limit ? `&per_type_limit=${limit}` : '';
-  const queryURL = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`;
+  const queryURL = `https://api.napster.com/v2.2/search/verbose?type=${makeSingular(channel)}&query=${query}${limitParam}`;
   return queryURL;
 };
 
-export const getQueryFetchInfo = () => {
-  const queryKeys = ['search', 'data'];
-  const queryURL = getQueryFetchInfo();
+export const getQueryFetchInfo = (query, channel, limit) => {
+  const queryKeys = ['search', 'data', channel];
+  const queryURL = getQueryURL(query, channel, limit);
   return [queryURL, queryKeys];
 };
 
@@ -16,12 +21,19 @@ const getChannelTopURL = (channel, limit) => {
   return channelTopURL;
 };
 
-export const getChannelTopInfo = (channel) => {
+/**
+ * channel = {tracks, albums, artists}
+ */
+export const getChannelTopInfo = (channel, limit) => {
   const channelTopKeys = [channel];
-  const channelTopURL = getChannelTopURL();
+  const channelTopURL = getChannelTopURL(channel, limit);
   return [channelTopURL, channelTopKeys];
 };
 
+
+export const getDataByKeys = (candidate, keys) => {
+  return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
+};
 
 /**
  * Old file
@@ -48,9 +60,6 @@ const getFetchErr = (err) => {
   return error;
 };
 
-export const getDataByKeys = (candidate, ...keys) => {
-  return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
-};
 
 const getNewData = (candidate, ...keys) => {
   return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);

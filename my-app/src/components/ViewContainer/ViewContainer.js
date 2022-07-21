@@ -12,8 +12,6 @@ const ViewContainer = ({ data }) => {
 
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
-      
-      // data[type] = {tracksData, }
         {
         type,
         open: channelsOpen[type],
@@ -43,12 +41,15 @@ const ViewContainer = ({ data }) => {
         const display = getDisplay(channel); 
         const noDisplay = getNoDisplay(channel);
         const title = captilizeFirstLetter(channel.type);
-        const body = channel.items.length ? 
-                     display:
-                     noDisplay;
+        let body;
+        if (channel.pendingMsg) body = <p>{channel.pendingMsg}</p>;
+        else if (channel.error.status) body = <p>{channel.error.userMsg}</p>
+        else body = channel.items.length ? display : noDisplay;
+
         return (
             <>
                 <h1>{title}</h1>
+                    {}
                     {body}
             </>
         );

@@ -44,6 +44,19 @@ const Player = () => {
         togglePlayAudio();
     }, [isPlaying]);
 
+    /*
+    const handleSongEnded = () => {
+        return;
+    }
+    
+    useEffect(() => {
+        const playerAudio = getPlayerAudio();
+        playerAudio.addEventListener('ended',handleSongEnded);
+
+        return () => playerAudio.removeEventListener('ended',handleSongEnded);
+    }, []);
+    */
+
     return (
         <div className='bottomscreen'>
             <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay preload='metadata'></audio>

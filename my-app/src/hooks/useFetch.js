@@ -2,52 +2,61 @@ import { useEffect, useReducer } from "react";
 import { getDataByKeys } from "../utility/fetchNapster";
 
 const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3' } };
+// const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViNU3' } };
 
 const initialState =  {
-    data: {},
+    items: [],
     error: {
       statusCode: null,
       statusText: '',
-      userMessage: ''
+      userMsg: ''
     },
     pendingMsg: '',
     fetchAttemptsLeft: 5
 };
 
+const DATA_LOADING = 'DATA_LOADING';
+const NEEDS_RETRY = 'NEEDS_RETRY';
+const ABOUT_TO_RETRY = 'ABOUT_TO_RETRY';
+const DATA_RETRIEVED = 'DATA_RETRIEVED';
+const ERROR = 'ERROR';
+const INITIALISE = 'INITIALISE';
+
 const dataReducer = (state, action) => {
     switch (action.type) {
-        case 'DATA_LOADING':
+        case DATA_LOADING:
             return {
             ...initialState, 
             pendingMsg: 'Loading...'
             };
-        case 'NEEDS_RETRY':
+        case NEEDS_RETRY:
             return {
                 ...initialState,
                 fetchAttemptsLeft: state.fetchAttemptsLeft - 1
             };
-        case 'ABOUT_TO_RETRY':
+        case ABOUT_TO_RETRY:
             return {
             ...initialState, 
+            fetchAttemptsLeft: state.fetchAttemptsLeft,
             pendingMsg: `Fetch failed. ${state.fetchAttemptsLeft} tries left. Retrying in ${action.payload} seconds...`
             };
-        case 'DATA_RETRIEVED':
+        case DATA_RETRIEVED:
             return {
             ...initialState, 
-            data: action.payload
+            items: action.payload
             }
-        case 'ERROR':
+        case ERROR:
             return {
             ...initialState,
             error: action.payload
             };
-        case 'INITIALISE':
+        case INITIALISE:
             return initialState;
     }
 };
 
 
-const getUserErrMessage = () => {
+const getUserErrMessage = (err) => {
     if (err.status >= 500) {
           return 'We couldn\'t connect to the server.';
     } else if (err.status === 404) {
@@ -58,16 +67,17 @@ const getUserErrMessage = () => {
 };
 
 
-const useFetch = (url, keys) => {
+const useFetch = (url, keys, deps = []) => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
 
     const createAboutToRetry = (resolve, countdown) => {
+        console.log("countdown", countdown)
         if (countdown === 0) {
             resolve();
         } else {
             dispatch({
-                type: 'ABOUT_TO_RETRY', 
-                payload: countdown
+                type: ABOUT_TO_RETRY, 
+                payload: countdown/1000
             });
             countdown -= 1000;
         }
@@ -77,27 +87,30 @@ const useFetch = (url, keys) => {
     const waitForRetry = (delay) => {
         return new Promise((resolve) => {
             let countdown = delay;
-            countdown = createAboutToRetry(resolve, countdown);
+            // countdown = createAboutToRetry(resolve, countdown);
             setInterval(() => {
-               countdown = createAboutToRetry(resolve, countdown);
+            //    countdown = createAboutToRetry(resolve, countdown);
+                countdown -= 1000
+                console.log(countdown)
             }, 1000);
         });
     };
 
     const dispatchErr = (err) => {
         dispatch({
-            type: 'ERROR',
+            type: ERROR,
             payload: {
             statusCode: err.status,
             statusText: err.statusText,
-            userMessage: getUserErrMessage(err)
+            userMsg: getUserErrMessage(err)
             }
         });
     };
 
     const fetchRetry = async (delay, tries)  => {
         const handleFetchError = (err) => {
-           if (err.status >= 500) handleRetry(err);
+            // change this ---v
+           if (err.status >= 400) handleRetry(err);
            else dispatchErr(err);
         };
 
@@ -107,19 +120,21 @@ const useFetch = (url, keys) => {
               dispatchErr(err); 
             } else {
                 dispatch({
-                    type: 'NEEDS_RETRY'
+                    type: NEEDS_RETRY
                 });
                 waitForRetry(delay)
-                .then(() => fetchRetry(url, delay, triesLeft, header));
+                .then(() => fetchRetry(url, delay, triesLeft, header))
             }
         };
-
+        dispatch({
+            type: DATA_LOADING
+        });
         const res = await fetch(url, header)
         if (res.ok) {
             const jRes = await res.json();
             const data = getDataByKeys(jRes, keys);
             dispatch({
-                type: 'DATA_RETREIVED',
+                type: DATA_RETRIEVED,
                 payload: data
             });
         } else {
@@ -130,11 +145,10 @@ const useFetch = (url, keys) => {
     useEffect(() => {
         fetchRetry(5000, 5);
 
-        return () => dispatch({type: 'INITIALISE'});
-    }, [])
+        return () => dispatch({type: INITIALISE});
+    }, deps)
 
     return state;
-
 }
 
 export default useFetch;      

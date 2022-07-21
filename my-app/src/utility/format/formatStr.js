@@ -4,7 +4,7 @@ export const truncateStr = (str, charLimit, shouldAddEllipsis) => {
         const truncatedStr = str.slice(0, charLimit);
         const truncatedStrPossiblyWithEllipsis = shouldAddEllipsis ?
                                                  truncatedStr + '...':
-                                                 truncateStr;
+                                                 truncatedStr;
         return truncatedStrPossiblyWithEllipsis;
     }
 };
@@ -14,5 +14,9 @@ export const captilizeFirstLetter = (str) => {
     const remainingStr = str.slice(1);
     const titleCase = firstLetter.toUpperCase() + remainingStr;
     return titleCase;
+};
+
+export const makeSingular = (str) => {
+    return truncateStr(str, str.length - 1, false);
 };
 

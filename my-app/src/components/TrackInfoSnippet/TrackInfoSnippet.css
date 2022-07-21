@@ -1,6 +1,5 @@
 :root {
     --scroll-bar-width: 0px;
-    --scroll-bar-speed: 1;
 }
 
 .img-div {
@@ -15,42 +14,41 @@
     margin: 0% 2%;
 }
 
+.shadow-wrapper {
+    position: relative;
+}
+
 .scroll-box {
     display: flex;
     align-items: center;
     overflow: hidden;
-    outline: 1px solid red;
+}
+
+.scroll-box:after {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right:0;
+    width: 20%;
+    content: '';
+    background: linear-gradient(to left,
+    rgba(255,255,255,0.8) 20%,
+    rgba(255,255,255,0) 80%);
+    z-index: 100;
 }
 
 .scroll-box span {
     align-items: center;
     white-space: nowrap;
     display: inline-block;
+    transition: 1s linear;
     transform: translateX(0);
-    transition: 0s;
     font-size: 75%;
 }
 
 .scroll-box:hover span {
-    transform: translateX(min(0,calc(var(--scroll-bar-width) - 100%)));
-    transition: 0.5s linear;
+    transform: translateX(min(0px, calc(var(--scroll-bar-width) - 100%)));
 }
-
-/* .scroll {
-    animation: scroll-animation 30s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-
-@keyframes scroll-animation {
-    0% {
-        transform: translateX(100%);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
-} */
 
 #player-icon {
     max-width: 100%;
