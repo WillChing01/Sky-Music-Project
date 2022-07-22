@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { fetchQuery, fetchTop, getChannelTopInfo, getQueryFetchInfo } from '../../utility/fetchNapster';
+import { getChannelTopInfo, getQueryFetchInfo } from '../../utility/fetchNapster';
 import { useSearchParams } from 'react-router-dom';
 
 import ViewContainer from '../ViewContainer/ViewContainer';

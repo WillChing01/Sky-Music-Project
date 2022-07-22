@@ -1,8 +1,11 @@
+import { listArrOfStrsAsStr } from "./format/formatArr";
 import { makeSingular } from "./format/formatStr";
+
+
 
 /**
  * channel = {track, album, artist}
- */
+*/
 const getQueryURL = (query, channel, limit) => {
   const limitParam = limit ? `&per_type_limit=${limit}` : '';
   const queryURL = `https://api.napster.com/v2.2/search/verbose?type=${makeSingular(channel)}&query=${query}${limitParam}`;
@@ -35,6 +38,40 @@ export const getDataByKeys = (candidate, keys) => {
   return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
 };
 
+
+const getGenresURL = (genresIds) => {
+  const idsStr = listArrOfStrsAsStr(genresIds, ',');
+  const idsPath = idsStr && `/${idsStr}`;
+  const genresURL = `https://api.napster.com/v2.2/genres${idsPath}`;
+  return genresURL;
+}
+
+export const getGenresInfo = (genresIds) => {
+  const genresKeys = ['genres'];
+  const genresURL = getGenresURL(genresIds);
+  return [genresURL, genresKeys];
+}
+
+// export const fetchAlbumTracks = async (albumId) => {
+//   const fetchURL = `https://api.napster.com/v2.2/albums/${albumId}/tracks`;
+//   const fetchInfo = await tryFetch(fetchURL, 'tracks');
+//   return fetchInfo; 
+// };
+
+const getAlbumTracksURL = (albumId) => {
+  const albumTracksURL = `https://api.napster.com/v2.2/albums/${albumId}/tracks`;
+  return albumTracksURL;
+}
+
+
+export const getAlbumTracksInfo = (albumId) => {
+  const albumTracksKeys = ['tracks'];
+  const albumTracksURL = getAlbumTracksURL(albumId);
+  return [albumTracksURL, albumTracksKeys];
+};
+
+
+
 /**
  * Old file
  *      |
@@ -65,8 +102,8 @@ const getNewData = (candidate, ...keys) => {
   return keys.reduce((currentObj, nextKey) => currentObj[nextKey], candidate);
 };
 
-const tryFetch = async (fetchUrl, ...keys) => {
-  const res = await fetch(fetchUrl, header);
+const tryFetch = async (fetchURL, ...keys) => {
+  const res = await fetch(fetchURL, header);
   const fetchInfo = {};
   if (!res.ok) {
     fetchInfo['newData'] = {};
@@ -81,15 +118,15 @@ const tryFetch = async (fetchUrl, ...keys) => {
 
 export const fetchQuery = async (query, limit) => {
   const limitParam = limit ? `&per_type_limit=${limit}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`;
-  const fetchInfo = await tryFetch(fetchUrl, 'search', 'data');
+  const fetchURL = `https://api.napster.com/v2.2/search/verbose?query=${query}${limitParam}`;
+  const fetchInfo = await tryFetch(fetchURL, 'search', 'data');
   return fetchInfo;
 };
 
 const fetchChannelTop = async (channel, limit) => {
   const limitParam = limit ? `?limit=${limit}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/${channel}/top${limitParam}`;
-  const fetchInfo = await tryFetch(fetchUrl, channel);
+  const fetchURL = `https://api.napster.com/v2.2/${channel}/top${limitParam}`;
+  const fetchInfo = await tryFetch(fetchURL, channel);
   const channelData = fetchInfo['newData'];
   const channelError = fetchInfo['error'];
   const channelInfo = {channelData , channelError};
@@ -102,8 +139,8 @@ export const fetchTop = async (limit) => {
   const newData = {};
   const error = null;
   for (const channel of channels) {
-      // get channel url & keys
-      // { data, error, pendingMsg, fetchAttempsLeft } = useFetch(url, keys)
+      // get channel URL & keys
+      // { data, error, pendingMsg, fetchAttempsLeft } = useFetch(URL, keys)
       // 
       const { channelData, channelError } = await fetchChannelTop(channel, limit);
       if (channelError) return { newData: {}, error: channelError };
@@ -112,24 +149,4 @@ export const fetchTop = async (limit) => {
   return { newData, error };
 };
 
-
-export const fetchAlbumTracks = async (albumId) => {
-  const fetchUrl = `https://api.napster.com/v2.2/albums/${albumId}/tracks`;
-  const fetchInfo = await tryFetch(fetchUrl, 'tracks');
-  return fetchInfo;
-};
-
-export const fetchGenre = async (idsStr='') => {
-  const idsPath = idsStr ? `/${idsStr}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/genres${idsPath}`;
-  const fetchInfo = await tryFetch(fetchUrl, 'genres');
-  return fetchInfo;
-};
-
-export const fetchArtists = async (idsStr='') => {
-  const idsPath = idsStr ? `/${idsStr}` : '';
-  const fetchUrl = `https://api.napster.com/v2.2/artists${idsPath}`;
-  const fetchInfo = await tryFetch(fetchUrl, 'artists');
-  return fetchInfo;
-};
 
