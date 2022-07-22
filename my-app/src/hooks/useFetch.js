@@ -11,18 +11,15 @@ const initialState =  {
       statusText: '',
       userMsg: ''
     },
-    pendingMsg: '',
-    fetchAttemptsLeft: 5
+    pendingMsg: ''
 };
 
 
-
 const getDelay = (attempts) => {
-    return 2 ** attempts;
-}
+    return Math.floor((2 ** attempts)) * 1000;
+};
 
 const DATA_LOADING = 'DATA_LOADING';
-const NEEDS_RETRY = 'NEEDS_RETRY';
 const ABOUT_TO_RETRY = 'ABOUT_TO_RETRY';
 const DATA_RETRIEVED = 'DATA_RETRIEVED';
 const ERROR = 'ERROR';
@@ -32,20 +29,13 @@ const dataReducer = (state, action) => {
     switch (action.type) {
         case DATA_LOADING:
             return {
-                ...initialState,
-                fetchAttemptsLeft: state.fetchAttemptsLeft, // Only needed in strict mode
+                ...initialState, 
                 pendingMsg: 'Loading...'
-            };
-        case NEEDS_RETRY:
-            return {
-                ...initialState,
-                fetchAttemptsLeft: action.payload // state.fetchAttemptsLeft - 1
             };
         case ABOUT_TO_RETRY:
             return {
                 ...initialState, 
-                fetchAttemptsLeft: state.fetchAttemptsLeft,
-                pendingMsg: `Fetch failed. ${state.fetchAttemptsLeft} tries left. Retrying in ${action.payload} seconds...`
+                pendingMsg: `Fetch failed. ${action.payload.triesLeft} tries left. Retrying in ${action.payload.secsToRetry} seconds...`
             };
         case DATA_RETRIEVED:
             return {
@@ -76,18 +66,21 @@ const getUserErrMessage = (err) => {
 };
 
 
-const useFetch = (url, keys, deps = []) => {
+const useFetch = (url, keys, deps = [], totalFetchAttempts = 5) => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
     let isCancelled = false;
 
     const dispatchIfNotCancelled = (action) => {
-        if(!isCancelled) dispatch(action);
+        if (!isCancelled) dispatch(action);
     };
 
-    const dispatchAboutToRetry = (countdown) => {
+    const dispatchAboutToRetry = (triesLeft, countdown) => {
         dispatchIfNotCancelled({
             type: ABOUT_TO_RETRY, 
-            payload: countdown / 1000
+            payload: {
+                triesLeft,
+                secsToRetry: countdown / 1000
+            }
         });
     };
 
@@ -109,30 +102,24 @@ const useFetch = (url, keys, deps = []) => {
         });
     };
 
-    const dispatchNeedsRetry = (triesLeft) => {
-        dispatchIfNotCancelled({
-            type: NEEDS_RETRY,
-            payload: triesLeft
-        });
-    };
 
-    const waitForRetry = (delay) => {
+    const waitForRetry = (triesLeft, delay) => {
         return new Promise((resolve) => {
             let countdown = delay;
-            dispatchAboutToRetry(countdown);
+            dispatchAboutToRetry(triesLeft, countdown);
             const id = setInterval(() => {
                 countdown -= 1000;
                 if (countdown === 0) {
                     clearInterval(id);
                     resolve();
                 }
-               dispatchAboutToRetry(countdown);
+               dispatchAboutToRetry(triesLeft, countdown);
             }, 1000);
             
         });
     };
 
-    const fetchRetry = async (delay, tries)  => {
+    const fetchRetry = async (tries)  => {
         const handleFetchError = (err) => {
            if (err.status >= 500) handleRetry(err);
            else dispatchErr(err);
@@ -140,14 +127,16 @@ const useFetch = (url, keys, deps = []) => {
 
         const handleRetry = (err) => {
             const triesLeft = tries - 1;
+            const attempts = totalFetchAttempts - triesLeft;
+            const delay = getDelay(attempts);
             if (triesLeft === 0) {
                 dispatchErr(err); 
             } else {
-                dispatchNeedsRetry(triesLeft);
-                waitForRetry(delay)
-                .then(() => fetchRetry(delay, triesLeft))
+                waitForRetry(triesLeft, delay)
+                .then(() => fetchRetry(triesLeft))
             }
         };
+
         dispatch({
             type: DATA_LOADING
         });
@@ -163,14 +152,19 @@ const useFetch = (url, keys, deps = []) => {
 
     useEffect(() => { 
         /*
-         * isCancelled is set back to false here due to the non standard behaviour of
-         * using react in strict mode. Specifically (inferred from log statements), 
-         * the first render in strict mode causes two useEffects to run one after another. 
-         * Furthermore, the first useEffect's clean up function is run, setting isCancelled 
-         * to true for the second useEffect, causing the second to believe it has been cancelled.
+         * The following is inferred from log statements: 
+         * Suppose you are in React strict mode. Then, after useFetch has retured, and we have
+         * rendered for the first time:
+         * - the useEffect fires
+         * - the clean up function for this useEffect fires
+         * - isCancelled is set to true; and
+         * - the useEffect fires _again_ 
+         * This second useEffect still reads vars native to the first render. So 
+         * without setting isCancelled = false in the useEffect, fetchRetry would see 
+         * isCancelled = true, and fail to make its dispatches. 
          */
         isCancelled = false;
-        fetchRetry(5000, 5);
+        fetchRetry(totalFetchAttempts);
         return () => {
             isCancelled = true;
             dispatch({type: INITIALISE});

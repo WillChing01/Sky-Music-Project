@@ -9,11 +9,25 @@ import List from '../List/List'
 import './WrapAlbum.css'
 import explicitIcon from '../../svg/explicit.svg';
 
+const getIsFetchResolved = (fetchResult) => {
+    const hasItems = !!fetchResult.items.length;
+    const hasError = !!fetchResult.error.statusCode;
+    return hasItems || hasError;
+};
+
+const getAreFetchesResolved = (...fetchResults) => {
+    for (const fetchResult of fetchResults) {
+        const isFetchResolved = getIsFetchResolved(fetchResult);
+        if (!isFetchResolved) return false;
+    }
+    return true;
+};
+
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const tracks = useFetch(...getAlbumTracksInfo(itemInfo.id), []);
-    const genres = useFetch(...getGenresInfo(itemInfo.genres), []);
+    const tracks = useFetch(...getAlbumTracksInfo(itemInfo.id), [], 2);
+    const genres = useFetch(...getGenresInfo(itemInfo.genres), [], 2);
 
     const listAlbumGenres = () => {
         const genreNames = genres.items.map(genre => genre.name);
@@ -42,7 +56,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
         if (itemInfo.isExplicit) { 
             const explicitMsg = (
                 <span>
-                &nbsp; The album has been rated <strong>explicit</strong> {explicitIcon}.
+                    &nbsp; The album has been rated <strong>explicit</strong> <img className='explicit-icon' src={explicitIcon} alt='explicit-icon'/>.
                 </span>
             );
             return explicitMsg;
@@ -50,7 +64,6 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     };
 
     const getGenresMessage = () => {
-        const defaultGenresMsg = '';
         const genresListStr = listAlbumGenres();
         if (genresListStr) {
             const genresMsg = (
@@ -59,7 +72,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
                 </span>
             ); 
             return genresMsg;
-        } else return defaultGenresMsg;
+        } else return genresListStr;
     };
 
 
@@ -80,8 +93,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     };
 
     const getIsAlbumInfoLoaded = () => {
-        const isAlbumInfoLoaded = !!tracks.items.length; 
-        return isAlbumInfoLoaded; 
+        return getAreFetchesResolved(tracks, genres); 
     };
 
     const getWrappedAlbumItemClassName = () => {

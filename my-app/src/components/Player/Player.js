@@ -39,9 +39,10 @@ const Player = () => {
             const playerAudio = getPlayerAudio();
             if (isPlaying) playerAudio.play();
             else playerAudio.pause();
-        };
-    
+        };    
+        
         togglePlayAudio();
+
     }, [isPlaying]);
 
     /*
@@ -60,11 +61,13 @@ const Player = () => {
     return (
         <div className='bottomscreen'>
             <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay preload='metadata'></audio>
-            <div className='left-panel'><TrackInfoSnippet /></div>
+            <div className='left-panel'>
+                <TrackInfoSnippet />
+            </div>
             <div className='center-position'>
                 <TrackControls 
-                currentPreviewURL={currentPreviewURL}
-                isPlaying={isPlaying}
+                    currentPreviewURL={currentPreviewURL}
+                    isPlaying={isPlaying}
                 />
                 <ProgressBar />
             </div>
