@@ -43,7 +43,7 @@ const ViewContainer = ({ data }) => {
         const title = captilizeFirstLetter(channel.type);
         let body;
         if (channel.pendingMsg) body = <p>{channel.pendingMsg}</p>;
-        else if (channel.error.status) body = <p>{channel.error.userMsg}</p>
+        else if (channel.error.statusCode) body = <p>{channel.error.userMsg}</p>
         else body = channel.items.length ? display : noDisplay;
 
         return (

@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react";
 import { getDataByKeys } from "../utility/fetchNapster";
 
-const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3' } };
-// const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViNU3' } };
+const _header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3' } };
+const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViNU3' } };
 
 const initialState =  {
     items: [],
@@ -26,32 +26,35 @@ const dataReducer = (state, action) => {
     switch (action.type) {
         case DATA_LOADING:
             return {
-            ...initialState, 
-            pendingMsg: 'Loading...'
+                ...initialState,
+                fetchAttemptsLeft: state.fetchAttemptsLeft, // Only needed in strict mode
+                pendingMsg: 'Loading...'
             };
         case NEEDS_RETRY:
             return {
                 ...initialState,
-                fetchAttemptsLeft: state.fetchAttemptsLeft - 1
+                fetchAttemptsLeft: action.payload // state.fetchAttemptsLeft - 1
             };
         case ABOUT_TO_RETRY:
             return {
-            ...initialState, 
-            fetchAttemptsLeft: state.fetchAttemptsLeft,
-            pendingMsg: `Fetch failed. ${state.fetchAttemptsLeft} tries left. Retrying in ${action.payload} seconds...`
+                ...initialState, 
+                fetchAttemptsLeft: state.fetchAttemptsLeft,
+                pendingMsg: `Fetch failed. ${state.fetchAttemptsLeft} tries left. Retrying in ${action.payload} seconds...`
             };
         case DATA_RETRIEVED:
             return {
-            ...initialState, 
-            items: action.payload
+                ...initialState, 
+                items: action.payload
             }
         case ERROR:
             return {
-            ...initialState,
-            error: action.payload
+                ...initialState,
+                error: action.payload
             };
         case INITIALISE:
             return initialState;
+        default:
+            return state;
     }
 };
 
@@ -70,14 +73,14 @@ const getUserErrMessage = (err) => {
 const useFetch = (url, keys, deps = []) => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
 
-    const createAboutToRetry = (resolve, countdown) => {
-        console.log("countdown", countdown)
+    const createAboutToRetry = (resolve, countdown, id) => {
         if (countdown === 0) {
+            clearInterval(id);
             resolve();
         } else {
             dispatch({
                 type: ABOUT_TO_RETRY, 
-                payload: countdown/1000
+                payload: countdown / 1000
             });
             countdown -= 1000;
         }
@@ -87,11 +90,9 @@ const useFetch = (url, keys, deps = []) => {
     const waitForRetry = (delay) => {
         return new Promise((resolve) => {
             let countdown = delay;
-            // countdown = createAboutToRetry(resolve, countdown);
-            setInterval(() => {
-            //    countdown = createAboutToRetry(resolve, countdown);
-                countdown -= 1000
-                console.log(countdown)
+            countdown = createAboutToRetry(resolve, countdown);
+            let id = setInterval(() => {
+                countdown = createAboutToRetry(resolve, countdown, id);
             }, 1000);
         });
     };
@@ -100,9 +101,9 @@ const useFetch = (url, keys, deps = []) => {
         dispatch({
             type: ERROR,
             payload: {
-            statusCode: err.status,
-            statusText: err.statusText,
-            userMsg: getUserErrMessage(err)
+                statusCode: err.status,
+                statusText: err.statusText,
+                userMsg: getUserErrMessage(err)
             }
         });
     };
@@ -117,13 +118,14 @@ const useFetch = (url, keys, deps = []) => {
         const handleRetry = (err) => {
             const triesLeft = tries - 1;
             if (triesLeft === 0) {
-              dispatchErr(err); 
+                dispatchErr(err); 
             } else {
                 dispatch({
-                    type: NEEDS_RETRY
+                    type: NEEDS_RETRY,
+                    payload: triesLeft
                 });
                 waitForRetry(delay)
-                .then(() => fetchRetry(url, delay, triesLeft, header))
+                .then(() => fetchRetry(delay, triesLeft, header))
             }
         };
         dispatch({
