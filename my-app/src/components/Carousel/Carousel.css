@@ -1,0 +1,40 @@
+.hide-content {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.scrolling-text {
+    animation: carousel 20s linear infinite;
+}
+
+.left-side {
+    position: absolute;
+    float: left;
+}
+
+.right-side {
+    float: right;
+    transform: translateX(100%);
+} 
+
+.overflow .scrolling-text {
+    width: fit-content;
+}
+
+.overflow .right-side {
+    margin-left: 3em;
+}
+
+@keyframes carousel {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}

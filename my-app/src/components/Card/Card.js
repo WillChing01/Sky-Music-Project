@@ -1,3 +1,4 @@
+import Carousel from '../Carousel/Carousel';
 import PlayIcon from '../PlayIcon/PlayIcon';
 import ScrollText from '../ScrollText/ScrollText';
 
@@ -8,6 +9,7 @@ const Card = ({ itemInfo }) => {
     return (
         <div className='py-2 px-4 border rounded card-view'>
             <h5 className='elem'>{itemInfo.name}</h5>
+            {/* <Carousel text={itemInfo.name} /> */}
             <img src={itemInfo.imgSrc} alt={itemInfo.name}></img>
             <div className='mt-2'>
                 <h6>{itemInfo.artist}</h6>

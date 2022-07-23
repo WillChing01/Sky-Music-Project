@@ -2,6 +2,7 @@
 
 .card-view {
     overflow: hidden;
+    width: 30em;
 }
 
 .card-view img {

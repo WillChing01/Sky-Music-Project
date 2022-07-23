@@ -19,7 +19,6 @@ const VolumeControl = () => {
             dispatch(setCurrentVolume(cachedVolume));
             setPlayerAudioVolume(cachedVolume);
         } else {
-            dispatch();
             dispatch(setCurrentVolume(0));
             setPlayerAudioVolume(0);
         }
