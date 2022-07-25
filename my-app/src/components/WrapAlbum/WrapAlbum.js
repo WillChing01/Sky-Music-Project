@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useFetch from '../../hooks/useFetch';
-import { getAlbumTracksInfo, getGenresInfo } from '../../utility/fetchNapster' 
+import { getAlbumTracksInfo, getAreFetchesResolved, getGenresInfo } from '../../utility/fetchNapster' 
 import { listArrOfStrsAsStr } from '../../utility/format/formatArr';
 import { getPlaylistInfo } from '../../utility/parseMusicItem';
 import { useDispatch } from 'react-redux';
@@ -12,19 +12,7 @@ import List from '../List/List'
 import './WrapAlbum.css'
 import explicitIcon from '../../svg/explicit.svg';
 
-const getIsFetchResolved = (fetchResult) => {
-    const hasItems = !!fetchResult.items.length;
-    const hasError = !!fetchResult.error.statusCode;
-    return hasItems || hasError;
-};
 
-const getAreFetchesResolved = (...fetchResults) => {
-    for (const fetchResult of fetchResults) {
-        const isFetchResolved = getIsFetchResolved(fetchResult);
-        if (!isFetchResolved) return false;
-    }
-    return true;
-};
 
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);

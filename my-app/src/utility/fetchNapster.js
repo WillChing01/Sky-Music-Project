@@ -59,3 +59,18 @@ export const getAlbumTracksInfo = (albumId) => {
   const albumTracksURL = getAlbumTracksURL(albumId);
   return [albumTracksURL, albumTracksKeys];
 };
+
+
+export const getIsFetchResolved = (fetchResult) => {
+  const hasItems = !!fetchResult.items.length;
+  const hasError = !!fetchResult.error.statusCode;
+  return hasItems || hasError;
+};
+
+export const getAreFetchesResolved = (...fetchResults) => {
+  for (const fetchResult of fetchResults) {
+      const isFetchResolved = getIsFetchResolved(fetchResult);
+      if (!isFetchResolved) return false;
+  }
+  return true;
+};

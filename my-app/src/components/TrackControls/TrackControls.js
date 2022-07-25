@@ -10,7 +10,7 @@ import './TrackControls.css';
 const tinyTimeIncrement = 0.0001;
 const skipIncrement = 5;
 
-const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, setNextTrack, setPreviousTrack }) => {
+const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPreviousTrack }) => {
 
     const { isShuffle, shouldLoop } = useSelector((state) => state.configPlayer);
     const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, set
     const handlePreviousTrack = () => {
         const effect = () => {
             //setPlayerAudioCurrentTime(0);
-            handleTrackSelection(setPreviousTrack);
+            setPreviousTrack();
         };
 
         givenTrackLoadedIntoPlayer(effect);
@@ -54,7 +54,7 @@ const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, set
             // const trackDuration = playerAudio.duration;
             // const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
             // setPlayerAudioCurrentTime(newPlayerAudioTime);  
-            handleTrackSelection(setNextTrack)
+            setNextTrack();
         };
 
         givenTrackLoadedIntoPlayer(effect);
