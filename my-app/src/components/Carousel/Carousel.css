@@ -1,9 +1,9 @@
-.hide-content {
+.overflow-box {
     overflow: hidden;
     white-space: nowrap;
 }
 
-.scrolling-text {
+.scrolling-box {
     animation: carousel 20s linear infinite;
 }
 
@@ -17,7 +17,7 @@
     transform: translateX(100%);
 } 
 
-.overflow .scrolling-text {
+.overflow .scrolling-box {
     width: fit-content;
 }
 
