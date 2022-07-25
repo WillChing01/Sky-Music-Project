@@ -1,0 +1,36 @@
+.flip-side {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.wrapped-side {
+    position: relative;
+}
+
+/* the bottom/right specs are arbitrary;
+    they work for the artist card
+*/
+
+.wrapped-side .bi-arrow-left-right {
+    position: absolute;
+    bottom: 1em;
+    right: 1.2rem;
+    font-size: 0.8rem;
+    display: none;
+    cursor: pointer;
+}
+
+.wrapped-side:hover .bi-arrow-left-right {
+    display: block;
+}
+
+.wrapped-side .bi-arrow-left-right:hover {
+    font-size: 1rem;
+    bottom: 0.7rem;
+} 
