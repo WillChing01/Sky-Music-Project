@@ -1,3 +1,4 @@
+
 import Carousel from '../Carousel/Carousel';
 import PlayIcon from '../PlayIcon/PlayIcon';
 import ScrollText from '../ScrollText/ScrollText';

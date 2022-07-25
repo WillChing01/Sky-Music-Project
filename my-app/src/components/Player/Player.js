@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPlayerInfo } from '../../state/slices/playerInfoSlice';
 
 import ProgressBar from '../ProgressBar/ProgressBar';
 import TrackControls from '../TrackControls/TrackControls';
@@ -31,8 +32,13 @@ export const setPlayerAudioLoop = (newShouldLoop) => {
 const Player = () => {
     const {
         currentPreviewURL,
-        isPlaying
+        isPlaying,
+        playlist
     } = useSelector((state) => state.playerInfo);
+
+    const isShuffle = useSelector((state) => state.configPlayer.isShuffle)
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const togglePlayAudio = () => {
@@ -45,22 +51,49 @@ const Player = () => {
 
     }, [isPlaying]);
 
-    /*
-    const handleSongEnded = () => {
-        return;
+    const setNthTrackFromCurrent = (n) => {
+        // Get index of current track
+        let currentIndex;
+        for(const [i, info] of playlist.entries()) {
+            if(info.currentPreviewURL == currentPreviewURL) {
+                currentIndex = i;
+                break;
+            }
+        }
+        const shuffleOffset = isShuffle ? n : 0;
+        // If track was not found (e.g., the user clicked an album that the current song isn't in) play song at shuffleOffset
+        const offset = currentIndex !== undefined ? (currentIndex + n) % playlist.length : shuffleOffset;
+        const nextTrack = playlist[offset];
+        dispatch(setPlayerInfo(nextTrack))
     }
-    
-    useEffect(() => {
-        const playerAudio = getPlayerAudio();
-        playerAudio.addEventListener('ended',handleSongEnded);
 
-        return () => playerAudio.removeEventListener('ended',handleSongEnded);
-    }, []);
-    */
+    const setShuffleTrack = () => {
+        const randomOffset = Math.floor(Math.random() * playlist.length);
+        setNthTrackFromCurrent(randomOffset);
+    }
+
+    const setNextTrack = () => {
+        setNthTrackFromCurrent(1);
+    }
+
+    const setPreviousTrack = () => {
+        const previousIndexDistance = playlist.length - 1;
+        setNthTrackFromCurrent(previousIndexDistance);
+    }
+
+    const resartPlayer = () => {
+        setPlayerAudioCurrentTime(0);
+    }
+
+    const handleTrackSelection = (selector, ...args) => {
+        resartPlayer();
+        if (isShuffle) setShuffleTrack();
+        else selector(...args);
+    }
 
     return (
         <div className='bottomscreen'>
-            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay preload='metadata'></audio>
+            <audio id='player-audio' src={currentPreviewURL} type='audio/mp3' autoPlay onEnded={() => handleTrackSelection(setNextTrack)} preload='metadata'></audio>
             <div className='left-panel'>
                 <TrackInfoSnippet />
             </div>
@@ -68,6 +101,9 @@ const Player = () => {
                 <TrackControls 
                     currentPreviewURL={currentPreviewURL}
                     isPlaying={isPlaying}
+                    handleTrackSelection={handleTrackSelection}
+                    setNextTrack={setNextTrack}
+                    setPreviousTrack={setPreviousTrack}
                 />
                 <ProgressBar />
             </div>

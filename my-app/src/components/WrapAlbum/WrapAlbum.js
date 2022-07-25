@@ -2,6 +2,9 @@ import { useState } from 'react'
 import useFetch from '../../hooks/useFetch';
 import { getAlbumTracksInfo, getGenresInfo } from '../../utility/fetchNapster' 
 import { listArrOfStrsAsStr } from '../../utility/format/formatArr';
+import { getPlaylistInfo } from '../../utility/parseMusicItem';
+import { useDispatch } from 'react-redux';
+import { setPlaylist, revertPlaylist } from '../../state/slices/playerInfoSlice';
 
 import Dialog from '../Dialog/Dialog';
 import List from '../List/List'
@@ -25,6 +28,8 @@ const getAreFetchesResolved = (...fetchResults) => {
 
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const dispatch = useDispatch();
 
     const tracks = useFetch(...getAlbumTracksInfo(itemInfo.id), [], 2);
     const genres = useFetch(...getGenresInfo(itemInfo.genres), [], 2);
@@ -115,12 +120,17 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
+        dispatch(revertPlaylist());
     };
     
      
     const handleClick = async () => {
         const isAlbumInfoLoaded = getIsAlbumInfoLoaded(); 
-        if (isAlbumInfoLoaded) setIsDialogOpen(true);
+        if (isAlbumInfoLoaded) {
+            setIsDialogOpen(true);
+            const playlistInfo = getPlaylistInfo(tracks.items);
+            dispatch(setPlaylist(playlistInfo));
+        }
     };
 
 

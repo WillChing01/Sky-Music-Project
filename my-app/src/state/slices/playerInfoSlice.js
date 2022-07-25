@@ -5,7 +5,9 @@ const initialState = {
     name: '', 
     artistName: '', 
     imgSrc: '', 
-    isPlaying: false
+    isPlaying: false,
+    playlist: [],
+    cachedPlaylist: []
 };
 
 export const playerInfoSlice = createSlice({
@@ -17,9 +19,17 @@ export const playerInfoSlice = createSlice({
         },
         toggleIsPlaying: (state) => {
             state.isPlaying = !state.isPlaying;
+        },
+        setPlaylist: (state, { payload }) => {
+            state.cachedPlaylist = state.playlist;
+            state.playlist = payload;
+        },
+        revertPlaylist: (state) => {
+            state.playlist = state.cachedPlaylist;
+            state.cachedPlaylist = [];
         }
     }
 });
 
-export const { setPlayerInfo, toggleIsPlaying } = playerInfoSlice.actions;
+export const { setPlayerInfo, toggleIsPlaying, setPlaylist, revertPlaylist} = playerInfoSlice.actions;
 export default playerInfoSlice.reducer;

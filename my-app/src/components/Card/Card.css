@@ -2,7 +2,7 @@
 
 .card-view {
     overflow: hidden;
-    width: 30em;
+    width: 25em;
 }
 
 .card-view img {
@@ -35,19 +35,11 @@
     float: right;
 }
 
-.scroll {
-    animation: scroll-animation 30s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    width: 100%;
+.dialog .card-view {
+    width: 35em;
 }
 
-@keyframes scroll-animation {
-    0% {
-        transform: translateX(100%);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
+.card-title {
+    font-size: 1.2em;
+    font-weight: bold;
 }

@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { captilizeFirstLetter } from '../../utility/format/formatStr';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPlaylistInfo } from '../../utility/parseMusicItem';
+import { setPlaylist } from '../../state/slices/playerInfoSlice';
 
 import List from '../List/List';
 import Grid from '../Grid/Grid';
@@ -9,6 +12,7 @@ import './ViewContainer.css';
 const ViewContainer = ({ data }) => {
     const channelsOpen = useSelector((state) => state.filter.channelsOpen);
     const view = useSelector((state) => state.view.value);
+    const dispatch = useDispatch();
 
     const channelTypes = ['tracks', 'albums', 'artists'];
     const channels = channelTypes.map(type => (
@@ -19,6 +23,11 @@ const ViewContainer = ({ data }) => {
       }  
       )
     ); 
+
+    useEffect(() => {
+        const playlist = getPlaylistInfo(channels[0].items);
+        dispatch(setPlaylist(playlist))
+    }, [data]);
 
     const getDisplay = (channel) => {
         const isGridView = view === 'grid';
