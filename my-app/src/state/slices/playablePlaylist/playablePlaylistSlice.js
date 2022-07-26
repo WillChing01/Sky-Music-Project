@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {createPlaylist} from './playlistMutators';
 import reducers from './playablePlaylistReducers';
 
+const initialPlaylist = createPlaylist();
+
 const initialState = {
-    currentPlaylist: {},
-    isShuffle: false,
-    playlistStack: []
+    currentPlaylist: initialPlaylist,
+    playlistStack: [initialPlaylist]
 };
 
 export const playablePlaylist = createSlice({
@@ -19,7 +21,8 @@ export const {
     setTrack,
     nextTrack,
     previousTrack,
-    toggleShuffle
+    shuffle,
+    unshuffle
 } = playablePlaylist.actions;
 
 export default playablePlaylist.reducer;

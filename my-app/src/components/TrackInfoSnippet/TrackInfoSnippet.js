@@ -5,6 +5,7 @@ import ScrollText from '../ScrollText/ScrollText';
 import Carousel from '../Carousel/Carousel';
 
 import './TrackInfoSnippet.css';
+import { getPlaylistTrack } from '../../state/slices/playablePlaylist/playlistMutators';
 
 const scrollSpeed = 0.5;
 
@@ -13,7 +14,10 @@ const TrackInfoSnippet = () => {
         name,
         artistName,
         imgSrc
-    } = useSelector((state) => state.playablePlaylist.currentPlaylist.getCurrentTrack());
+    } = useSelector((state) => {
+        const playlist = state.playablePlaylist.currentPlaylist;
+        return getPlaylistTrack(playlist);
+    });
 
     return(
         <>

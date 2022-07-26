@@ -74,7 +74,9 @@ const ViewContainer = ({ data }) => {
                             {channelDisplay}
                         </div>
                     )
-                }           
+                } else {
+                    return null;
+                }         
             })  
             }
         </div>

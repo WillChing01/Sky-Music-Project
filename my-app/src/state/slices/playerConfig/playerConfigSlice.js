@@ -8,7 +8,7 @@ const initialState = {
     cachedVolume: initialVolume,
     isMuted: false,
     shouldLoop: false,
-    isShuffle: false,
+    //isShuffle: false,
     isPlaying: false
 };
 
@@ -24,6 +24,7 @@ export const {
     setCachedVolume, 
     toggleIsMuted, 
     toggleShouldLoop, 
+    //toggleIsShuffle,
     setIsPlaying,
     toggleIsPlaying
 } = playerConfigSlice.actions;

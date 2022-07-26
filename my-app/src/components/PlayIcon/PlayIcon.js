@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTrack } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
+import { getPlaylistTrack } from '../../state/slices/playablePlaylist/playlistMutators';
 import { setIsPlaying } from '../../state/slices/playerConfig/playerConfigSlice';
 
 import "./PlayIcon.css";
@@ -13,7 +14,11 @@ const PlayIcon = ({itemInfo}) => {
 
     //const {isPlaying, currentPreviewURL} = useSelector((state) => state.playerInfo);
     const isPlaying = useSelector((state) => state.playerConfig.isPlaying)
-    const { currentPreviewURL } = useSelector((state) => state.currentPlaylist.getCurrentTrack());
+    const { currentPreviewURL } = useSelector((state) => {
+        const playlist = state.playablePlaylist.currentPlaylist;
+        return getPlaylistTrack(playlist);
+    });
+    
     const dispatch = useDispatch();
 
     const configureIcons = useCallback(() => {

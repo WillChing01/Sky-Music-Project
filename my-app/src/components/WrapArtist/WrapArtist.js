@@ -24,7 +24,7 @@ const WrapArtist = ({children, itemInfo}) => {
                                 front={children}
                                 back={<ArtistSnippet name={name} bio={getArtistBio()}/>}
                                 />
-                            : {children}
+                            : children
             }
         </div>
     );

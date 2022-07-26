@@ -8,6 +8,7 @@ import VolumeControl from '../VolumeControl/VolumeControl';
 import TrackInfoSnippet from '../TrackInfoSnippet/TrackInfoSnippet';
 
 import './Player.css';
+import { getPlaylistTrack } from '../../state/slices/playablePlaylist/playlistMutators';
 
 export const getPlayerAudio = () => {
     const playerAudio = document.getElementById('player-audio');
@@ -30,8 +31,11 @@ export const setPlayerAudioLoop = (newShouldLoop) => {
 };
 
 const Player = () => {
-    const isPlaying = useSelector((state) => state.playerInfo);
-    const { currentPreviewURL } = useSelector((state) => state.playablePlaylist.currentPlaylist.getCurrentTrack());
+    const isPlaying = useSelector((state) => state.playerConfig.isPlaying);
+    const { currentPreviewURL } = useSelector((state) => {
+        const playlist = state.playablePlaylist.currentPlaylist;
+        return getPlaylistTrack(playlist);
+    });
 
     const dispatch = useDispatch();
 
@@ -39,7 +43,7 @@ const Player = () => {
         const playerAudio = getPlayerAudio();
         if (isPlaying) playerAudio.play();
         else playerAudio.pause();
-    }, [isPlaying]);
+    }, [isPlaying, currentPreviewURL]);
 
     useEffect(() => {
         togglePlayAudio();
