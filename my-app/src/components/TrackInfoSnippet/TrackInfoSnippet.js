@@ -13,7 +13,7 @@ const TrackInfoSnippet = () => {
         name,
         artistName,
         imgSrc
-    } = useSelector((state) => state.playerInfo);
+    } = useSelector((state) => state.playablePlaylist.currentPlaylist.getCurrentTrack());
 
     return(
         <>

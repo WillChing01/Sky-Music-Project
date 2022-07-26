@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import playerInfoReducer from "./slices/playerInfoSlice";
+import playablePlaylistReducer from './slices/playablePlaylist/playablePlaylistSlice';
+import playerConfigReducer from './slices/playerConfig/playerConfigSlice';
 import filterReducer from './slices/filterSlice';
 import viewReducer from './slices/viewSlice';
-import configPlayerReducer from './slices/configPlayerSlice';
 
 export const store = configureStore({
   reducer: {
-    playerInfo: playerInfoReducer,
+    playablePlaylist: playablePlaylistReducer,
+    playerConfig: playerConfigReducer,
     filter: filterReducer,
-    view: viewReducer,
-    configPlayer: configPlayerReducer
+    view: viewReducer
   },
 });

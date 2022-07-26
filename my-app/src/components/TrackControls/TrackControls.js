@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleIsShuffle, toggleShouldLoop } from '../../state/slices/configPlayerSlice';
-import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
+import { toggleIsPlaying, toggleIsShuffle, toggleShouldLoop }  from '../../state/slices/playerConfig/playerConfigSlice';
 import { setPlayerAudioLoop, setPlayerAudioCurrentTime, getPlayerAudio } from '../Player/Player';
 
 import useKeyPress from '../../hooks/useKeyPress';
@@ -12,7 +11,7 @@ const skipIncrement = 5;
 
 const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPreviousTrack }) => {
 
-    const { isShuffle, shouldLoop } = useSelector((state) => state.configPlayer);
+    const { isShuffle, shouldLoop } = useSelector((state) => state.playerConfig);
     const dispatch = useDispatch();
 
     const givenTrackLoadedIntoPlayer = (effect) => {
@@ -24,6 +23,7 @@ const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPrevious
 
     const handleToggleShuffleTracks = () => {
         dispatch(toggleIsShuffle());
+        dispatch()
     };
 
     const handleToggleLoopTrack = () => {

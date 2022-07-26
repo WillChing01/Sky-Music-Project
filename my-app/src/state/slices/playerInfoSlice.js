@@ -7,7 +7,7 @@ const initialState = {
     artistName: '', 
     imgSrc: '', 
     isPlaying: false,
-    currentPlaylist,
+    currentPlaylist: {},
     playlistStack: [],
 };
 
@@ -60,6 +60,25 @@ playlistStack = {, }
 
 
 */
+
+// if on playlist && played a track:
+// -if shuffle is on:
+// backwards, go through history;
+// forwards, use the reorder the whole playlist cycle-after-cycle model;
+
+// -if shuffle is off:
+// backwards, you go to album track n - 1 from track n;
+// forwards, you go to album track n + 1 from track n + 1;
+
+// if you just play a track (not from a real playlist):
+// if shuffle is on:
+// backwards, go through that playlists history
+// forwards,  use the reorder the whole track list cycle-after-cylce model;
+
+// if shuffle is off:
+// backwards, go through histoy
+// forwards, go through the view
+// 
 
 /*
 Rule: If I press the play icon for a track, then press forwards or backwards, I look for 

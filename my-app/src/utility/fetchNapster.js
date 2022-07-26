@@ -22,6 +22,20 @@ const getChannelTopURL = (channel, limit) => {
   return channelTopURL;
 };
 
+const getArtistsURL = (artistIds) => {
+  const idsStr = listArrOfStrsAsStr(artistIds, ',');
+  const idsPath = idsStr && `/${idsStr}`;
+  const artistsURL = `https://api.napster.com/v2.2/artists${idsPath}`;
+  return artistsURL;
+};
+
+export const getArtistsInfo = (artistIds) => {
+  const artistsKeys = ['artists'];
+  const artistsURL = getArtistsURL(artistIds);
+  return [artistsURL, artistsKeys];
+};
+
+
 /**
  * channel = {tracks, albums, artists}
  */
@@ -40,18 +54,18 @@ const getGenresURL = (genresIds) => {
   const idsPath = idsStr && `/${idsStr}`;
   const genresURL = `https://api.napster.com/v2.2/genres${idsPath}`;
   return genresURL;
-}
+};
 
 export const getGenresInfo = (genresIds) => {
   const genresKeys = ['genres'];
   const genresURL = getGenresURL(genresIds);
   return [genresURL, genresKeys];
-}
+};
 
 const getAlbumTracksURL = (albumId) => {
   const albumTracksURL = `https://api.napster.com/v2.2/albums/${albumId}/tracks`;
   return albumTracksURL;
-}
+};
 
 
 export const getAlbumTracksInfo = (albumId) => {

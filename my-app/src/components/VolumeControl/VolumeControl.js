@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useKeyPress from '../../hooks/useKeyPress';
-import { setCurrentVolume, toggleIsMuted } from '../../state/slices/configPlayerSlice';
+import { setCurrentVolume, toggleIsMuted } from '../../state/slices/playerConfig/playerConfigSlice';
 import { setPlayerAudioVolume } from '../Player/Player';
 
 import './VolumeControl.css';
@@ -11,7 +11,7 @@ const volumeIncrement = 0.05;
 
 
 const VolumeControl = () => {
-    const {currentVolume, cachedVolume, isMuted } = useSelector((state) => state.configPlayer);
+    const {currentVolume, cachedVolume, isMuted } = useSelector((state) => state.playerConfig);
     const dispatch = useDispatch();
 
     const handleClickVolumeIcon = () => {

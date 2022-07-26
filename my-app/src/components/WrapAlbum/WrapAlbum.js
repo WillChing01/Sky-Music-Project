@@ -4,7 +4,7 @@ import { getAlbumTracksInfo, getAreFetchesResolved, getGenresInfo } from '../../
 import { listArrOfStrsAsStr } from '../../utility/format/formatArr';
 import { getPlaylistInfo } from '../../utility/parseMusicItem';
 import { useDispatch } from 'react-redux';
-import { setPlaylist, revertPlaylist } from '../../state/slices/playerInfoSlice';
+import { pushPlaylist, popPlaylist } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
 
 import Dialog from '../Dialog/Dialog';
 import List from '../List/List'
@@ -108,7 +108,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
-        dispatch(revertPlaylist());
+        dispatch(popPlaylist());
     };
     
      
@@ -117,10 +117,9 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
         if (isAlbumInfoLoaded) {
             setIsDialogOpen(true);
             const playlistInfo = getPlaylistInfo(tracks.items);
-            dispatch(setPlaylist(playlistInfo));
+            dispatch(pushPlaylist(playlistInfo));
         }
     };
-
 
     return (
         <div className='wrapped-album'>

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getPlayerAudio, setPlayerAudioCurrentTime } from '../Player/Player';
 import { formatTime } from '../../utility/format/formatBarTime';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
+import { toggleIsPlaying } from '../../state/slices/playerConfig/playerConfigSlice';
 
 import './ProgressBar.css';
 
@@ -19,7 +19,7 @@ const ProgressBar = () => {
     const [isDragging, setIsDragging] = useState(false);
     const [didPlayingChange, setDidPlayingChange] = useState(false);
 
-    const isPlaying = useSelector((state) => state.playerInfo.isPlaying);
+    const isPlaying = useSelector((state) => state.playerConfig.isPlaying);
     const dispatch = useDispatch();
 
     const updateSongProgress = () => {
