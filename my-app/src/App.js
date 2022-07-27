@@ -8,13 +8,12 @@ import Player from './components/Player/Player';
 
 import './App.css';
 
-
 const App = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     
     return (
-        <div className='page'>
+        <div className='page dark-mode'>
             <NavBar searchParams={searchParams} setSearchParams={setSearchParams}/>
             <Routes>
                 <Route path='/' element={<Home searchParams={searchParams} />} />

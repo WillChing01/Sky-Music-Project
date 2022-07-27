@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from './state/store';
+import { AuthContextProvider } from './context/authContext'; 
 
 import App from './App';
 
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <Router>
       <Provider store={store}>
-        <App />        
+        <AuthContextProvider>
+          <App />        
+        </AuthContextProvider>
       </Provider>
     </Router>
   </React.StrictMode>

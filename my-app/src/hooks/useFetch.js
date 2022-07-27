@@ -1,9 +1,6 @@
 import { useEffect, useReducer } from "react";
 import { getDataByKeys } from "../utility/fetchNapster";
 
-const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViN2U3' } };
-// const header = { headers: { apikey: 'NzQ2YmQ5NmUtODM2MS00ZDg2LTg4NzMtZGE0ZDExZmViNU3' } };
-
 const initialState =  {
     items: [],
     error: {
@@ -66,7 +63,7 @@ const getUserErrMessage = (err) => {
 };
 
 
-const useFetch = (url, keys, deps = [], totalFetchAttempts = 5) => {
+const useFetch = (url, keys, deps = [], fetchOptions = {}, totalFetchAttempts = 5) => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
     let isCancelled = false;
 
@@ -140,7 +137,7 @@ const useFetch = (url, keys, deps = [], totalFetchAttempts = 5) => {
         dispatch({
             type: DATA_LOADING
         });
-        const res = await fetch(url, header)
+        const res = await fetch(url, fetchOptions);
         if (res.ok) {
             const jRes = await res.json();
             const data = getDataByKeys(jRes, keys);

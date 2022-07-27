@@ -8,9 +8,8 @@ const SignUp = () => {
                 <h1>Sign Up</h1>
                 <div className='form-group'>
                     <label htmlFor='signup-username'>Username</label>
-                    <input type="email" className="form-control" id="signup-username" placeholder="Enter username"/>
+                    <input type="text" className="form-control" id="signup-username" placeholder="Enter username"/>
                 </div>
-                
                 <div className="form-group">
                     <label htmlFor="signup-password">Password</label>
                     <input type="password" className="form-control" id="signup-password" placeholder="Enter password"/>

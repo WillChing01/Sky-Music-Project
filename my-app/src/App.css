@@ -1,7 +1,3 @@
 .page {
   padding-top: max(7vh, 3em); /* Ofset for NavBar */
 }
-
-.dark :not(img) {
-  filter: invert(100%);
-}

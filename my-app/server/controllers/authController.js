@@ -9,12 +9,10 @@ const login = async (req, res) => {
         res.status(200).json({username, token});
     } catch (err) {
         res.status(400).json({
-            status: 400,
-            statusText: 'Failed to log in user.',
-            userMsg: err.message
+            error: err.message
         });
     }
-}
+};
 
 const signup = async (req, res) => {
         const { username, password } = req.body;
@@ -24,12 +22,10 @@ const signup = async (req, res) => {
             res.status(200).json({username, token});
         } catch (err) {
             res.status(400).json({
-                status: 400,
-                statusText: 'Failed to sign up user.',
-                userMsg: err.message
+                error: err.message
             });
         }
-}
+};
 
 
 

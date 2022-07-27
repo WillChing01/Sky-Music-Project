@@ -11,9 +11,9 @@ const Profile = () => {
         <div>
             <FavouritesIcon track={{data: 'hello'}} id={1}/>
             <Routes>
-                <Route path='login' element={<LogIn />} />
-                <Route path='signup' element={<SignUp />} />
-                <Route path='id' element={<p>profile</p>} />
+                <Route path='/login' element={<LogIn />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/:id' element={<p>profile</p>} />
             </Routes>
         </div>
     );
