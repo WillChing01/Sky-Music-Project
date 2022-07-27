@@ -88,3 +88,15 @@ export const getAreFetchesResolved = (...fetchResults) => {
   }
   return true;
 };
+
+export const getTracksInfo = (tracksIds) => {
+  const tracksKey = ['tracks'];
+  const tracksURL = getTracksURL(tracksIds);
+  return [tracksURL, tracksKey];
+};
+
+const getTracksURL = (tracksIds) => {
+  const trackIdList = listArrOfStrsAsStr(tracksIds, ',');;
+  const tracksURL = `https://api.napster.com/v2.2/tracks/${trackIdList}`;
+  return tracksURL;
+};

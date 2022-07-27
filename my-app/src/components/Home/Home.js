@@ -6,7 +6,7 @@ import ViewContainer from '../ViewContainer/ViewContainer';
 import './Home.css';
 import useFetch from '../../hooks/useFetch';
 
-const limit = 3;
+const limit = 20;
 const getFetchArgs = (query, channel) => {
     const fetchArgs = query ? getQueryFetchInfo(query, channel, limit)
                             : getChannelTopInfo(channel, limit);
@@ -37,9 +37,20 @@ const Home = () => {
     artists
   };
 
+  const getTrendingTitle = () => {
+    if (!query) {
+      return (
+        <div className='home-center border'>
+            <h1 className='indent'>Trending</h1>
+        </div>
+      );
+    } else return null;
+  }
+
   return (
     <div className='space'>
-      {data && <ViewContainer data={data} />}
+      { getTrendingTitle() }
+      { data && <ViewContainer data={data} /> }
     </div>
   );
 }

@@ -14,6 +14,7 @@ import { current } from '@reduxjs/toolkit';
  * When tracks load
  */
 const pushPlaylist = (state, { payload }) => {
+    console.log("stack", current(state.playlistStack))
     const newPlaylist = createPlaylist(payload);
     state.playlistStack.push(newPlaylist);
 };
@@ -22,6 +23,7 @@ const pushPlaylist = (state, { payload }) => {
  * When playlist is no longer in scope
  */
 const popPlaylist = (state) => {
+    console.log("stack", current(state.playlistStack))
     state.playlistStack.pop();
 };
 
@@ -55,7 +57,6 @@ const nextTrack = (state) => {
  * When previous track is clicked
  */
 const previousTrack = (state) => {
-    console.log(current(state))
     setPlaylistPreviousTrack(state.currentPlaylist)
 }
 

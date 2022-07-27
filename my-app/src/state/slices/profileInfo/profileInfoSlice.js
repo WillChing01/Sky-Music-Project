@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import reducers from './profileInfoReducers';
 
 const initialState = {
-    isLoggedIn: false,
-    favourites: [],
-    playlists: []
+    isLoggedIn: true,
+    favourites: []
 };
 
 export const profileInfoSlice = createSlice({
@@ -13,5 +12,5 @@ export const profileInfoSlice = createSlice({
     reducers
 });
 
-export const { toggleIsLoggedIn } = profileInfoSlice.actions;
+export const { toggleIsLoggedIn, toggleFavouriteTrack } = profileInfoSlice.actions;
 export default profileInfoSlice.reducer;

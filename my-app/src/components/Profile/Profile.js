@@ -1,18 +1,18 @@
 import { Route, Routes } from 'react-router-dom';
 
-import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
-
+import FavouritesList from '../FavouritesList/FavouritesList';
 import LogIn from '../ProfileForms/LogIn/LogIn';
 import SignUp from '../ProfileForms/SignUp/SignUp';
 
 
 const Profile = () => {
+
     return (
         <div>
             <Routes>
                 <Route path='/login' element={<LogIn />} />
                 <Route path='/signup' element={<SignUp />} />
-                <Route path='/:id' element={<p>profile</p>} />
+                <Route path='/favourites' element={<FavouritesList />} />
             </Routes>
         </div>
     );
