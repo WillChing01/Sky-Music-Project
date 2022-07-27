@@ -18,7 +18,7 @@ const App = () => {
             <NavBar searchParams={searchParams} setSearchParams={setSearchParams}/>
             <Routes>
                 <Route path='/' element={<Home searchParams={searchParams} />} />
-                <Route path='/profile' element={<Profile />} />
+                <Route path='/profile/*' element={<Profile />} />
             </Routes>
             <Player />
         </div>

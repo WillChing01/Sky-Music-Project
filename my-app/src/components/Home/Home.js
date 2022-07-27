@@ -5,7 +5,7 @@ import ViewContainer from '../ViewContainer/ViewContainer';
 
 import './Home.css';
 import useFetch from '../../hooks/useFetch';
-const limit = 20;
+const limit = 3;
 const getFetchArgs = (query, channel) => {
     const fetchArgs = query ? getQueryFetchInfo(query, channel, limit)
                             : getChannelTopInfo(channel, limit);

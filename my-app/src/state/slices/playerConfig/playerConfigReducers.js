@@ -1,4 +1,4 @@
-import { current } from '@reduxjs/toolkit'
+import { current } from '@reduxjs/toolkit';
 
 const setPlayerConfig =  (state, { payload }) => {
     return {...current(state), ...payload};
