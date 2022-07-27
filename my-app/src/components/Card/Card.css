@@ -47,3 +47,12 @@
     font-size: 1.25em;
     font-weight: 500;
 }
+
+.artist-name {
+    font-weight: 500;
+}
+
+.card-top {
+    display: flex;
+    align-items: center;
+}

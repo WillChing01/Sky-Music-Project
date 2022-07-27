@@ -1,5 +1,5 @@
 .list-item {
-    --spacing: 5px;
+    --spacing: 0.4em;
 }
 
 .list-item {
@@ -7,6 +7,8 @@
     padding-bottom: var(--spacing);
     margin-bottom: var(--spacing);
     border-bottom: 1px solid grey;
+    display: flex;
+    align-items: center;
 }
 
 .list-item .item-info {

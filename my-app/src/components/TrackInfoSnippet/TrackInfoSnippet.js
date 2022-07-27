@@ -3,11 +3,10 @@ import { useSelector } from 'react-redux';
 
 import ScrollText from '../ScrollText/ScrollText';
 import Carousel from '../Carousel/Carousel';
+import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 
 import './TrackInfoSnippet.css';
 import { getPlaylistTrack } from '../../state/slices/playablePlaylist/playlistMutators';
-
-const scrollSpeed = 0.5;
 
 const TrackInfoSnippet = () => {
     const {
@@ -22,13 +21,13 @@ const TrackInfoSnippet = () => {
     return(
         <>
             <div className='img-div'><img id='player-icon' alt='' src={imgSrc}></img></div>
+            {/* { name !== '' && <FavouritesIcon trackId={name}/>} */}
             <div className='info-div'>
                 <div className='make-bold'>
-                    {/* <ScrollText message={name} containerId={'asdf'} /> */}
                     <Carousel text={name} />
                 </div>
-                {/* <ScrollText message={artistName} containerId={'asdlfjef'} /> */}
                 <Carousel text={artistName} />
+                
             </div>
         </>
     );
