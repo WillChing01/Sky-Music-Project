@@ -90,7 +90,7 @@ const useFetch = (url, keys, deps = [], totalFetchAttempts = 5) => {
             payload: {
                 statusCode: err.status,
                 statusText: err.statusText,
-                userMsg: getUserErrMessage(err)
+                userMsg: err.userMsg || getUserErrMessage(err)
             }
         });
     };

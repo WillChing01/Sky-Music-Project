@@ -1,8 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
+
 import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 
 import LogIn from '../ProfileForms/LogIn/LogIn';
 import SignUp from '../ProfileForms/SignUp/SignUp';
+
 
 const Profile = () => {
     return (

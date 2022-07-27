@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useSearchParams } from 'react-router-dom';
 
 import Home from './components/Home/Home';
@@ -12,7 +12,7 @@ import './App.css';
 const App = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
-
+    
     return (
         <div className='page'>
             <NavBar searchParams={searchParams} setSearchParams={setSearchParams}/>
