@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
-// const profileRoutes = require('./routes/profileRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 
 const port = process.env.PORT || 3001;
 
@@ -27,4 +27,4 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use('/api/auth', authRoutes);
 
-// app.use('profile', profileRoutes)
+app.use('/api/profile', profileRoutes)
