@@ -56,6 +56,7 @@ const generateNewId = () => {
 }
 
 const defaultTrack = {
+    id: '',
     currentPreviewURL: '',
     name: '',
     artistName: '',
@@ -67,6 +68,7 @@ export const createPlaylist = (tracks = [defaultTrack]) => {
     const masterTracks = tracks;
     const progressIndex = 0;
     const currentIndex = progressIndex;
+    const playingTrack = tracks[currentIndex];
     const history = createHistory();
     return {
         id,
@@ -74,42 +76,51 @@ export const createPlaylist = (tracks = [defaultTrack]) => {
         tracks,
         progressIndex,
         currentIndex,
+        playingTrack,
         history 
     }
 };
 
-// formerly shuffle
 export const shufflePlaylist = (playlist) => {
     const tracks = playlist.tracks;
     const length = tracks.length;
+    
+    playlist.progressIndex = -1;
+    playlist.currentIndex = -1;
 
-    for (let i = length - 2; i >= 0; i--) {
-        const j = getRandomIndex(length - 1);
+    for (let i = length - 1; i >= 0; i--) {
+        const j = getRandomIndex(i + 1);
         [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
     }
 
-    const randIndex = getRandomIndex(length);
-    const lastItemIndex = Math.min(randIndex + 1, length - 1);
-    [tracks[randIndex], tracks[lastItemIndex]] = [tracks[lastItemIndex], tracks[randIndex]];
+    const firstTrack = tracks[0];
+    if (playlist.playingTrack.id === firstTrack.id) {
+        console.log("happened")
+        const j = Math.min(1 + getRandomIndex(length), length - 1);
+        [tracks[0], tracks[j]] = [tracks[j], tracks[0]];
+    }
 };
 
-// formerly unshuffle
 export const unshufflePlaylist = (playlist) => {
     playlist.tracks = playlist.masterTracks;
+    const currentTrackIndex = getPlaylistTrackIndex(playlist, playlist.playingTrack);
+    playlist.currentIndex = currentTrackIndex;
+    playlist.progressIndex = currentTrackIndex;
 };
 
-// formerly getCurrentTrack
-export const getPlaylistTrack = (playlist) => {
+const setPlayingTrack = (playlist) => {
+    const tracks = playlist.tracks;
+    const currentIndex = playlist.currentIndex;
+    playlist.playingTrack = tracks[currentIndex];
     return playlist.tracks[playlist.currentIndex];
 };
 
 const updateHistory = (playlist) => {
-    const currentTrack = getPlaylistTrack(playlist);
+    const currentTrack = playlist.playingTrack; 
     pushHistory(playlist.history, currentTrack);
     playlist.history.current = playlist.history.top
 }
 
-// formerly setTrack
 export const setPlaylistTrack = (playlist, track, isShuffle) => {
     const trackIndex = getPlaylistTrackIndex(playlist, track);
     updateHistory(playlist);
@@ -120,9 +131,9 @@ export const setPlaylistTrack = (playlist, track, isShuffle) => {
         playlist.progressIndex = trackIndex;
         playlist.currentIndex = playlist.progressIndex;
     }
+    setPlayingTrack(playlist);
 };
 
-// formerly setNextTrack
 export const setPlaylistNextTrack = (playlist, isShuffle) => {
     const lastIndex = playlist.masterTracks.length - 1;
     const isAtLastTrack = playlist.progressIndex === lastIndex;
@@ -139,23 +150,23 @@ export const setPlaylistNextTrack = (playlist, isShuffle) => {
         playlist.progressIndex++;
         playlist.currentIndex = playlist.progressIndex;
     }
+    setPlayingTrack(playlist);
 };
 
-// formerly setPreviousTrack
 export const setPlaylistPreviousTrack = (playlist) => {
     const previousTrack = getHistory(playlist.history);
     if (previousTrack === null) return;
-    const currentTrack = getPlaylistTrack(playlist);
+    const currentTrack = playlist.playingTrack;
     pushHistory(playlist.history, currentTrack);
     
     const previousTrackIndex = getPlaylistTrackIndex(playlist, previousTrack);
     playlist.currentIndex = previousTrackIndex;
+    setPlayingTrack(playlist);
 }
 
-// formerly getTrackIndex
 export const getPlaylistTrackIndex = (playlist, track) => {
-    for (const [index, info] of playlist.tracks.entries()) {
-        const isCurrentTrack = info.currentPreviewURL === track.currentPreviewURL;
+    for (const [index, trackInfo] of playlist.tracks.entries()) {
+        const isCurrentTrack = trackInfo.id === track.id;
         if (isCurrentTrack) {
             return index;
         }

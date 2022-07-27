@@ -107,6 +107,7 @@ export const getPlaylistInfo = (items) => {
     return items.map(item => {
         const info = getItemInfo(item);
         return {
+            id: info.id,
             currentPreviewURL: info.previewURL,
             name: info.name,
             artistName: info.artist,

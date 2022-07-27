@@ -25,7 +25,8 @@ const LogIn = () => {
                 <h1>Log In</h1>
                 <div className='form-group'>
                     <label htmlFor='login-username'>Username</label>
-                    <input type="text" className="form-control" id="login-username" aria-describedby="username-help" name="username" placeholder="Enter username" required/>
+                    <input type="text" className="form-control" id="login-username" name="username" placeholder="Enter username" required/>
+
                 </div>
                 
                 <div className="form-group">

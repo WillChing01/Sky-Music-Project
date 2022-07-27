@@ -42,7 +42,7 @@ const ViewContainer = ({ data }) => {
     };
 
     const getNoDisplay = (channel) => {
-        const noDisplay = <p>No {channel.type} were found</p>;
+        const noDisplay = <p className='indent'>No {channel.type} were found</p>;
         return noDisplay;
     };
 
@@ -57,7 +57,7 @@ const ViewContainer = ({ data }) => {
 
         return (
             <>
-                <h1>{title}</h1>
+                <h1 className='indent'>{title}</h1>
                     {body}
             </>
         );

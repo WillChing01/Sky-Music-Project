@@ -11,7 +11,7 @@ const NavBar = () => {
     const isLoggedIn = useSelector((state) => state.profileInfo.isLoggedIn);
 
     const getProfilePath = () => {
-        if (isLoggedIn) return '/profile/id'; // TODO temp
+        if (isLoggedIn) return '/profile/favourites'; // TODO temp
         else return '/profile/login';
     }
 

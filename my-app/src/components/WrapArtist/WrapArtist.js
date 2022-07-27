@@ -13,14 +13,15 @@ const WrapArtist = ({children, itemInfo}) => {
     const artists = useFetch(...getArtistsInfo([id]), [], fetchOptions);
 
 
-    const getArtistBio = () => {
+    const getArtistBios = () => {
         if (artists.items.length) {
             const artist = artists.items[0];
-            if (artist.blurbs.length) {
-                const bio = artist.blurbs[0];
-                
-                return bio;
+            const bios = [];
+            for (let i = 0; i < 3; i++) {
+                const bio = artist.blurbs[i];
+                if (bio) bios.push(bio);
             }
+            if (bios.length) return bios;
         }
         return null;
     };
@@ -28,9 +29,9 @@ const WrapArtist = ({children, itemInfo}) => {
     return (
         <div className='wrapped-artist m-4'>
             {
-            getArtistBio() ? <FlipWrap 
+            getArtistBios() ? <FlipWrap 
                                 front={children}
-                                back={<ArtistSnippet name={name} bio={getArtistBio()}/>}
+                                back={<ArtistSnippet name={name} bios={getArtistBios()}/>}
                                 />
                             : children
             }
