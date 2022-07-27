@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import useFetch from '../../hooks/useFetch';
-import { getAlbumTracksInfo, getGenresInfo } from '../../utility/fetchNapster' 
+import { getAlbumTracksInfo, getAreFetchesResolved, getGenresInfo } from '../../utility/fetchNapster' 
 import { listArrOfStrsAsStr } from '../../utility/format/formatArr';
 import { getPlaylistInfo } from '../../utility/parseMusicItem';
 import { useDispatch } from 'react-redux';
-import { setPlaylist, revertPlaylist } from '../../state/slices/playerInfoSlice';
+import { pushPlaylist, popPlaylist } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
 
 import Dialog from '../Dialog/Dialog';
 import List from '../List/List'
@@ -12,19 +12,7 @@ import List from '../List/List'
 import './WrapAlbum.css'
 import explicitIcon from '../../svg/explicit.svg';
 
-const getIsFetchResolved = (fetchResult) => {
-    const hasItems = !!fetchResult.items.length;
-    const hasError = !!fetchResult.error.statusCode;
-    return hasItems || hasError;
-};
 
-const getAreFetchesResolved = (...fetchResults) => {
-    for (const fetchResult of fetchResults) {
-        const isFetchResolved = getIsFetchResolved(fetchResult);
-        if (!isFetchResolved) return false;
-    }
-    return true;
-};
 
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -120,7 +108,7 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
-        dispatch(revertPlaylist());
+        dispatch(popPlaylist());
     };
     
      
@@ -129,10 +117,9 @@ const WrapAlbum = ({children, card, itemInfo, isCard}) => {
         if (isAlbumInfoLoaded) {
             setIsDialogOpen(true);
             const playlistInfo = getPlaylistInfo(tracks.items);
-            dispatch(setPlaylist(playlistInfo));
+            dispatch(pushPlaylist(playlistInfo));
         }
     };
-
 
     return (
         <div className='wrapped-album'>

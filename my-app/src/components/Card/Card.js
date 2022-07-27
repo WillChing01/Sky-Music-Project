@@ -10,8 +10,8 @@ const Card = ({ itemInfo }) => {
     //<h5 className='elem'><ScrollText message={itemInfo.name} containerId={itemInfo.name} /></h5>
     return (
         <div className='py-2 px-4 border rounded card-view'>
-            <h5 className='elem'>{name}</h5>
-            {/* <Carousel text={itemInfo.name} /> */}
+            {/* <h5 className='elem'>{name}</h5> */}
+            <Carousel text={itemInfo.name} className='card-title' />
             <img src={imgSrc} alt={name}></img>
             <div className='mt-2'>
                 <h6>{artist}</h6>

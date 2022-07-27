@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { captilizeFirstLetter } from '../../utility/format/formatStr';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPlaylistInfo } from '../../utility/parseMusicItem';
-import { setPlaylist } from '../../state/slices/playerInfoSlice';
+import { pushPlaylist } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
 
 import List from '../List/List';
 import Grid from '../Grid/Grid';
@@ -26,7 +26,7 @@ const ViewContainer = ({ data }) => {
 
     useEffect(() => {
         const playlist = getPlaylistInfo(channels[0].items);
-        dispatch(setPlaylist(playlist))
+        dispatch(pushPlaylist(playlist));
     }, [data]);
 
     const getDisplay = (channel) => {
@@ -58,7 +58,6 @@ const ViewContainer = ({ data }) => {
         return (
             <>
                 <h1>{title}</h1>
-                    {}
                     {body}
             </>
         );
@@ -75,7 +74,9 @@ const ViewContainer = ({ data }) => {
                             {channelDisplay}
                         </div>
                     )
-                }           
+                } else {
+                    return null;
+                }         
             })  
             }
         </div>

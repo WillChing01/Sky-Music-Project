@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPlayerInfo } from '../../state/slices/playerInfoSlice';
+import { setTrack } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
+import { getPlaylistTrack } from '../../state/slices/playablePlaylist/playlistMutators';
+import { setIsPlaying } from '../../state/slices/playerConfig/playerConfigSlice';
 
 import "./PlayIcon.css";
 
@@ -10,7 +12,13 @@ const pauseIconClass = 'bi-pause';
 const PlayIcon = ({itemInfo}) => { 
     const [iconClass, setIconClass] = useState(playIconClass);
 
-    const {isPlaying, currentPreviewURL} = useSelector((state) => state.playerInfo);
+    //const {isPlaying, currentPreviewURL} = useSelector((state) => state.playerInfo);
+    const isPlaying = useSelector((state) => state.playerConfig.isPlaying)
+    const { currentPreviewURL } = useSelector((state) => {
+        const playlist = state.playablePlaylist.currentPlaylist;
+        return getPlaylistTrack(playlist);
+    });
+    
     const dispatch = useDispatch();
 
     const configureIcons = useCallback(() => {
@@ -29,14 +37,14 @@ const PlayIcon = ({itemInfo}) => {
         const { previewURL, name, artist, imgSrc } = itemInfo;
         const isCurrentTrack = itemInfo.previewURL === currentPreviewURL;
         const newIsPlaying = isCurrentTrack ? !isPlaying : true;
-        const newPlayingInfo = {
+        const newTrack = {
             currentPreviewURL: previewURL,
             name,
             artistName: artist,
             imgSrc,
-            isPlaying: newIsPlaying
         };
-        dispatch(setPlayerInfo(newPlayingInfo));
+        dispatch(setTrack(newTrack));
+        dispatch(setIsPlaying(newIsPlaying));
     };
 
     useEffect(() => {

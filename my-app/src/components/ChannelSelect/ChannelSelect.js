@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleChannelOpen } from '../../state/slices/filterSlice';
+import { toggleChannelOpen } from '../../state/slices/filter/filterSlice';
 import './ChannelSelect.css';
 
 

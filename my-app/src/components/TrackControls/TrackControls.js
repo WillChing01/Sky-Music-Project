@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleIsShuffle, toggleShouldLoop } from '../../state/slices/configPlayerSlice';
-import { toggleIsPlaying } from '../../state/slices/playerInfoSlice';
+import { toggleIsPlaying, toggleIsShuffle, toggleShouldLoop }  from '../../state/slices/playerConfig/playerConfigSlice';
 import { setPlayerAudioLoop, setPlayerAudioCurrentTime, getPlayerAudio } from '../Player/Player';
+import { shuffle, unshuffle } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
 
 import useKeyPress from '../../hooks/useKeyPress';
 
@@ -10,9 +11,11 @@ import './TrackControls.css';
 const tinyTimeIncrement = 0.0001;
 const skipIncrement = 5;
 
-const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, setNextTrack, setPreviousTrack }) => {
+const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPreviousTrack }) => {
 
-    const { isShuffle, shouldLoop } = useSelector((state) => state.configPlayer);
+    const [ isShuffle, setIsShuffle ] = useState(false);
+
+    const { shouldLoop } = useSelector((state) => state.playerConfig);
     const dispatch = useDispatch();
 
     const givenTrackLoadedIntoPlayer = (effect) => {
@@ -23,7 +26,13 @@ const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, set
      };
 
     const handleToggleShuffleTracks = () => {
-        dispatch(toggleIsShuffle());
+        if (isShuffle) {
+            setIsShuffle(false);
+            dispatch(unshuffle());
+        } else {
+            setIsShuffle(true);
+            dispatch(shuffle());
+        }
     };
 
     const handleToggleLoopTrack = () => {
@@ -42,7 +51,7 @@ const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, set
     const handlePreviousTrack = () => {
         const effect = () => {
             //setPlayerAudioCurrentTime(0);
-            handleTrackSelection(setPreviousTrack);
+            setPreviousTrack();
         };
 
         givenTrackLoadedIntoPlayer(effect);
@@ -54,7 +63,7 @@ const TrackControls = ({ isPlaying, currentPreviewURL, handleTrackSelection, set
             // const trackDuration = playerAudio.duration;
             // const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
             // setPlayerAudioCurrentTime(newPlayerAudioTime);  
-            handleTrackSelection(setNextTrack)
+            setNextTrack();
         };
 
         givenTrackLoadedIntoPlayer(effect);

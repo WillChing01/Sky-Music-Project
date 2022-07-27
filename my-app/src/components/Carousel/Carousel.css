@@ -18,6 +18,7 @@
 } 
 
 .overflow .scrolling-box {
+    width: -moz-fit-content;
     width: fit-content;
 }
 
