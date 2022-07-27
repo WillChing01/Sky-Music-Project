@@ -20,7 +20,7 @@ userSchema.statics.signup = async function(username, password) {
     checkIsInfoMissing(username, password);
 
     const isUsernameTaken = await this.findOne({ username });
-    if (isUsernameTaken) throw Error('Username is already in use.')
+    if (isUsernameTaken) throw Error('That username has been taken.')
 
     const hashedPassword = await bcryptHash(password);
 
@@ -38,10 +38,10 @@ userSchema.statics.login = async function(username, password) {
 
     const user = await this.findOne({username});
 
-    if (!user) throw Error('No such username exists.')
+    if (!user) throw Error('No such user exists.')
     else {
         const isPasswordMatch = await bcryptGetMatch(password, user.password);
-        if (!isPasswordMatch) throw Error('Incorrect password');
+        if (!isPasswordMatch) throw Error('Incorrect password.');
     } 
 
     return user;

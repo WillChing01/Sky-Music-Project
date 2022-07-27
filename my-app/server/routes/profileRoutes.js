@@ -1,8 +1,12 @@
-// const express = require('express');
+const express = require('express');
+const requireAuth = require('../middleware/requireAuth');
+const router = express.Router();
 
-// const router = express.Router();
+router.use(requireAuth);
 
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+    res.send({"message": "hi"});
+})
 
-// router.get('/:id', () => {
-//     const { id } = req.params;
-// })
+module.exports = router;
