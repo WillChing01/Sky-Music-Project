@@ -6,7 +6,8 @@ const initialPlaylist = createPlaylist();
 
 const initialState = {
     currentPlaylist: initialPlaylist,
-    playlistStack: [initialPlaylist]
+    playlistStack: [initialPlaylist],
+    isShuffle: false
 };
 
 export const playablePlaylist = createSlice({

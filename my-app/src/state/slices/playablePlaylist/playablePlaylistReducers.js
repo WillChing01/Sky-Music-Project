@@ -1,27 +1,11 @@
 import { 
-    getHistory,
-    pushHistory,
     createPlaylist,
     shufflePlaylist,
     unshufflePlaylist,
-    getPlaylistTrack,
     setPlaylistTrack,
     setPlaylistNextTrack,
     setPlaylistPreviousTrack,
-    getPlaylistTrackIndex
 } from './playlistMutators';
-import { current } from '@reduxjs/toolkit';
-
-/**
- * Required when using a function that takes state as an argument and tries to modify it. 
- * This is because Immer uses a proxy state to 'allow' mutations.
- */
-const mutateState = (func, state, action) => {
-    const stateCopy = current(state);
-    const deepCopy = JSON.parse(JSON.stringify(stateCopy)); // implement better way to get a deep copy
-    func(deepCopy, action);
-    return deepCopy;
-}
 
 // Reducers:
 
@@ -43,65 +27,50 @@ const popPlaylist = (state) => {
 /**
  * When play icon is clicked
  */
-const setTrack = (state, action) => {
-    const func = (state, { payload }) => {
-        const topPlaylist = state.playlistStack.at(-1);
-        setPlaylistTrack(topPlaylist, payload);
+const setTrack = (state, { payload }) => {
+    const topPlaylist = state.playlistStack.at(-1);
+    const currentPlaylist = state.currentPlaylist; 
+    const shouldUpdate = topPlaylist.id !== currentPlaylist.id;
+    
+    if (shouldUpdate) {
+        const isShuffle = state.isShuffle;
 
-        const currentPlaylist = state.currentPlaylist; 
-
-        const shouldUpdate = topPlaylist !== currentPlaylist; // TODO may cause problems
-        
-        if (shouldUpdate) {
-            state.currentPlaylist = topPlaylist;
-        }
+        if (isShuffle) shufflePlaylist(topPlaylist);
+        setPlaylistTrack(topPlaylist, payload, isShuffle);
+        state.currentPlaylist = topPlaylist;
+    } else {
+        setPlaylistTrack(currentPlaylist, payload, state.isShuffle);
     }
-
-    return mutateState(func, state, action);
 };
 
 /**
  * End of a song or when next track is clicked
  */
 const nextTrack = (state) => {
-    const func = (state) => {
-        setPlaylistNextTrack(state.currentPlaylist)
-    }
-    return mutateState(func, state);
+    setPlaylistNextTrack(state.currentPlaylist, state.isShuffle);
 }
 
 /**
  * When previous track is clicked
  */
 const previousTrack = (state) => {
-    const func = (state) => {
-        setPlaylistPreviousTrack(state.currentPlaylist)
-    }
-    return mutateState(func, state);
+    setPlaylistPreviousTrack(state.currentPlaylist)
 }
 
 /**
  * When shuffle is turned on
  */
  const shuffle = (state) => {
-    const func = (state) => {
-        for (const playlist of state.playlistStack) {
-            shufflePlaylist(playlist);
-        }
-    }
-    return mutateState(func, state);
+    shufflePlaylist(state.currentPlaylist);
+    state.isShuffle = true;
 }
 
 /**
  * When shuffle is turned off
  */
  const unshuffle = (state) => {
-    const func = (state) => {
-        for (const playlist of state.playlistStack) {
-            unshufflePlaylist(playlist);
-        }
-    }
-    return mutateState(func, state);
+    unshufflePlaylist(state.currentPlaylist);
+    state.isShuffle = false;
 }
 
 const reducers = {

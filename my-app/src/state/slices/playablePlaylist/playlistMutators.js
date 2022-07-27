@@ -48,6 +48,11 @@ const getRandomIndex = (bound) => {
     return Math.floor(Math.random() * bound);
 }
 
+let id = 0;
+const generateNewId = () => {
+    return id++;
+}
+
 const defaultTrack = {
     currentPreviewURL: '',
     name: '',
@@ -56,15 +61,15 @@ const defaultTrack = {
 }
 
 export const createPlaylist = (tracks = [defaultTrack]) => {
+    const id = generateNewId();
     const masterTracks = tracks;
-    const isShuffle = false; // some how need to update this
     const progressIndex = 0;
     const currentIndex = progressIndex;
     const history = createHistory();
     return {
+        id,
         masterTracks,
         tracks,
-        isShuffle,
         progressIndex,
         currentIndex,
         history 
@@ -84,14 +89,11 @@ export const shufflePlaylist = (playlist) => {
     const randIndex = getRandomIndex(length);
     const lastItemIndex = Math.min(randIndex + 1, length - 1);
     [tracks[randIndex], tracks[lastItemIndex]] = [tracks[lastItemIndex], tracks[randIndex]];
-
-    playlist.isShuffle = true;
 };
 
 // formerly unshuffle
 export const unshufflePlaylist = (playlist) => {
     playlist.tracks = playlist.masterTracks;
-    playlist.isShuffle = false;
 };
 
 // formerly getCurrentTrack
@@ -100,9 +102,9 @@ export const getPlaylistTrack = (playlist) => {
 };
 
 // formerly setTrack
-export const setPlaylistTrack = (playlist, track) => {
+export const setPlaylistTrack = (playlist, track, isShuffle) => {
     const trackIndex = getPlaylistTrackIndex(playlist, track);
-    if (playlist.isShuffle) {
+    if (isShuffle) {
         playlist.currentIndex = trackIndex;
     } else {
         playlist.progressIndex = trackIndex;
@@ -111,7 +113,7 @@ export const setPlaylistTrack = (playlist, track) => {
 };
 
 // formerly setNextTrack
-export const setPlaylistNextTrack = (playlist) => {
+export const setPlaylistNextTrack = (playlist, isShuffle) => {
     const lastIndex = playlist.masterTracks.length - 1;
     const isAtLastTrack = playlist.progressIndex === lastIndex;
 
@@ -122,7 +124,7 @@ export const setPlaylistNextTrack = (playlist) => {
     if (isAtLastTrack) {
         playlist.progressIndex = 0;
         playlist.currentIndex = 0;
-        if (playlist.isShuffle) {
+        if (isShuffle) {
             shufflePlaylist(playlist);
         }
     } else {
