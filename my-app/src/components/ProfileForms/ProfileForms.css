@@ -1,0 +1,17 @@
+.center-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10%;
+}
+
+.user-form {
+    width: 33vw;
+    margin-top: 1em;
+    padding: 1em;
+    border-radius: 5px;
+}
+
+.user-form *{
+    margin-bottom: 0.4em;
+}

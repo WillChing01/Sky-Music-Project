@@ -1,0 +1,7 @@
+.star {
+    display: none;
+}
+
+.star-label {
+    cursor: pointer;
+}
