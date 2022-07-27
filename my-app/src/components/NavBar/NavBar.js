@@ -16,8 +16,6 @@ const NavBar = () => {
 
     const toggleDarkMode = () => {
         const isDark = document.documentElement.className === 'dark-mode-filter';
-
-        console.log(isDark);
         console.log(document.documentElement)
         if (isDark) {
             document.documentElement.className = '';
@@ -30,7 +28,8 @@ const NavBar = () => {
         <div className='topscreen'>
             <Link className='nav-link' to='/'><i className="bi bi-house nav-icon border ms-2 me-2"></i></Link>
             <ViewSelect/>
-            <input type='checkbox' onClick={toggleDarkMode}/>
+            {<input type='checkbox' onClick={toggleDarkMode}/>}
+            <i className='bi bi-sun' />
             <div className="region"></div>
             <div className='bar'>
                 <FilterControlPanel/>

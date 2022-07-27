@@ -21,7 +21,7 @@ const TrackInfoSnippet = () => {
     return(
         <>
             <div className='img-div'><img id='player-icon' alt='' src={imgSrc}></img></div>
-            {/* { name !== '' && <FavouritesIcon trackId={name}/>} */}
+            { name !== '' && <FavouritesIcon trackId={name}/>}
             <div className='info-div'>
                 <div className='make-bold'>
                     <Carousel text={name} />

@@ -1,10 +1,22 @@
 import { Link } from 'react-router-dom';
+import useSignUp from '../../../hooks/useSignUp';
 import '../ProfileForms.css';
 
 const SignUp = () => {
+    const { signup, isPending, error } = useSignUp(); 
+    
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const username = form.username;
+        const password = form.password;
+        await signup(username, password);
+    };
+
+
     return (
         <div className='center-form'>
-            <form className='user-form border' action="http://localhost:3001/profile/signup" method="POST">
+            <form className='user-form border' onSubmit={handleSignUp}>
                 <h1>Sign Up</h1>
                 <div className='form-group'>
                     <label htmlFor='signup-username'>Username</label>
@@ -29,7 +41,7 @@ const SignUp = () => {
             </form>
         </div>
     );
-}
+};
 
 export default SignUp;
 
