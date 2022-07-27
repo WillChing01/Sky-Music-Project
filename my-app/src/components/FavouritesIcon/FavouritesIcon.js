@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 import './FavouritesIcon.css'
 
-const FavouritesIcon = ({ track, id }) => {
-
+const FavouritesIcon = ({ trackId }) => {
     const [ favourited, setFavourited ] = useState(false); // will probably be represented elsewhere
 
     const handleChange = (e) => {
@@ -16,11 +15,11 @@ const FavouritesIcon = ({ track, id }) => {
         return favourited ? "bi bi-star-fill" : "bi bi-star";;
     }
 
-    return (
+    return ( // remember this path
         <form action='/' method='POST'>
-            <input type='hidden' value={track} name='track'/>
-            <label className="star-label" htmlFor={id}><i className={getIconClassName()}></i></label>
-            <input className="star" id={id} type='checkbox' onChange={handleChange} name='favourited' defaultChecked={favourited}/>
+            <input type='hidden' value={trackId} name='track'/>
+            <input className="star-checkbox" id={trackId} type='checkbox' onChange={handleChange} name='favourited' defaultChecked={favourited}/>
+            <label className="star-label" htmlFor={trackId}><i className={getIconClassName()}></i></label>
         </form>
     );
 }

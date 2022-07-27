@@ -1,7 +1,15 @@
-.star {
+.star-checkbox {
     display: none;
 }
 
 .star-label {
+    display: inline;
+    padding-left: 1em;
     cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.star-checkbox:checked + .star-label {
+    color: rgb(242, 205, 0);
 }

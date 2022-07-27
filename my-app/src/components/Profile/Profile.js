@@ -9,7 +9,6 @@ import SignUp from '../ProfileForms/SignUp/SignUp';
 const Profile = () => {
     return (
         <div>
-            <FavouritesIcon track={{data: 'hello'}} id={1}/>
             <Routes>
                 <Route path='/login' element={<LogIn />} />
                 <Route path='/signup' element={<SignUp />} />
