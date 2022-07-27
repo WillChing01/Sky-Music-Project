@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import SearchBar from "../SearchBar/SearchBar";
 import FilterControlPanel from "../FilterControlPanel/FilterControlPanel";
 import ViewSelect from "../ViewSelect/ViewSelect";
+import ColourScheme from '../ColourScheme/ColourScheme';
 
 import './NavBar.css';
 
@@ -14,22 +15,11 @@ const NavBar = () => {
         else return '/profile/login';
     }
 
-    const toggleDarkMode = () => {
-        const isDark = document.documentElement.className === 'dark-mode-filter';
-        console.log(document.documentElement)
-        if (isDark) {
-            document.documentElement.className = '';
-        } else {
-            document.documentElement.className = 'dark-mode-filter';
-        }
-    }
-
     return (
         <div className='topscreen'>
             <Link className='nav-link' to='/'><i className="bi bi-house nav-icon border ms-2 me-2"></i></Link>
             <ViewSelect/>
-            {<input type='checkbox' onClick={toggleDarkMode}/>}
-            <i className='bi bi-sun' />
+            <ColourScheme/>
             <div className="region"></div>
             <div className='bar'>
                 <FilterControlPanel/>
