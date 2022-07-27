@@ -12,15 +12,16 @@ import List from '../List/List'
 import './WrapAlbum.css'
 import explicitIcon from '../../svg/explicit.svg';
 
-
+const apikey = process.env.REACT_APP_NAPSTER_API_KEY;
 
 const WrapAlbum = ({children, card, itemInfo, isCard}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const dispatch = useDispatch();
 
-    const tracks = useFetch(...getAlbumTracksInfo(itemInfo.id), [], 2);
-    const genres = useFetch(...getGenresInfo(itemInfo.genres), [], 2);
+    const fetchOptions = {headers: { apikey }};
+    const tracks = useFetch(...getAlbumTracksInfo(itemInfo.id), [], fetchOptions, 2);
+    const genres = useFetch(...getGenresInfo(itemInfo.genres), [], fetchOptions, 2);
 
     const listAlbumGenres = () => {
         const genreNames = genres.items.map(genre => genre.name);

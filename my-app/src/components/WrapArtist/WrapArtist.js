@@ -5,9 +5,12 @@ import FlipWrap from '../FlipWrap/FlipWrap';
 
 import './WrapArtist.css'
 
+const apikey = process.env.REACT_APP_NAPSTER_API_KEY;
+
 const WrapArtist = ({children, itemInfo}) => {
     const { id, name } = itemInfo;
-    const artists = useFetch(...getArtistsInfo([id]), []);
+    const fetchOptions = {headers: { apikey }}
+    const artists = useFetch(...getArtistsInfo([id]), [], fetchOptions);
 
 
     const getArtistBio = () => {

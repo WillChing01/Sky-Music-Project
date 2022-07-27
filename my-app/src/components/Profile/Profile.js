@@ -10,9 +10,9 @@ const Profile = () => {
     return (
         <div>
             <Routes>
-                <Route path='login' element={<LogIn />} />
-                <Route path='signup' element={<SignUp />} />
-                <Route path='id' element={<p>profile</p>} />
+                <Route path='/login' element={<LogIn />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/:id' element={<p>profile</p>} />
             </Routes>
         </div>
     );

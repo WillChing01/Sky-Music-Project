@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
-const getUser = async (req, res) => {
-    const { id } = req.params;
+// const getUser = async (req, res) => {
+//     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
 
-    }
+//     }
 
-}
+// }
 

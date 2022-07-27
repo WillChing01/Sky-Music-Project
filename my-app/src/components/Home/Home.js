@@ -5,12 +5,15 @@ import ViewContainer from '../ViewContainer/ViewContainer';
 
 import './Home.css';
 import useFetch from '../../hooks/useFetch';
+
 const limit = 3;
 const getFetchArgs = (query, channel) => {
     const fetchArgs = query ? getQueryFetchInfo(query, channel, limit)
                             : getChannelTopInfo(channel, limit);
     return fetchArgs;
 };
+
+const apikey = process.env.REACT_APP_NAPSTER_API_KEY;
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -21,10 +24,12 @@ const Home = () => {
   const albumsFetchArgs = getFetchArgs(query, 'albums');
   const artistsFetchArgs = getFetchArgs(query, 'artists');
 
-  const deps = [searchParams]
-  const tracks = useFetch(...tracksFetchArgs, deps);
-  const albums = useFetch(...albumsFetchArgs, deps);
-  const artists = useFetch(...artistsFetchArgs, deps);
+  const deps = [searchParams];
+  const fetchOptions = {headers: { apikey }};
+
+  const tracks = useFetch(...tracksFetchArgs, deps, fetchOptions);
+  const albums = useFetch(...albumsFetchArgs, deps, fetchOptions);
+  const artists = useFetch(...artistsFetchArgs, deps, fetchOptions);
 
   const data = {
     tracks, 
