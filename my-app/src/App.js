@@ -7,11 +7,12 @@ import NavBar from './components/NavBar/NavBar';
 import Player from './components/Player/Player';
 
 import './App.css';
+import { useAuthContext } from './hooks/useAuthContext';
 
 const App = () => {
-
     const [searchParams, setSearchParams] = useSearchParams();
-    
+    const { user } = useAuthContext();
+
     return (
         <div className='page dark-mode'>
             <NavBar searchParams={searchParams} setSearchParams={setSearchParams}/>

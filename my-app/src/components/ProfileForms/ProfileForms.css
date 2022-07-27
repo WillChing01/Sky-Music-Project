@@ -15,3 +15,9 @@
 .user-form *{
     margin-bottom: 0.4em;
 }
+
+.profile-form-error {
+    display: inline;
+    margin-left: 1em;
+    color: red;
+}

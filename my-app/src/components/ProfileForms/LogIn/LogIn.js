@@ -1,23 +1,40 @@
 import { Link } from 'react-router-dom';
+
+import useLogin from '../../../hooks/auth/useLogin';
+
 import '../ProfileForms.css';
 
 const LogIn = () => {
+    const { login, isPending, error } = useLogin();
+
+    console.log(
+        error
+    )
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const username = form['username'].value;
+        const password = form['password'].value;
+        await login(username, password);
+    };
+
     return (
         <div className='center-form'>
-            <form className='user-form border' action="http://localhost:3001/profile/login" method="POST">
+            <form className='user-form border' onSubmit={handleLogin}>
                 <h1>Log In</h1>
                 <div className='form-group'>
                     <label htmlFor='login-username'>Username</label>
-                    <input type="email" className="form-control" id="login-username" aria-describedby="username-help" placeholder="Enter username"/>
+                    <input type="text" className="form-control" id="login-username" aria-describedby="username-help" name="username" placeholder="Enter username"/>
                 </div>
                 
                 <div className="form-group">
                     <label htmlFor="login-password">Password</label>
-                    <input type="password" className="form-control" id="login-password" placeholder="Enter password"/>
+                    <input type="password" className="form-control" id="login-password" name="password" placeholder="Enter password"/>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Log In</button>
-
+                <button type="submit" className="btn btn-primary">{isPending ? 'Loading...': 'Log In'}</button>
+                {error && <div className='profile-form-error'>{error}</div>}
                 <div>
                     <span>Don't have an account? </span>
                     <Link to='../signup'>Sign Up</Link>
