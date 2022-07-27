@@ -6,6 +6,7 @@ import {
     setPlaylistNextTrack,
     setPlaylistPreviousTrack,
 } from './playlistMutators';
+import { current } from '@reduxjs/toolkit';
 
 // Reducers:
 
@@ -54,6 +55,7 @@ const nextTrack = (state) => {
  * When previous track is clicked
  */
 const previousTrack = (state) => {
+    console.log(current(state))
     setPlaylistPreviousTrack(state.currentPlaylist)
 }
 

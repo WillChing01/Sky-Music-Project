@@ -1,3 +1,5 @@
+import { current } from '@reduxjs/toolkit';
+
 const mod = (n, m) => {
     return ((n % m) + m) % m;
 };
@@ -101,9 +103,17 @@ export const getPlaylistTrack = (playlist) => {
     return playlist.tracks[playlist.currentIndex];
 };
 
+const updateHistory = (playlist) => {
+    const currentTrack = getPlaylistTrack(playlist);
+    pushHistory(playlist.history, currentTrack);
+    playlist.history.current = playlist.history.top
+}
+
 // formerly setTrack
 export const setPlaylistTrack = (playlist, track, isShuffle) => {
     const trackIndex = getPlaylistTrackIndex(playlist, track);
+    updateHistory(playlist);
+    
     if (isShuffle) {
         playlist.currentIndex = trackIndex;
     } else {
@@ -117,9 +127,7 @@ export const setPlaylistNextTrack = (playlist, isShuffle) => {
     const lastIndex = playlist.masterTracks.length - 1;
     const isAtLastTrack = playlist.progressIndex === lastIndex;
 
-    const currentTrack = getPlaylistTrack(playlist);
-    pushHistory(playlist.history, currentTrack);
-    playlist.history.current = playlist.history.top
+    updateHistory(playlist);
     
     if (isAtLastTrack) {
         playlist.progressIndex = 0;
@@ -135,7 +143,6 @@ export const setPlaylistNextTrack = (playlist, isShuffle) => {
 
 // formerly setPreviousTrack
 export const setPlaylistPreviousTrack = (playlist) => {
-    console.log(playlist.history)
     const previousTrack = getHistory(playlist.history);
     if (previousTrack === null) return;
     const currentTrack = getPlaylistTrack(playlist);
