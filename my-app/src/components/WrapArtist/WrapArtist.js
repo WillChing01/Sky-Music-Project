@@ -7,14 +7,19 @@ import './WrapArtist.css'
 
 const WrapArtist = ({children, itemInfo}) => {
     const { id, name } = itemInfo;
-    const artists = useFetch(...getArtistsInfo([id]), [])
+    const artists = useFetch(...getArtistsInfo([id]), []);
+
 
     const getArtistBio = () => {
-        if (artists.data) {
-            const artist = artists.data[0];
-            const bio = artist.bios.bio;
-            return bio;
-        } else return null;
+        if (artists.items.length) {
+            const artist = artists.items[0];
+            if (artist.blurbs.length) {
+                const bio = artist.blurbs[0];
+                
+                return bio;
+            }
+        }
+        return null;
     };
 
     return (

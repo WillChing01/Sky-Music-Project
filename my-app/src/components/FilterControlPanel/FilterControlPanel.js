@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleExplicit } from '../../state/slices/filterSlice';  
+import { toggleExplicit } from '../../state/slices/filter/filterSlice';  
 
 import GenreSelect from '../GenreSelect/GenreSelect';
 import ChannelSelect from '../ChannelSelect/ChannelSelect';

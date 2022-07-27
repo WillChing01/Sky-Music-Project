@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchGenre } from '../../utility/fetchNapster';
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../../state/slices/filterSlice';
+import { setFilter } from '../../state/slices/filter/filterSlice';
 
 import './GenreSelect.css';
 

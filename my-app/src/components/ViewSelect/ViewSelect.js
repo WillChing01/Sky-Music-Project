@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { toggleView } from '../../state/slices/viewSlice';
+import { toggleView } from '../../state/slices/view/viewSlice';
 
 import './ViewSelect.css';
 
