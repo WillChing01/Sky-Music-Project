@@ -51,7 +51,8 @@
 
 .icon-selected {
     font-size: 120%;
-    color: rgb(106, 218, 255);
+    /*color: rgb(106, 218, 255); */
+    color: #0d6efd;
 }
 
 .icon-selected:hover {

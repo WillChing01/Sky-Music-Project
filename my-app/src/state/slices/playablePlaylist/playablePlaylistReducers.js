@@ -6,7 +6,6 @@ import {
     setPlaylistNextTrack,
     setPlaylistPreviousTrack,
 } from './playlistMutators';
-import { current } from '@reduxjs/toolkit';
 
 // Reducers:
 
@@ -14,7 +13,6 @@ import { current } from '@reduxjs/toolkit';
  * When tracks load
  */
 const pushPlaylist = (state, { payload }) => {
-    console.log("stack", current(state.playlistStack))
     const newPlaylist = createPlaylist(payload);
     state.playlistStack.push(newPlaylist);
 };
@@ -23,9 +21,14 @@ const pushPlaylist = (state, { payload }) => {
  * When playlist is no longer in scope
  */
 const popPlaylist = (state) => {
-    console.log("stack", current(state.playlistStack))
     state.playlistStack.pop();
 };
+
+const swapPlaylist = (state, { payload }) => {
+    const newPlaylist = createPlaylist(payload);
+    state.playlistStack.pop();
+    state.playlistStack.push(newPlaylist);
+}
 
 /**
  * When play icon is clicked
@@ -79,6 +82,7 @@ const previousTrack = (state) => {
 const reducers = {
     pushPlaylist,
     popPlaylist,
+    swapPlaylist,
     setTrack,
     nextTrack,
     previousTrack,

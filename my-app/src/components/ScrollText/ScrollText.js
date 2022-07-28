@@ -77,13 +77,11 @@ const ScrollText = ({ message, containerId }) => {
         };
 
         const forwardAnimation = (e) => {
-            //change the translateX to length.
             const scrollWidth = String(getScrollBarWidth()) + 'px';
             changeTransform('translateX(min(calc(var(--shadow-width) * ' + scrollWidth + '), calc((1 - var(--shadow-width)) * ' + scrollWidth + ' - 100%)))');
         };
         
         const backwardAnimation = (e) => {
-            //revert the translateX to original.
             const scrollWidth = String(getScrollBarWidth()) + 'px';
             changeTransform('translateX(calc(var(--shadow-width) * ' + scrollWidth + '))');
         };

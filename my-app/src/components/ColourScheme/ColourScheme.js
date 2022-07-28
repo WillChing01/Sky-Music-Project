@@ -4,6 +4,7 @@ import './ColourScheme.css';
 
 const ColourScheme = () => {
 
+    //const { isDark } = useSelector((state) => state.playerInfo.darkMode);
     const [ isDark, setIsDark ] = useState(false);
 
     const getDocumentElement = () => {
@@ -21,8 +22,8 @@ const ColourScheme = () => {
     }
 
     const getColourSchemeClass = () => {
-        return isDark === true ? 'bi bi-sun-fill padded-icon'
-                               : 'bi bi-moon padded-icon';
+        return isDark === true ? 'bi bi-sun-fill border rounded ms-2 me-2 padded-icon'
+                               : 'bi bi-moon-fill border rounded ms-2 me-2 padded-icon';
     }
 
     return (

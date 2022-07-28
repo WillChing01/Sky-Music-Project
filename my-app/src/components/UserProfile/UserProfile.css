@@ -1,3 +1,9 @@
 .bi-box-arrow-in-left {
     cursor: pointer;
 }
+
+.to-right {
+    position: absolute;
+    right: 0%;
+    padding: 1% 1%;
+}

@@ -35,3 +35,7 @@ code {
   user-select: none;
   cursor: grab;
 }
+
+.space {
+  padding-bottom: 6%;
+}

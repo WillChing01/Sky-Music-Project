@@ -1,10 +1,6 @@
-- create playlist schema associated to a user
-- configure backend to deliver user playlists/have playlists posted to it
-- complete UserProfile component
-- have redirects on login/signup
+- style UserProfile component 
 - profile icon conditional route
 - get rid of all warnings about import statements
 - look for stray comments
 - put components into groups
-- functional theme icon 
 

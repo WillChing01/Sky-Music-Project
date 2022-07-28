@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { bcryptHash, bcryptGetMatch } = require('../utility/hash');
-const { checkIsInfoMissing } = require('../utility/validate');
+const { checkIsInfoMissing, checkUsernameCharacters } = require('../utility/validate');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -15,11 +15,15 @@ const userSchema = new mongoose.Schema({
 });
 
 
+
 userSchema.statics.signup = async function(username, password) {
     
+    checkUsernameCharacters(username);
     checkIsInfoMissing(username, password);
 
     const isUsernameTaken = await this.findOne({ username });
+
+
     if (isUsernameTaken) throw Error('That username has been taken.')
 
     const hashedPassword = await bcryptHash(password);

@@ -6,14 +6,10 @@ import { toggleIsPlaying } from '../../state/slices/playerConfig/playerConfigSli
 
 import './ProgressBar.css';
 
-
-// refreshTimePeriod in milliseconds.
 const refreshTimePeriod = 10;
 const tinyFraction = 0.0001;
 
 const ProgressBar = () => {
-    //songDuration is length in seconds.
-    //songProgress is fraction of way through song.
     const [songDuration, setSongDuration] = useState(0);
     const [songProgress, setSongProgress] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -69,7 +65,6 @@ const ProgressBar = () => {
     }
 
     const setSongPosition = (MouseEvent) => {
-        //get position of mouse
         const progBackgrRect = getProgressBackgroundRect();
         const progBackgrWidth = getClientRectWidth(progBackgrRect); 
         

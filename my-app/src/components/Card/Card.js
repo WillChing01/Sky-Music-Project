@@ -2,11 +2,13 @@
 import Carousel from '../Carousel/Carousel';
 import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 import PlayIcon from '../PlayIcon/PlayIcon';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 
 import './Card.css';
 
 const Card = ({ itemInfo }) => {
+    const { user } = useAuthContext();
     const { type, name, imgSrc, artist } = itemInfo;
 
     return (
@@ -15,7 +17,7 @@ const Card = ({ itemInfo }) => {
             <div className='card-top'>
                 <Carousel text={itemInfo.name} className='card-title' />
                 <span className='region'></span>
-                {type === 'track' && <FavouritesIcon trackId={itemInfo.id}/>} 
+                {type === 'track' && user && <FavouritesIcon trackId={itemInfo.id}/>} 
             </div>
             <img src={imgSrc} alt={name}></img>
             <div className='mt-2 card-bottom'>

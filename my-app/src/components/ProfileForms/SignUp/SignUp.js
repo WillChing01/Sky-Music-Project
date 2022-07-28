@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useSignUp from '../../../hooks/auth/useSignUp';
-import { useAuthContext } from '../../../hooks/useAuthContext';
 import '../ProfileForms.css';
 
 const SignUp = () => {
-    const { signup, isPending, error } = useSignUp();
+    const { signup, isPending, error} = useSignUp();
+    const [finishedAttempt, setFinishedAttempt] = useState(false);
     const navigate = useNavigate();
     
     const handleSignUp = async (e) => {
@@ -14,7 +15,13 @@ const SignUp = () => {
         const password = form['password'].value;
         const confirmPassword = form['confirm-password'].value;
         await signup(username, password, confirmPassword);
+        setFinishedAttempt(username);
     };
+
+    useEffect(() => {
+        if (!error && finishedAttempt) navigate(`/profile/user/${finishedAttempt}`);
+        setFinishedAttempt(false);
+    }, [error, finishedAttempt]);
 
     return (
         <div className='center-form'>
@@ -46,28 +53,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-/*
-<div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-</div>
-*/
-
-/*
-<form action="http://localhost:3001/profile/signup" method="POST">
-            <label htmlFor="signup-username">Username</label>
-            <input id="signup-username" className='form-label' type='text' name="username"></input>
-            
-            <label htmlFor="signup-password">Password</label>
-            <input id="signup-password" className='form-label' type='password' name="password"></input>
-            
-            <label htmlFor="signup-confirm-password">Confirm password</label>
-            <input id="signup-confirm-password" className='form-label' type='password' name="password"></input>
-            
-            <button type="submit">Sign up</button>
-            <div>
-                Already have an account?
-                <Link to='../login'>Log in</Link>
-            </div>
-        </form> */

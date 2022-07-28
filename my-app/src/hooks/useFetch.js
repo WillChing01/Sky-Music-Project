@@ -87,7 +87,7 @@ const useFetch = (url, keys, deps = [], fetchOptions = {}, totalFetchAttempts = 
             payload: {
                 statusCode: err.status,
                 statusText: err.statusText,
-                userMsg: err.userMsg || getUserErrMessage(err)
+                userMsg: getUserErrMessage(err)
             }
         });
     };
@@ -162,6 +162,7 @@ const useFetch = (url, keys, deps = [], fetchOptions = {}, totalFetchAttempts = 
          */
         isCancelled = false;
         fetchRetry(totalFetchAttempts);
+
         return () => {
             isCancelled = true;
             dispatch({type: INITIALISE});

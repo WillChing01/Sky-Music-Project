@@ -3,13 +3,6 @@ export const formatTime = (songDuration, songFraction) => {
     const isLong = getIsLong(songDuration);
     const formattedFraction = padTime(hours, minutes, seconds, isLong);
     return formattedFraction;
-    // if ((isNaN(hours) || isNaN(minutes)) || isNaN(seconds)) {
-    //     const defaultTime = padTime(0, 0, 0);
-    //     return defaultTime;
-    // } else {
-    //     const formattedFraction = padTime(hours, minutes, seconds);
-    //     return formattedFraction;
-    // }
 };
 
 const getIsLong = (songDuration) => {

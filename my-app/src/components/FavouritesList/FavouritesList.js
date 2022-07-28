@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import useFetch from "../../hooks/useFetch";
-import { getTracksInfo } from "../../utility/fetchNapster";
-import { popPlaylist, pushPlaylist } from "../../state/slices/playablePlaylist/playablePlaylistSlice";
+import { getIsFetchResolved, getTracksInfo } from "../../utility/fetchNapster";
+import { swapPlaylist } from "../../state/slices/playablePlaylist/playablePlaylistSlice";
 import { getPlaylistInfo } from "../../utility/parseMusicItem";
 
 import Grid from '../../components/Grid/Grid';
@@ -24,9 +24,8 @@ const FavouritesList = () => {
 
     useEffect(() => {
         if (channelItems.length) {
-            dispatch(popPlaylist());
             const playlist = getPlaylistInfo(channelItems);
-            dispatch(pushPlaylist(playlist));
+            dispatch(swapPlaylist(playlist));
         }
     }, [channelItems]);
 
@@ -36,6 +35,7 @@ const FavouritesList = () => {
                                 : <List channelItems={channelItems} />
             return favouriteView;
         } else {
+            if (!getIsFetchResolved(tracksRes)) return null;
             return <p className="indent">You haven't favourited any tracks.</p>
         }
     }

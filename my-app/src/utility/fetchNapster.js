@@ -78,6 +78,8 @@ export const getAlbumTracksInfo = (albumId) => {
 export const getIsFetchResolved = (fetchResult) => {
   const hasItems = !!fetchResult.items.length;
   const hasError = !!fetchResult.error.statusCode;
+  console.log("fetch has items", hasItems)
+  console.log("fetch has error", hasError)
   return hasItems || hasError;
 };
 
@@ -96,7 +98,7 @@ export const getTracksInfo = (tracksIds) => {
 };
 
 const getTracksURL = (tracksIds) => {
-  const trackIdList = listArrOfStrsAsStr(tracksIds, ',');;
+  const trackIdList = listArrOfStrsAsStr(tracksIds, ',');
   const tracksURL = `https://api.napster.com/v2.2/tracks/${trackIdList}`;
   return tracksURL;
 };

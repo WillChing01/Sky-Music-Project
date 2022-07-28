@@ -11,7 +11,6 @@ const pauseIconClass = 'bi-pause';
 const PlayIcon = ({itemInfo}) => { 
     const [iconClass, setIconClass] = useState(playIconClass);
 
-    //const {isPlaying, currentPreviewURL} = useSelector((state) => state.playerInfo);
     const isPlaying = useSelector((state) => state.playerConfig.isPlaying)
     const { currentPreviewURL } = useSelector((state) => state.playablePlaylist.currentPlaylist.playingTrack);
     

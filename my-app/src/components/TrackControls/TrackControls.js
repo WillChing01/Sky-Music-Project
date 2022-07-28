@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleIsPlaying, toggleIsShuffle, toggleShouldLoop }  from '../../state/slices/playerConfig/playerConfigSlice';
+import { toggleIsPlaying, toggleShouldLoop }  from '../../state/slices/playerConfig/playerConfigSlice';
 import { setPlayerAudioLoop, setPlayerAudioCurrentTime, getPlayerAudio } from '../Player/Player';
 import { shuffle, unshuffle } from '../../state/slices/playablePlaylist/playablePlaylistSlice';
 
@@ -50,7 +50,6 @@ const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPrevious
     
     const handlePreviousTrack = () => {
         const effect = () => {
-            //setPlayerAudioCurrentTime(0);
             setPreviousTrack();
         };
 
@@ -59,10 +58,6 @@ const TrackControls = ({ isPlaying, currentPreviewURL, setNextTrack, setPrevious
 
     const handleNextTrack = () => {
         const effect = () => {
-            // const playerAudio = getPlayerAudio();
-            // const trackDuration = playerAudio.duration;
-            // const newPlayerAudioTime = trackDuration - tinyTimeIncrement;
-            // setPlayerAudioCurrentTime(newPlayerAudioTime);  
             setNextTrack();
         };
 

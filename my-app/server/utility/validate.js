@@ -6,6 +6,14 @@ function checkIsInfoMissing(...info) {
     }
 }
 
+const checkUsernameCharacters = (username) => {
+    const regex = /^[A-Za-z0-9]+$/
+    const checksOut = regex.test(username);
+    console.log(checksOut);
+    if (!checksOut) throw Error('Your username contains forbidden characters.');
+};
+
 module.exports = {
-    checkIsInfoMissing
+    checkIsInfoMissing,
+    checkUsernameCharacters
 };

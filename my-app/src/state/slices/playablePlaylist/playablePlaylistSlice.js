@@ -19,6 +19,7 @@ export const playablePlaylist = createSlice({
 export const {
     pushPlaylist,
     popPlaylist,
+    swapPlaylist,
     setTrack,
     nextTrack,
     previousTrack,

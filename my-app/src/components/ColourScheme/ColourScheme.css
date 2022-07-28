@@ -1,17 +1,17 @@
 .dark-mode-filter {
-    -webkit-filter: invert(100%);
-    filter: invert(100%);
-  }
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
   
-  .dark-mode-filter img {
-    -webkit-filter: invert(100%);
-    filter: invert(100%);
-  }
+.dark-mode-filter img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
 
-  .padded-icon {
-    padding: 0% 0.5em;
-  }
+.padded-icon {
+  padding: 0% 0.5em;
+}
 
-  .padded-icon:hover {
-    cursor: pointer;
-  }
+.padded-icon:hover {
+  cursor: pointer;
+}

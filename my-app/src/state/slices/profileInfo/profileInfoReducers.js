@@ -1,10 +1,6 @@
-const toggleIsLoggedIn = (state) => {
-    state.isLoggedIn = !state.isLoggedIn;
-};
-
 const toggleFavouriteTrack = (state, { payload }) => {
     const tracks = state.favourites;
-    var trackIndex = tracks.indexOf(payload.id);
+    const trackIndex = tracks.indexOf(payload.id);
     if (trackIndex !== -1) {
         tracks.splice(trackIndex, 1);
     } else {
@@ -12,9 +8,18 @@ const toggleFavouriteTrack = (state, { payload }) => {
     }
 }
 
+const setFavourites = (state, { payload }) => {
+    state.favourites = payload.favourites;
+}
+
+// const toggleDarkMode = (state) => {
+//     state.darkMode = !state.darkMode;
+// }
+
 const reducers = {
-    toggleIsLoggedIn,
-    toggleFavouriteTrack
+    toggleFavouriteTrack,
+    setFavourites
+    //toggleDarkMode
 };
 
 export default reducers;

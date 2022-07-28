@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../utility/jwt');
 const User = require('../models/User');
 

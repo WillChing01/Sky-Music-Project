@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import useLogin from '../../../hooks/auth/useLogin';
 
@@ -6,10 +7,8 @@ import '../ProfileForms.css';
 
 const LogIn = () => {
     const { login, isPending, error } = useLogin();
-
-    console.log(
-        error
-    )
+    const [finishedAttempt, setFinishedAttempt] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -17,7 +16,13 @@ const LogIn = () => {
         const username = form['username'].value;
         const password = form['password'].value;
         await login(username, password);
+        setFinishedAttempt(username);
     };
+
+    useEffect(() => {
+        if (!error && finishedAttempt) navigate(`/profile/user/${finishedAttempt}`);
+        setFinishedAttempt(false);
+    }, [error, finishedAttempt]);
 
     return (
         <div className='center-form'>

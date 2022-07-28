@@ -28,10 +28,10 @@ const useSignUp = () => {
     };
 
     const signup = async (username, password, confirmPassword) => {
+        setError(null)
         if (passwordChecksOut(password, confirmPassword)) {
             setIsPending(true)
-            setError(null)
-    
+           
             const fetchOptions = {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -49,8 +49,11 @@ const useSignUp = () => {
                 setIsPending(false)
             }
         }
+        return error;
     };
-        
+
+    console.log("error in useSignUp", error);
+
     return { signup, isPending, error };
 };
  

@@ -13,3 +13,8 @@
 .gold {
     color: rgb(242, 205, 0);
 }
+
+.inversion {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+}

@@ -24,7 +24,8 @@
 }
 
 .card-view .bi-play-fill:hover {
-    font-size: large;
+    /*font-size: large; */
+    color: gray;
 }
 
  .card-view .display {
@@ -37,6 +38,10 @@
 
 .card-view .bi-pause {
     float: right;
+}
+
+.card-view .bi-pause:hover {
+    color: gray;
 }
 
 .dialog .card-view {
