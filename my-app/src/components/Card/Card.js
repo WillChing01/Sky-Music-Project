@@ -2,15 +2,16 @@
 import Carousel from '../Carousel/Carousel';
 import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 import PlayIcon from '../PlayIcon/PlayIcon';
-import ScrollText from '../ScrollText/ScrollText';
+
 
 import './Card.css';
 
 const Card = ({ itemInfo }) => {
     const { type, name, imgSrc, artist } = itemInfo;
-    //<h5 className='elem'><ScrollText message={itemInfo.name} containerId={itemInfo.name} /></h5>
+
     return (
-        <div className='py-2 px-4 border border-secondary rounded card-view'>
+        // <div className='py-2 px-4 border border-secondary rounded card-view'></div>
+        <div className='py-2 px-4 border rounded card-view'>
             <div className='card-top'>
                 <Carousel text={itemInfo.name} className='card-title' />
                 <span className='region'></span>

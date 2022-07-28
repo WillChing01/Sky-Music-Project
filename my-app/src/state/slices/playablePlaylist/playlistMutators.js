@@ -85,20 +85,16 @@ export const shufflePlaylist = (playlist) => {
     const tracks = playlist.tracks;
     const length = tracks.length;
     
-    playlist.progressIndex = -1;
-    playlist.currentIndex = -1;
+    playlist.progressIndex = 0;
+    playlist.currentIndex = 0;
 
     for (let i = length - 1; i >= 0; i--) {
         const j = getRandomIndex(i + 1);
         [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
     }
 
-    const firstTrack = tracks[0];
-    if (playlist.playingTrack.id === firstTrack.id) {
-        console.log("happened")
-        const j = Math.min(1 + getRandomIndex(length), length - 1);
-        [tracks[0], tracks[j]] = [tracks[j], tracks[0]];
-    }
+    const playingIndex = getPlaylistTrackIndex(playlist, playlist.playingTrack);
+    [tracks[0], tracks[playingIndex]] = [tracks[playingIndex], tracks[0]];
 };
 
 export const unshufflePlaylist = (playlist) => {
@@ -121,6 +117,13 @@ const updateHistory = (playlist) => {
     playlist.history.current = playlist.history.top
 }
 
+const setNextIndex = (playlist) => {
+    const length = playlist.tracks.length;
+    const nextIndex = mod(playlist.progressIndex + 1, length);
+    playlist.progressIndex = nextIndex;
+    playlist.currentIndex = nextIndex;
+}
+
 export const setPlaylistTrack = (playlist, track, isShuffle) => {
     const trackIndex = getPlaylistTrackIndex(playlist, track);
     updateHistory(playlist);
@@ -141,10 +144,9 @@ export const setPlaylistNextTrack = (playlist, isShuffle) => {
     updateHistory(playlist);
     
     if (isAtLastTrack) {
-        playlist.progressIndex = 0;
-        playlist.currentIndex = 0;
         if (isShuffle) {
             shufflePlaylist(playlist);
+            setNextIndex(playlist);
         }
     } else {
         playlist.progressIndex++;
