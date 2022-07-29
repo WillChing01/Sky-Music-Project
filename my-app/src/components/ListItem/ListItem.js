@@ -1,10 +1,9 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-import PlayIcon from "../PlayIcon/PlayIcon";
-import FavouritesIcon from "../FavouritesIcon/FavouritesIcon";
+import PlayIcon from '../PlayIcon/PlayIcon';
+import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 
 import './ListItem.css'
-import Carousel from "../Carousel/Carousel";
 
 const ListItem = ({itemInfo}) => {
     const { user } = useAuthContext();
@@ -13,7 +12,6 @@ const ListItem = ({itemInfo}) => {
         <li className="list-item me-5 ms-5">
             <img id='list-image' src={itemInfo.imgSrc}></img>
             {itemInfo.playable && <PlayIcon itemInfo={itemInfo}/>}
-            {/* <Carousel text={itemInfo.name + (itemInfo.artist ? ', ' + itemInfo.artist : '')}/> */}
             <span className="item-info">{itemInfo.name + (itemInfo.artist ? ', ' + itemInfo.artist : '')}</span>
             <span className="region" />
             {itemInfo.type === 'track' && user && <FavouritesIcon trackId={itemInfo.id}/>} 

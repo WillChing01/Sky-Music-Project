@@ -27,8 +27,9 @@ const getProfileFetchOptions = (token) => {
 
 const UserProfile = ({ user }) => {
     const { username } = useParams();
-    const { logout } = useLogout();
+    const isRightUser = username === user.username; 
     
+    const { logout } = useLogout();
     const dispatch = useDispatch();
     
     const favourites = useFetch(...getFavouritesFetchInfo(user.username), [], getProfileFetchOptions(user.token)); 
@@ -44,22 +45,25 @@ const UserProfile = ({ user }) => {
     };
 
     useEffect(() => {
-        if (username !== user.username) navigate('/');
+        if (!isRightUser) navigate('/');
     }, []);
 
     useEffect(() => {
-        if (items[0] !== null) {
+        const hasFavourites = items[0] !== null;
+        if (hasFavourites) {
             const favouritesList = { favourites: items };
             dispatch(setFavourites(favouritesList));
-        }
+        };
     }, [JSON.stringify(items)]);
 
     const getFavouritesView = () => {
         if (pendingMsg) {
             return <div className='indent'>Grabbing favourites...</div>;
         } else {
-            const gotFavourites = getIsFetchResolved(favourites); 
-            return gotFavourites && !error.statusCode && <FavouritesList />;
+            const isFavsFetchResolved = getIsFetchResolved(favourites);
+            const isErrorFree = !error.statusCode;
+            const canShowFavs = isFavsFetchResolved && isErrorFree; 
+            return canShowFavs && <FavouritesList />;
         }
     };
 
@@ -68,7 +72,7 @@ const UserProfile = ({ user }) => {
             <div className='to-right'>
                 <button className="btn btn-primary" onClick={handleLogOut}>Log out</button>
             </div>
-            {username === user.username && getFavouritesView()}
+            {isRightUser && getFavouritesView()}
         </div>
     );
 }

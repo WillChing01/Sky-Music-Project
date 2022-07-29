@@ -8,8 +8,6 @@ import Grid from '../../components/Grid/Grid';
 import List from '../../components/List/List';
 import { useEffect } from "react";
 
-
-
 const apikey = process.env.REACT_APP_NAPSTER_API_KEY;
 
 const FavouritesList = () => {
@@ -46,6 +44,6 @@ const FavouritesList = () => {
             { getView() }
         </div>
     );
-}
+};
  
 export default FavouritesList;

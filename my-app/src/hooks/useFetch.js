@@ -158,7 +158,7 @@ const useFetch = (url, keys, deps = [], fetchOptions = {}, totalFetchAttempts = 
          * - the useEffect fires _again_ 
          * This second useEffect still reads vars native to the first render. So 
          * without setting isCancelled = false in the useEffect, fetchRetry would see 
-         * isCancelled = true, and fail to make its dispatches. 
+         * isCancelled = true in this case, and fail to make its dispatches. 
          */
         isCancelled = false;
         fetchRetry(totalFetchAttempts);

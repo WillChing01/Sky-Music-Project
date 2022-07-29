@@ -9,7 +9,7 @@ const initialState = {
     }, 
     genre: 'all', 
     showExplicit: true
-}
+};
 
 export const filterSlice = createSlice({
     name: 'filter',

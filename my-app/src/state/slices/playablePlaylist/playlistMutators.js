@@ -1,5 +1,3 @@
-import { current } from '@reduxjs/toolkit';
-
 const mod = (n, m) => {
     return ((n % m) + m) % m;
 };
@@ -48,12 +46,12 @@ export const pushHistory = (history, track) => {
 
 const getRandomIndex = (bound) => {
     return Math.floor(Math.random() * bound);
-}
+};
 
 let id = 0;
 const generateNewId = () => {
     return id++;
-}
+};
 
 const defaultTrack = {
     id: '',
@@ -61,7 +59,7 @@ const defaultTrack = {
     name: '',
     artistName: '',
     imgSrc: ''
-}
+};
 
 export const createPlaylist = (tracks = [defaultTrack]) => {
     const id = generateNewId();

@@ -78,8 +78,6 @@ export const getAlbumTracksInfo = (albumId) => {
 export const getIsFetchResolved = (fetchResult) => {
   const hasItems = !!fetchResult.items.length;
   const hasError = !!fetchResult.error.statusCode;
-  console.log("fetch has items", hasItems)
-  console.log("fetch has error", hasError)
   return hasItems || hasError;
 };
 

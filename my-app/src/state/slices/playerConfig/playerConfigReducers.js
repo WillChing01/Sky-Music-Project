@@ -19,10 +19,6 @@ const toggleIsMuted = (state) => {
 const toggleShouldLoop = (state) => {
     state.shouldLoop = !state.shouldLoop;
 };
- 
-// const toggleIsShuffle = (state) => {
-//     state.isShuffle = !state.isShuffle;
-// };
 
 const setIsPlaying = (state, { payload }) => {
     state.isPlaying = payload;
@@ -38,7 +34,6 @@ const reducers = {
     setCachedVolume,
     toggleIsMuted,
     toggleShouldLoop, 
-    //toggleIsShuffle,
     setIsPlaying,
     toggleIsPlaying
 };

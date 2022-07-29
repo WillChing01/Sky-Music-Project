@@ -13,7 +13,6 @@ const useLogin = () => {
         dispatch({type: LOGIN, payload: user});
     };
 
-
     const login = async (username, password) => {
             setIsPending(true);
             setError(null);

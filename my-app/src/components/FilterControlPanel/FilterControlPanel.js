@@ -7,7 +7,6 @@ import ChannelSelect from '../ChannelSelect/ChannelSelect';
 
 import './FilterControlPanel.css';
 
-
 const FilterControlPanel = () => {
 
     const showExplicit = useSelector((state) => state.filter.showExplicit);
@@ -42,6 +41,6 @@ const FilterControlPanel = () => {
             </div>
         </details>
     );
-}
+};
  
 export default FilterControlPanel;
