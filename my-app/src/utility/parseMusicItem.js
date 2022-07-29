@@ -40,13 +40,13 @@ const getNumTracks = (item) => {
     if (item.type === 'album') return item.trackCount;
     else if (item.type === 'track') return 1; 
     else return 0;
-}
+};
 
 const getIsExplicit = (item) => {
     if (item.type === 'track') return item.isExplicit;
     else if (item.type === 'album') return item.tags.includes('Explicit');
     else return false;
-}
+};
 
 const getReleaseDate = (item) => {
     if (item.type === 'artist') return null;
@@ -112,6 +112,6 @@ export const getPlaylistInfo = (items) => {
             name: info.name,
             artistName: info.artist,
             imgSrc: info.imgSrc,
-        }
-    })
-} 
+        };
+    });
+};

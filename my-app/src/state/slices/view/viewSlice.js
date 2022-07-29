@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import reducers from './viewReducer';
 
 const grid = 'grid';
-const list = 'list';
 
 const initialState = {
     value: grid

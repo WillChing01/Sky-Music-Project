@@ -3,8 +3,6 @@ import { useState } from 'react';
 import './ColourScheme.css';
 
 const ColourScheme = () => {
-
-    //const { isDark } = useSelector((state) => state.playerInfo.darkMode);
     const [ isDark, setIsDark ] = useState(false);
 
     const getDocumentElement = () => {

@@ -62,7 +62,7 @@ const ProgressBar = () => {
 
     const getPixelsIntoRect = (MouseEvent, rect) => {
         return MouseEvent.clientX - rect.left;
-    }
+    };
 
     const setSongPosition = (MouseEvent) => {
         const progBackgrRect = getProgressBackgroundRect();
@@ -178,6 +178,6 @@ const ProgressBar = () => {
             <div className='time-format'>{getFormattedRemainingTime()}</div>
         </div>
     );
-}
+};
 
 export default ProgressBar;

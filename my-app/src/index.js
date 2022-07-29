@@ -21,12 +21,3 @@ root.render(
     </Router>
   </React.StrictMode>
 );
-
-// Non strict mode
-// root.render(
-//   <Router>
-//     <Provider store={store}>
-//       <App />        
-//     </Provider>
-//   </Router>
-// );

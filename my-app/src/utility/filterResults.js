@@ -1,6 +1,13 @@
-// To be changed as more filter option become available
+// To be changed as more filter options become available
 export const shouldBeFiltered = (info, filter) => {
-    const incorrectGenre = !info.genres.includes(filter.genre) && filter.genre !== 'all';
-    const isExplicit = !filter.showExplicit && info.isExplicit;
-    return incorrectGenre || isExplicit;
+    const isOfSelectedGenre = info.genres.includes(filter.genre);
+    const isGenreSelected = filter.genre !== 'all'
+    const shouldFilterByGenre = isGenreSelected && !isOfSelectedGenre;
+    
+    const shouldFilterExplicit = !filter.showExplicit;
+    const isExplicit = info.isExplicit;
+    const shouldFilterByExplicit = shouldFilterExplicit && isExplicit;
+
+    const shouldFilter = shouldFilterByGenre || shouldFilterByExplicit;
+    return shouldFilter;
 };

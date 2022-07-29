@@ -1,6 +1,6 @@
+const { checkUsernameCharacters } = require("../utility/validate");
 const Favourites = require("../models/Favorites");
 const User = require("../models/User");
-const { checkUsernameCharacters } = require("../utility/validate");
 
 const checkUserExists = async (username) => {
     const user = await User.findOne({username});
@@ -28,17 +28,37 @@ const getFavouritesByUser = async (username) => {
 
 const getFavourites = async (req, res) => {
     const { username } = req.params;
-
-    const userFavourites = await getFavouritesByUser(username);
-    if (!userFavourites || !userFavourites.favourites.length) {
-        console.log("made it", userFavourites)
-        res.status(200).json({favourites: [null]});
-    } else {
-        console.log('user data')
+    const userFavs = await getFavouritesByUser(username);
+    const hasNoFavs = !userFavs || !userFavs.favourites.length;
+    if (hasNoFavs) {
         res.status(200).json({
-            favourites: userFavourites.favourites
-        })
+            favourites: [null]
+        });
+    } else {
+        res.status(200).json({
+            favourites: userFavs.favourites
+        });
     }
+};
+
+
+const makeFavourites = async (username, trackId) => {
+    await Favourites.create({
+        user: username,
+        favourites: [trackId]
+    });
+};
+
+const addFavourite = async (trackId, favs) => {
+    favs.favourites.push(trackId);
+    await favs.save();
+};
+
+const unfavourite = async (trackId, favs) => {
+    const grabbedIndex = favs.favourites.indexOf(trackId);
+    const isTrackInFavs = grabbedIndex !== -1;
+    if (isTrackInFavs) favs.favourites.splice(grabbedIndex, 1);
+    await favs.save();
 };
 
 const postFavourites = async (req, res) => {
@@ -47,27 +67,27 @@ const postFavourites = async (req, res) => {
     try {
         checkUsernameCharacters(username);
         await checkUserExists(username);
-        const userFavourites = await getFavouritesByUser(username);
-        if (!userFavourites && favourited) {
-            Favourites.create({
-                user: username,
-                favourites: [trackId]
-            })
-        } else if (userFavourites && favourited) {
-            userFavourites.favourites.push(trackId);
-            await userFavourites.save();
-        } else if (userFavourites && !favourited) {
-            const trackIndex = userFavourites.favourites.indexOf(trackId);
-            if (trackIndex !== -1) {
-                userFavourites.favourites.splice(trackIndex, 1);
+
+        const userFavs = await getFavouritesByUser(username);
+        const hasMadeFavs = !!userFavs;
+
+        if (!hasMadeFavs) {
+            if (favourited) {
+                await makeFavourites(username, trackId);
             }
-            await userFavourites.save();
+        } else {
+            if (favourited) {
+                await addFavourite(trackId, userFavs);
+            } else {
+                await unfavourite(trackId, userFavs);
+            }
         }
-        res.status(200).json({trackId})
+        res.status(200).json({trackId});
+
     } catch(err) {
         res.status(401).json({
             error: err.message
-        })
+        });
     }
 };
 

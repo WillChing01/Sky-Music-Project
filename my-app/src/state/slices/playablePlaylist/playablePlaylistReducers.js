@@ -28,7 +28,7 @@ const swapPlaylist = (state, { payload }) => {
     const newPlaylist = createPlaylist(payload);
     state.playlistStack.pop();
     state.playlistStack.push(newPlaylist);
-}
+};
 
 /**
  * When play icon is clicked
@@ -54,14 +54,14 @@ const setTrack = (state, { payload }) => {
  */
 const nextTrack = (state) => {
     setPlaylistNextTrack(state.currentPlaylist, state.isShuffle);
-}
+};
 
 /**
  * When previous track is clicked
  */
 const previousTrack = (state) => {
     setPlaylistPreviousTrack(state.currentPlaylist)
-}
+};
 
 /**
  * When shuffle is turned on
@@ -69,7 +69,7 @@ const previousTrack = (state) => {
  const shuffle = (state) => {
     shufflePlaylist(state.currentPlaylist);
     state.isShuffle = true;
-}
+};
 
 /**
  * When shuffle is turned off
@@ -77,7 +77,7 @@ const previousTrack = (state) => {
  const unshuffle = (state) => {
     unshufflePlaylist(state.currentPlaylist);
     state.isShuffle = false;
-}
+};
 
 const reducers = {
     pushPlaylist,

@@ -17,12 +17,19 @@ const TrackInfoSnippet = () => {
         imgSrc
     } = useSelector((state) => state.playablePlaylist.currentPlaylist.playingTrack);
 
+    const getFavouritable = () => {
+        const isRealTrack = id !== '';
+        const isLoggedIn = !!user;
+        const isFavouritable = isRealTrack && isLoggedIn;
+        return isFavouritable; 
+    };
+
     return(
         <>
             <div className='img-div'>
                 <img className='player-icon' alt='' src={imgSrc}></img>
             </div>
-            { id !== '' && user && <FavouritesIcon trackId={id} prefix="player"/> }
+            { getFavouritable() && <FavouritesIcon trackId={id} prefix="player"/> }
             <div className='info-div'>
                 <div className='make-bold'>
                     <Carousel text={name} />

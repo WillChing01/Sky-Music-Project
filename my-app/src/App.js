@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useSearchParams } from 'react-router-dom';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import Profile from './components/Profile/Profile';
