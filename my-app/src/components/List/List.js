@@ -3,7 +3,7 @@ import { shouldBeFiltered } from '../../utility/filterResults';
 import { useSelector } from "react-redux";
 
 import WrapAlbum from "../WrapAlbum/WrapAlbum";
-import ListItem from "../MusicItem/ListItem/ListItem";
+import ListItem from "../ListItem/ListItem";
 import Card from "../Card/Card";
 
 import './List.css';

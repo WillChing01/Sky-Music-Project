@@ -1,7 +1,7 @@
-import { useAuthContext } from '../../../hooks/useAuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
-import PlayIcon from "../../PlayIcon/PlayIcon";
-import FavouritesIcon from "../../FavouritesIcon/FavouritesIcon";
+import PlayIcon from '../PlayIcon/PlayIcon';
+import FavouritesIcon from '../FavouritesIcon/FavouritesIcon';
 
 import './ListItem.css'
 

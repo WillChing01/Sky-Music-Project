@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 
+dotenv.config();
 const port = process.env.PORT || 3001;
 
 const app = express();
@@ -11,9 +12,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-dotenv.config();
-const dbURI = process.env.MONGO_URI;
 
+const dbURI = process.env.MONGO_URI;
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
     console.log('connected');
