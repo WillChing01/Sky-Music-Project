@@ -4,6 +4,7 @@ import playerConfigReducer from './slices/playerConfig/playerConfigSlice';
 import filterReducer from './slices/filter/filterSlice';
 import viewReducer from './slices/view/viewSlice';
 import profileInfoReducer from './slices/profileInfo/profileInfoSlice';
+import { colourSchemeMiddleware } from './middleware/customMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -13,4 +14,5 @@ export const store = configureStore({
     view: viewReducer,
     profileInfo: profileInfoReducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(colourSchemeMiddleware)
 });
