@@ -1,32 +1,36 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleDarkMode } from '../../state/slices/profileInfo/profileInfoSlice';
 
 import './ColourScheme.css';
 
 const ColourScheme = () => {
-    const [ isDark, setIsDark ] = useState(false);
+
+    const { darkMode } = useSelector((state) => (state.profileInfo));
+    const dispatch = useDispatch();
 
     const getDocumentElement = () => {
         return document.documentElement;
-    }
+    };
 
-    const toggleDarkMode = () => {
+    const handleToggleDarkMode = () => {
+        dispatch(toggleDarkMode());
+    };
+
+    useEffect(() => {
         const doc = getDocumentElement();
-        if (isDark) {
-            doc.className = '';
-        } else {
-            doc.className = 'dark-mode-filter';
-        }
-        setIsDark(!isDark);
-    }
+        doc.className = darkMode === true ? 'dark-mode-filter'
+                                          : '';
+    },[darkMode]);
 
     const getColourSchemeClass = () => {
-        return isDark === true ? 'bi bi-sun-fill border rounded ms-2 me-2 padded-icon'
-                               : 'bi bi-moon-fill border rounded ms-2 me-2 padded-icon';
-    }
+        return darkMode === true ? 'bi bi-sun-fill border rounded ms-2 me-2 padded-icon'
+                                 : 'bi bi-moon-fill border rounded ms-2 me-2 padded-icon';
+    };
 
     return (
-        <i className={getColourSchemeClass()} onClick={toggleDarkMode} />
+        <i className={getColourSchemeClass()} onClick={handleToggleDarkMode} />
     );
-}
+};
 
 export default ColourScheme;

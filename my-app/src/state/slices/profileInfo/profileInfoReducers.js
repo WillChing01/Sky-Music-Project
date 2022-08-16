@@ -12,9 +12,14 @@ const setFavourites = (state, { payload }) => {
     state.favourites = payload.favourites;
 };
 
+const toggleDarkMode = (state) => {
+    state.darkMode = !state.darkMode;
+};
+
 const reducers = {
     toggleFavouriteTrack,
-    setFavourites
+    setFavourites,
+    toggleDarkMode
 };
 
 export default reducers;

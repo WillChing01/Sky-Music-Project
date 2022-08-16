@@ -1,9 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import reducers from './profileInfoReducers';
 
+const getCachedDarkMode = () => {
+    try {
+        const darkMode = localStorage.getItem('darkMode') === 'true' ? true 
+                                                                     : false;
+        return darkMode;
+    } catch {
+        return false;
+    }
+};
+
 const initialState = {
     favourites: [],
-    darkMode: false
+    darkMode: getCachedDarkMode()
 };
 
 export const profileInfoSlice = createSlice({
@@ -12,5 +22,5 @@ export const profileInfoSlice = createSlice({
     reducers
 });
 
-export const { toggleFavouriteTrack, setFavourites} = profileInfoSlice.actions;
+export const { toggleFavouriteTrack, setFavourites, toggleDarkMode } = profileInfoSlice.actions;
 export default profileInfoSlice.reducer;
